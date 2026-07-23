@@ -1,0 +1,130 @@
+name: Validate & Publish Game Catalog
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+  push:
+    branches:
+      - develop
+      - main
+    tags:
+      - 'catalog-v*'
+
+permissions:
+  contents: read
+
+jobs:
+  catalog:
+    name: Build and validate catalog
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          # Нужно, чтобы при публикации можно было проверить,
+          # что релизный тег действительно находится в main.
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      - name: Determine release version
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            VERSION="${GITHUB_REF_NAME}"
+          else
+            VERSION="dev-${GITHUB_SHA:0:12}"
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          echo "Catalog version: $VERSION"
+
+      - name: Verify release tag belongs to main
+        if: startsWith(github.ref, 'refs/tags/catalog-v')
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git fetch origin main
+
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "ERROR: release tag is not based on main"
+            exit 1
+          fi
+
+          echo "Release commit belongs to main"
+
+      - name: Build and validate catalog
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python scripts/build_catalog.py \
+            --catalog-dir catalog \
+            --output build/catalog-release.json \
+            --version "${{ steps.release.outputs.version }}" \
+            --schema-version 1 \
+            --commit-sha "${GITHUB_SHA}"
+
+      - name: Show release summary
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+
+          with open(
+              "build/catalog-release.json",
+              encoding="utf-8"
+          ) as f:
+              data = json.load(f)
+
+          print("Version:", data["version"])
+          print("Schema version:", data["schemaVersion"])
+          print("Commit:", data["commitSha"])
+          print("Hash:", data["contentHash"])
+
+          print("\nEntities:")
+
+          for key, values in data["catalog"].items():
+              print(f"  {key}: {len(values)}")
+          PY
+
+      #
+      # ПУБЛИКАЦИЯ В PRODUCTION
+      #
+      # Этот шаг выполняется ТОЛЬКО для тегов catalog-v*
+      #
+      - name: Publish catalog
+        if: startsWith(github.ref, 'refs/tags/catalog-v')
+        env:
+          CATALOG_PUBLISH_URL: ${{ secrets.CATALOG_PUBLISH_URL }}
+          CATALOG_PUBLISH_TOKEN: ${{ secrets.CATALOG_PUBLISH_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Publishing ${{ steps.release.outputs.version }}"
+
+          curl \
+            --fail-with-body \
+            --show-error \
+            --silent \
+            --request POST \
+            --header "Authorization: Bearer ${CATALOG_PUBLISH_TOKEN}" \
+            --header "Content-Type: application/json" \
+            --data-binary @build/catalog-release.json \
+            "${CATALOG_PUBLISH_URL}"
+
+          echo
+          echo "Catalog published successfully"
