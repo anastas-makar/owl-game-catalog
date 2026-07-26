@@ -105,26 +105,35 @@ jobs:
       #
       # Этот шаг выполняется ТОЛЬКО для тегов catalog-v*
       #
-      - name: Publish catalog
+      - name: Publish catalog through SSH
         if: startsWith(github.ref, 'refs/tags/catalog-v')
         env:
-          CATALOG_PUBLISH_URL: ${{ secrets.CATALOG_PUBLISH_URL }}
-          CATALOG_PUBLISH_TOKEN: ${{ secrets.CATALOG_PUBLISH_TOKEN }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
         shell: bash
         run: |
           set -euo pipefail
 
-          echo "Publishing ${{ steps.release.outputs.version }}"
+          install -m 700 -d ~/.ssh
 
-          curl \
-            --fail-with-body \
-            --show-error \
-            --silent \
-            --request POST \
-            --header "Authorization: Bearer ${CATALOG_PUBLISH_TOKEN}" \
-            --header "Content-Type: application/json" \
-            --data-binary @build/catalog-release.json \
-            "${CATALOG_PUBLISH_URL}"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
 
-          echo
-          echo "Catalog published successfully"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+          REMOTE_FILE="/tmp/owl-catalog-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json"
+
+          scp \
+            -P "$SSH_PORT" \
+            build/catalog-release.json \
+            "$SSH_USER@$SSH_HOST:$REMOTE_FILE"
+
+          ssh \
+            -p "$SSH_PORT" \
+            "$SSH_USER@$SSH_HOST" \
+            "set -e;
+             trap 'rm -f \"$REMOTE_FILE\"' EXIT;
+             /usr/local/bin/publish-owl-catalog \"$REMOTE_FILE\""
