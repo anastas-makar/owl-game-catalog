@@ -1,0 +1,8 @@
+{
+  "templateId": "swamp-ghoul",
+  "name": "Болотный упырь",
+  "description": "Небольшой, но упрямый упырь, который прячется среди камышей.",
+  "imageUrl": "https://example.invalid/owl-game/enemies/swamp-ghoul.webp",
+  "healAmount": 500,
+  "damageAmount": 80
+}

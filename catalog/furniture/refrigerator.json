@@ -1,0 +1,9 @@
+{
+  "templateId": "refrigerator",
+  "name": "Холодильник",
+  "price": 900,
+  "imageUrl": "https://example.invalid/owl-game/furniture/refrigerator.webp",
+  "height": 0.3,
+  "width": 0.19,
+  "type": "REFRIGERATOR"
+}

@@ -1,0 +1,28 @@
+{
+  "_comment": "Черновик: названия полей slotId, allowedLocationTypes и allowedEnemyTemplateIds надо сверить с текущим CatalogMapImport.",
+  "templateId": "swamp-free",
+  "name": "Карта болотистой местности",
+  "imageUrl": "https://example.invalid/owl-game/maps/swamp-free.webp",
+  "type": "FREE",
+  "locationSlots": [
+    {
+      "slotId": "north-west-location",
+      "x": 0.22,
+      "y": 0.35,
+      "allowedLocationTypes": [
+        "CAVE",
+        "RUINS"
+      ]
+    }
+  ],
+  "enemySlots": [
+    {
+      "slotId": "central-enemy",
+      "x": 0.55,
+      "y": 0.52,
+      "allowedEnemyTemplateIds": [
+        "swamp-ghoul"
+      ]
+    }
+  ]
+}

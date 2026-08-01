@@ -1,0 +1,8 @@
+{
+  "templateId": "honey",
+  "imageUrl": "https://example.invalid/owl-game/supplies/honey.webp",
+  "name": "Мёд",
+  "description": "Сладкий припас. Восстанавливает немного здоровья.",
+  "effectType": "HEAL",
+  "effectAmount": 100
+}

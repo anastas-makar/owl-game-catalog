@@ -1,0 +1,49 @@
+{
+  "templateId": "stone-fortress",
+  "name": "Каменный замок",
+  "imageUrl": "https://example.invalid/owl-game/buildings/stone-fortress.webp",
+  "cost": 5000,
+  "type": "FORTRESS",
+  "rooms": [
+    {
+      "name": "Главный зал",
+      "imageUrl": "https://example.invalid/owl-game/rooms/stone-fortress-main-hall.webp",
+      "roomNumber": 1
+    },
+    {
+      "name": "Комната в башне",
+      "imageUrl": "https://example.invalid/owl-game/rooms/stone-fortress-tower-room.webp",
+      "roomNumber": 2
+    },
+    {
+      "name": "Кухня",
+      "imageUrl": "https://example.invalid/owl-game/rooms/stone-fortress-kitchen.webp",
+      "roomNumber": 3
+    },
+    {
+      "name": "Ванная",
+      "imageUrl": "https://example.invalid/owl-game/rooms/stone-fortress-bathroom.webp",
+      "roomNumber": 4
+    }
+  ],
+  "gardens": [
+    {
+      "name": "Огород",
+      "imageUrl": "https://example.invalid/owl-game/gardens/stone-fortress-kitchen-garden.webp",
+      "gardenNumber": 1,
+      "gardenType": "KITCHEN_GARDEN"
+    },
+    {
+      "name": "Сад",
+      "imageUrl": "https://example.invalid/owl-game/gardens/stone-fortress-garden.webp",
+      "gardenNumber": 2,
+      "gardenType": "GARDEN"
+    },
+    {
+      "name": "Пруд",
+      "imageUrl": "https://example.invalid/owl-game/gardens/stone-fortress-pool.webp",
+      "gardenNumber": 3,
+      "gardenType": "POOL"
+    }
+  ]
+}
