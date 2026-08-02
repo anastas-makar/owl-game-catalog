@@ -23,42 +23,82 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@v6
         with:
-          # Нужно, чтобы при публикации можно было проверить,
+          # Полная история нужна, чтобы при публикации проверить,
           # что релизный тег действительно находится в main.
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@v6
         with:
           python-version: '3.13'
 
-      - name: Determine release version
-        id: release
+      - name: Determine catalog mode
+        id: catalog_mode
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+          REF: ${{ github.ref }}
+          BASE_REF: ${{ github.base_ref }}
         shell: bash
         run: |
           set -euo pipefail
 
-          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
-            VERSION="${GITHUB_REF_NAME}"
-          else
-            VERSION="dev-${GITHUB_SHA:0:12}"
+          VERSION="dev-${GITHUB_SHA:0:12}"
+          REQUIRE_IMAGE_KEYS="false"
+          PUBLISH="false"
+
+          #
+          # Релизный тег:
+          # - версия берётся из имени тега;
+          # - допускаются только imageKey;
+          # - после проверки каталог публикуется.
+          #
+          if [[ "$REF_TYPE" == "tag" ]]; then
+            VERSION="$REF_NAME"
+            REQUIRE_IMAGE_KEYS="true"
+            PUBLISH="true"
+
+          #
+          # Pull request в main:
+          # к этому моменту все временные sourceImageUrl
+          # должны быть заменены на imageKey.
+          #
+          elif [[ "$EVENT_NAME" == "pull_request" \
+              && "$BASE_REF" == "main" ]]; then
+            REQUIRE_IMAGE_KEYS="true"
+
+          #
+          # Прямой push в main:
+          # также допускаются только imageKey.
+          #
+          elif [[ "$EVENT_NAME" == "push" \
+              && "$REF" == "refs/heads/main" ]]; then
+            REQUIRE_IMAGE_KEYS="true"
           fi
 
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "require_image_keys=$REQUIRE_IMAGE_KEYS" >> "$GITHUB_OUTPUT"
+          echo "publish=$PUBLISH" >> "$GITHUB_OUTPUT"
 
           echo "Catalog version: $VERSION"
+          echo "Require image keys: $REQUIRE_IMAGE_KEYS"
+          echo "Publish: $PUBLISH"
 
       - name: Verify release tag belongs to main
-        if: startsWith(github.ref, 'refs/tags/catalog-v')
+        if: steps.catalog_mode.outputs.publish == 'true'
         shell: bash
         run: |
           set -euo pipefail
 
           git fetch origin main
 
-          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+          if ! git merge-base \
+              --is-ancestor \
+              "$GITHUB_SHA" \
+              origin/main; then
             echo "ERROR: release tag is not based on main"
             exit 1
           fi
@@ -66,28 +106,40 @@ jobs:
           echo "Release commit belongs to main"
 
       - name: Build and validate catalog
+        env:
+          CATALOG_VERSION: ${{ steps.catalog_mode.outputs.version }}
+          REQUIRE_IMAGE_KEYS: ${{ steps.catalog_mode.outputs.require_image_keys }}
         shell: bash
         run: |
           set -euo pipefail
 
-          python scripts/build_catalog.py \
-            --catalog-dir catalog \
-            --output build/catalog-release.json \
-            --version "${{ steps.release.outputs.version }}" \
-            --schema-version 1 \
-            --commit-sha "${GITHUB_SHA}"
+          BUILD_ARGS=(
+            --catalog-dir catalog
+            --output build/catalog-release.json
+            --version "$CATALOG_VERSION"
+            --schema-version 1
+            --commit-sha "$GITHUB_SHA"
+          )
+
+          if [[ "$REQUIRE_IMAGE_KEYS" == "true" ]]; then
+            BUILD_ARGS+=(--require-image-keys)
+          fi
+
+          python scripts/build_catalog.py "${BUILD_ARGS[@]}"
 
       - name: Show release summary
         shell: bash
         run: |
+          set -euo pipefail
+
           python - <<'PY'
           import json
 
           with open(
               "build/catalog-release.json",
-              encoding="utf-8"
-          ) as f:
-              data = json.load(f)
+              encoding="utf-8",
+          ) as file:
+              data = json.load(file)
 
           print("Version:", data["version"])
           print("Schema version:", data["schemaVersion"])
@@ -103,10 +155,10 @@ jobs:
       #
       # ПУБЛИКАЦИЯ В PRODUCTION
       #
-      # Этот шаг выполняется ТОЛЬКО для тегов catalog-v*
+      # Этот шаг выполняется только для тегов catalog-v*.
       #
       - name: Publish catalog through SSH
-        if: startsWith(github.ref, 'refs/tags/catalog-v')
+        if: steps.catalog_mode.outputs.publish == 'true'
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
@@ -119,10 +171,13 @@ jobs:
 
           install -m 700 -d ~/.ssh
 
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          printf '%s\n' "$SSH_PRIVATE_KEY" \
+            > ~/.ssh/id_ed25519
+
           chmod 600 ~/.ssh/id_ed25519
 
-          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          printf '%s\n' "$SSH_KNOWN_HOSTS" \
+            > ~/.ssh/known_hosts
 
           REMOTE_FILE="/tmp/owl-catalog-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json"
 

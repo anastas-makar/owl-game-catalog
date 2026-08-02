@@ -4,7 +4,7 @@ import argparse
 import hashlib
 import json
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 
@@ -279,8 +279,162 @@ def validate_nested_identifiers(
                 )
 
 
+def validate_image_reference(
+    source: str,
+    value: dict[str, Any],
+    require_image_key: bool,
+) -> None:
+    """
+    Проверяет один объект, в котором найдено одно из полей:
+    imageKey, sourceImageUrl или устаревшее imageUrl.
+
+    В develop разрешено ровно одно из:
+    - imageKey;
+    - sourceImageUrl.
+
+    В строгом релизном режиме разрешён только imageKey.
+    """
+    if "imageUrl" in value:
+        raise CatalogValidationError(
+            f"{source}: field 'imageUrl' is not allowed in catalog; "
+            f"use 'sourceImageUrl' for a temporary contributor URL "
+            f"or 'imageKey' for the final S3 object"
+        )
+
+    has_image_key_field = "imageKey" in value
+    has_source_url_field = "sourceImageUrl" in value
+
+    if has_image_key_field and has_source_url_field:
+        raise CatalogValidationError(
+            f"{source}: use either imageKey or "
+            f"sourceImageUrl, not both"
+        )
+
+    if not has_image_key_field and not has_source_url_field:
+        return
+
+    if has_image_key_field:
+        image_key = require_non_blank_string(
+            source,
+            "imageKey",
+            value.get("imageKey"),
+        )
+
+        if "://" in image_key:
+            raise CatalogValidationError(
+                f"{source}: imageKey must not be a URL"
+            )
+
+        if image_key.startswith("/"):
+            raise CatalogValidationError(
+                f"{source}: imageKey must not start with '/'"
+            )
+
+        if "\\" in image_key:
+            raise CatalogValidationError(
+                f"{source}: imageKey must use '/' separators"
+            )
+
+        if ".." in PurePosixPath(image_key).parts:
+            raise CatalogValidationError(
+                f"{source}: imageKey must not contain '..'"
+            )
+
+        return
+
+    source_image_url = require_non_blank_string(
+        source,
+        "sourceImageUrl",
+        value.get("sourceImageUrl"),
+    )
+
+    if require_image_key:
+        raise CatalogValidationError(
+            f"{source}: sourceImageUrl is not allowed "
+            f"in a release; upload the image to S3 "
+            f"and replace it with imageKey"
+        )
+
+    if not source_image_url.startswith(
+        ("https://", "http://")
+    ):
+        raise CatalogValidationError(
+            f"{source}: sourceImageUrl must be "
+            f"an HTTP or HTTPS URL"
+        )
+
+
+def validate_image_references_recursively(
+    value: Any,
+    source: str,
+    require_image_keys: bool,
+) -> None:
+    """
+    Рекурсивно обходит весь объект каталога.
+
+    Поэтому отдельно перечислять buildings, rooms, gardens,
+    scenes и будущие вложенные объекты не требуется:
+    любое встретившееся imageKey/sourceImageUrl будет проверено.
+    """
+    if isinstance(value, dict):
+        if (
+            "imageKey" in value
+            or "sourceImageUrl" in value
+            or "imageUrl" in value
+        ):
+            validate_image_reference(
+                source=source,
+                value=value,
+                require_image_key=require_image_keys,
+            )
+
+        for field_name, child in value.items():
+            if field_name in {
+                "imageKey",
+                "sourceImageUrl",
+                "imageUrl",
+            }:
+                continue
+
+            validate_image_references_recursively(
+                value=child,
+                source=f"{source}.{field_name}",
+                require_image_keys=require_image_keys,
+            )
+
+        return
+
+    if isinstance(value, list):
+        for index, child in enumerate(value):
+            validate_image_references_recursively(
+                value=child,
+                source=f"{source}[{index}]",
+                require_image_keys=require_image_keys,
+            )
+
+
+def validate_all_image_references(
+    catalog: dict[str, list[dict[str, Any]]],
+    require_image_keys: bool,
+) -> None:
+    """
+    Запускает рекурсивный обход для каждой корневой
+    каталожной сущности.
+    """
+    for category_name, items in catalog.items():
+        for item in items:
+            template_id = item["templateId"]
+
+            validate_image_references_recursively(
+                value=item,
+                source=f"{category_name} '{template_id}'",
+                require_image_keys=require_image_keys,
+            )
+
+
 def validate_catalog(
     catalog: dict[str, list[dict[str, Any]]],
+    require_image_keys: bool,
 ) -> None:
     indexes = {
         category: index_by_template_id(
@@ -291,6 +445,13 @@ def validate_catalog(
     }
 
     validate_nested_identifiers(catalog)
+
+    # Рекурсивно обходит все категории, включая
+    # buildings, rooms, gardens и другие вложенные объекты.
+    validate_all_image_references(
+        catalog,
+        require_image_keys=require_image_keys,
+    )
 
     location_ids = set(indexes["locations"])
     medal_ids = set(indexes["medals"])
@@ -472,6 +633,7 @@ def build_catalog(
     version: str,
     schema_version: int,
     commit_sha: str,
+    require_image_keys: bool,
 ) -> dict[str, Any]:
     catalog: dict[
         str,
@@ -487,7 +649,10 @@ def build_catalog(
             directory_name,
         )
 
-    validate_catalog(catalog)
+    validate_catalog(
+        catalog,
+        require_image_keys=require_image_keys,
+    )
 
     # Хешируется только фактическое содержимое каталога.
     # Форматирование JSON и порядок полей на хеш не влияют.
@@ -540,6 +705,15 @@ def main() -> int:
         required=True,
     )
 
+    parser.add_argument(
+        "--require-image-keys",
+        action="store_true",
+        help=(
+            "Reject sourceImageUrl and require final imageKey "
+            "for every image reference found in the catalog"
+        ),
+    )
+
     args = parser.parse_args()
 
     try:
@@ -550,6 +724,7 @@ def main() -> int:
             version=args.version,
             schema_version=args.schema_version,
             commit_sha=args.commit_sha,
+            require_image_keys=args.require_image_keys,
         )
 
         output = Path(args.output)
