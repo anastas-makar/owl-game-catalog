@@ -23,11 +23,110 @@ CATEGORY_DIRS = {
 }
 
 
+# Вложенные объекты используют разные идентификаторы.
+#
+# Формат правила:
+# category:
+#   (
+#       parent label,
+#       nested field,
+#       child label,
+#       identifier field,
+#   )
+NESTED_ID_RULES = {
+    "buildings": (
+        (
+            "Building",
+            "rooms",
+            "room",
+            "templateId",
+        ),
+        (
+            "Building",
+            "gardens",
+            "garden",
+            "templateId",
+        ),
+    ),
+    "locations": (
+        (
+            "Location",
+            "scenes",
+            "scene",
+            "templateId",
+        ),
+    ),
+    "maps": (
+        (
+            "Map",
+            "locationSlots",
+            "location slot",
+            "slotId",
+        ),
+        (
+            "Map",
+            "enemySlots",
+            "enemy slot",
+            "slotId",
+        ),
+    ),
+}
+
+
 class CatalogValidationError(Exception):
     pass
 
 
-def load_category(root: Path, directory_name: str) -> list[dict[str, Any]]:
+def require_object_list(
+    source: str,
+    field_name: str,
+    value: Any,
+) -> list[dict[str, Any]]:
+    """
+    Возвращает массив объектов.
+
+    Отсутствующее поле и null трактуются как пустой массив.
+    Любое другое значение считается ошибкой схемы.
+    """
+    if value is None:
+        return []
+
+    if not isinstance(value, list):
+        raise CatalogValidationError(
+            f"{source}: field '{field_name}' must be an array"
+        )
+
+    result: list[dict[str, Any]] = []
+
+    for index, item in enumerate(value):
+        if not isinstance(item, dict):
+            raise CatalogValidationError(
+                f"{source}: field '{field_name}' item "
+                f"at index {index} must be an object"
+            )
+
+        result.append(item)
+
+    return result
+
+
+def require_non_blank_string(
+    source: str,
+    field_name: str,
+    value: Any,
+) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise CatalogValidationError(
+            f"{source}: missing or invalid {field_name}"
+        )
+
+    return value
+
+
+def load_category(
+    root: Path,
+    directory_name: str,
+) -> list[dict[str, Any]]:
     directory = root / directory_name
 
     if not directory.exists():
@@ -49,12 +148,11 @@ def load_category(root: Path, directory_name: str) -> list[dict[str, Any]]:
                 f"{path}: root JSON value must be an object"
             )
 
-        template_id = value.get("templateId")
-
-        if not isinstance(template_id, str) or not template_id.strip():
-            raise CatalogValidationError(
-                f"{path}: missing or invalid templateId"
-            )
+        require_non_blank_string(
+            str(path),
+            "templateId",
+            value.get("templateId"),
+        )
 
         result.append(value)
 
@@ -83,25 +181,116 @@ def index_by_template_id(
 
 def require_reference(
     source: str,
-    reference: str | None,
+    reference: Any,
     target_name: str,
     target_ids: set[str],
 ) -> None:
     if reference is None:
         return
 
-    if reference not in target_ids:
+    reference_id = require_non_blank_string(
+        source,
+        f"{target_name} templateId reference",
+        reference,
+    )
+
+    if reference_id not in target_ids:
         raise CatalogValidationError(
             f"{source}: references unknown {target_name} "
-            f"templateId '{reference}'"
+            f"templateId '{reference_id}'"
         )
 
 
-def validate_catalog(catalog: dict[str, list[dict[str, Any]]]) -> None:
+def validate_unique_nested_ids(
+    parent_source: str,
+    field_name: str,
+    child_label: str,
+    id_field: str,
+    children: list[dict[str, Any]],
+) -> None:
+    """
+    Проверяет наличие и уникальность идентификатора
+    вложенной сущности в пределах её родителя.
+
+    Например:
+
+    building + rooms + templateId
+    map + locationSlots + slotId
+    map + enemySlots + slotId
+    """
+    seen: set[str] = set()
+
+    for index, child in enumerate(children):
+        child_source = (
+            f"{parent_source}, {child_label} at index {index}"
+        )
+
+        child_id = require_non_blank_string(
+            child_source,
+            id_field,
+            child.get(id_field),
+        )
+
+        if child_id in seen:
+            raise CatalogValidationError(
+                f"{parent_source}: duplicate {child_label} "
+                f"{id_field} '{child_id}' "
+                f"in field '{field_name}'"
+            )
+
+        seen.add(child_id)
+
+
+def validate_nested_identifiers(
+    catalog: dict[str, list[dict[str, Any]]],
+) -> None:
+    """
+    Применяет правила из NESTED_ID_RULES.
+
+    Здесь намеренно нет общего требования templateId
+    для любого объекта, находящегося внутри массива.
+    """
+    for category, rules in NESTED_ID_RULES.items():
+        for item in catalog[category]:
+            parent_id = item["templateId"]
+
+            for (
+                parent_label,
+                field_name,
+                child_label,
+                id_field,
+            ) in rules:
+                parent_source = (
+                    f"{parent_label} '{parent_id}'"
+                )
+
+                children = require_object_list(
+                    parent_source,
+                    field_name,
+                    item.get(field_name),
+                )
+
+                validate_unique_nested_ids(
+                    parent_source=parent_source,
+                    field_name=field_name,
+                    child_label=child_label,
+                    id_field=id_field,
+                    children=children,
+                )
+
+
+def validate_catalog(
+    catalog: dict[str, list[dict[str, Any]]],
+) -> None:
     indexes = {
-        category: index_by_template_id(category, items)
+        category: index_by_template_id(
+            category,
+            items,
+        )
         for category, items in catalog.items()
     }
+
+    validate_nested_identifiers(catalog)
 
     location_ids = set(indexes["locations"])
     medal_ids = set(indexes["medals"])
@@ -111,20 +300,29 @@ def validate_catalog(catalog: dict[str, list[dict[str, Any]]]) -> None:
     # Maps
     for map_item in catalog["maps"]:
         map_id = map_item["templateId"]
+        map_source = f"Map '{map_id}'"
 
         require_reference(
-            f"Map '{map_id}'",
+            map_source,
             map_item.get("completionMedalTemplateId"),
             "medal",
             medal_ids,
         )
 
-        for slot in map_item.get("locationSlots", []):
+        location_slots = require_object_list(
+            map_source,
+            "locationSlots",
+            map_item.get("locationSlots"),
+        )
+
+        for slot in location_slots:
             if slot.get("mode") == "FIXED":
                 require_reference(
-                    f"Map '{map_id}', location slot "
+                    f"{map_source}, location slot "
                     f"'{slot.get('slotId')}'",
-                    slot.get("fixedLocationTemplateId"),
+                    slot.get(
+                        "fixedLocationTemplateId"
+                    ),
                     "location",
                     location_ids,
                 )
@@ -150,18 +348,27 @@ def validate_catalog(catalog: dict[str, list[dict[str, Any]]]) -> None:
     # Recipes
     for recipe in catalog["recipes"]:
         recipe_id = recipe["templateId"]
+        recipe_source = f"Recipe '{recipe_id}'"
 
         require_reference(
-            f"Recipe '{recipe_id}' result",
+            f"{recipe_source} result",
             recipe.get("resultSupplyTemplateId"),
             "supply",
             supply_ids,
         )
 
-        for ingredient in recipe.get("ingredients", []):
+        ingredients = require_object_list(
+            recipe_source,
+            "ingredients",
+            recipe.get("ingredients"),
+        )
+
+        for ingredient in ingredients:
             require_reference(
-                f"Recipe '{recipe_id}' ingredient",
-                ingredient.get("supplyTemplateId"),
+                f"{recipe_source} ingredient",
+                ingredient.get(
+                    "supplyTemplateId"
+                ),
                 "supply",
                 supply_ids,
             )
@@ -169,71 +376,93 @@ def validate_catalog(catalog: dict[str, list[dict[str, Any]]]) -> None:
     # Locations -> quests
     for location in catalog["locations"]:
         location_id = location["templateId"]
+        location_source = (
+            f"Location '{location_id}'"
+        )
 
-        for scene in location.get("scenes", []):
+        scenes = require_object_list(
+            location_source,
+            "scenes",
+            location.get("scenes"),
+        )
+
+        for scene in scenes:
             require_reference(
-                f"Location '{location_id}', scene "
+                f"{location_source}, scene "
                 f"'{scene.get('templateId')}'",
                 scene.get("questTemplateId"),
                 "quest",
                 quest_ids,
             )
 
-    # Basic nested uniqueness checks.
-    for building in catalog["buildings"]:
-        building_id = building["templateId"]
-
-        for field in ("rooms", "gardens"):
-            seen: set[str] = set()
-
-            for child in building.get(field, []):
-                child_id = child.get("templateId")
-
-                if not child_id:
-                    raise CatalogValidationError(
-                        f"Building '{building_id}': "
-                        f"{field} item has no templateId"
-                    )
-
-                if child_id in seen:
-                    raise CatalogValidationError(
-                        f"Building '{building_id}': duplicate "
-                        f"{field} templateId '{child_id}'"
-                    )
-
-                seen.add(child_id)
-
-    # Quest page checks.
+    # Quest pages
     for quest in catalog["quests"]:
         quest_id = quest["templateId"]
-        pages = quest.get("pages", [])
+        quest_source = f"Quest '{quest_id}'"
 
-        page_numbers = {
-            page.get("number")
-            for page in pages
-        }
+        pages = require_object_list(
+            quest_source,
+            "pages",
+            quest.get("pages"),
+        )
 
-        if len(page_numbers) != len(pages):
-            raise CatalogValidationError(
-                f"Quest '{quest_id}': duplicate page numbers"
-            )
+        page_numbers: set[int] = set()
 
-        start_page = quest.get("startPageNumber")
+        for index, page in enumerate(pages):
+            number = page.get("number")
+
+            if not isinstance(number, int):
+                raise CatalogValidationError(
+                    f"{quest_source}, page at index "
+                    f"{index}: missing or invalid number"
+                )
+
+            if number in page_numbers:
+                raise CatalogValidationError(
+                    f"{quest_source}: duplicate "
+                    f"page number {number}"
+                )
+
+            page_numbers.add(number)
+
+        start_page = quest.get(
+            "startPageNumber"
+        )
 
         if start_page not in page_numbers:
             raise CatalogValidationError(
-                f"Quest '{quest_id}': startPageNumber "
+                f"{quest_source}: startPageNumber "
                 f"{start_page} does not exist"
             )
 
         for page in pages:
-            for option in page.get("options", []):
-                target = option.get("targetPageNumber")
+            page_number = page["number"]
+
+            options = require_object_list(
+                f"{quest_source}, page {page_number}",
+                "options",
+                page.get("options"),
+            )
+
+            for option_index, option in enumerate(
+                options
+            ):
+                target = option.get(
+                    "targetPageNumber"
+                )
+
+                if not isinstance(target, int):
+                    raise CatalogValidationError(
+                        f"{quest_source}, page "
+                        f"{page_number}, option at index "
+                        f"{option_index}: missing or invalid "
+                        f"targetPageNumber"
+                    )
 
                 if target not in page_numbers:
                     raise CatalogValidationError(
-                        f"Quest '{quest_id}', page "
-                        f"{page.get('number')}: target page "
+                        f"{quest_source}, page "
+                        f"{page_number}: target page "
                         f"{target} does not exist"
                     )
 
@@ -244,10 +473,15 @@ def build_catalog(
     schema_version: int,
     commit_sha: str,
 ) -> dict[str, Any]:
+    catalog: dict[
+        str,
+        list[dict[str, Any]],
+    ] = {}
 
-    catalog: dict[str, list[dict[str, Any]]] = {}
-
-    for category_name, directory_name in CATEGORY_DIRS.items():
+    for (
+        category_name,
+        directory_name,
+    ) in CATEGORY_DIRS.items():
         catalog[category_name] = load_category(
             catalog_root,
             directory_name,
@@ -255,8 +489,8 @@ def build_catalog(
 
     validate_catalog(catalog)
 
-    # Hash only the actual catalog content.
-    # Formatting and field order do not affect the hash.
+    # Хешируется только фактическое содержимое каталога.
+    # Форматирование JSON и порядок полей на хеш не влияют.
     canonical_catalog = json.dumps(
         catalog,
         ensure_ascii=False,
@@ -264,7 +498,9 @@ def build_catalog(
         separators=(",", ":"),
     ).encode("utf-8")
 
-    content_hash = hashlib.sha256(canonical_catalog).hexdigest()
+    content_hash = hashlib.sha256(
+        canonical_catalog
+    ).hexdigest()
 
     return {
         "version": version,
@@ -308,16 +544,24 @@ def main() -> int:
 
     try:
         result = build_catalog(
-            catalog_root=Path(args.catalog_dir),
+            catalog_root=Path(
+                args.catalog_dir
+            ),
             version=args.version,
             schema_version=args.schema_version,
             commit_sha=args.commit_sha,
         )
 
         output = Path(args.output)
-        output.parent.mkdir(parents=True, exist_ok=True)
+        output.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
 
-        with output.open("w", encoding="utf-8") as file:
+        with output.open(
+            "w",
+            encoding="utf-8",
+        ) as file:
             json.dump(
                 result,
                 file,
@@ -325,13 +569,27 @@ def main() -> int:
                 indent=2,
             )
 
-        print(f"Catalog release built: {output}")
-        print(f"Version: {result['version']}")
-        print(f"Commit: {result['commitSha']}")
-        print(f"Content hash: {result['contentHash']}")
+        print(
+            f"Catalog release built: {output}"
+        )
+        print(
+            f"Version: {result['version']}"
+        )
+        print(
+            f"Commit: {result['commitSha']}"
+        )
+        print(
+            f"Content hash: "
+            f"{result['contentHash']}"
+        )
 
-        for category, values in result["catalog"].items():
-            print(f"  {category}: {len(values)}")
+        for (
+            category,
+            values,
+        ) in result["catalog"].items():
+            print(
+                f"  {category}: {len(values)}"
+            )
 
         return 0
 
