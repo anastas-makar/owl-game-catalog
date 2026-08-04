@@ -1,0 +1,54 @@
+{
+  "_comment": "Черновик: структуру nodes/endings/rewards надо сверить с текущим CatalogQuestImport. Файл имеет расширение .draft, чтобы сборщик не включил его автоматически.",
+  "templateId": "first-hatches",
+  "title": "Люки под гротом",
+  "description": "Под старым гротом обнаружены закрытые люки. Их можно вскрыть или оставить в покое.",
+  "startNodeId": "start",
+  "nodes": [
+    {
+      "nodeId": "start",
+      "text": "Железные люки заржавели, но замок ещё держится.",
+      "choices": [
+        {
+          "text": "Вскрыть люки",
+          "nextNodeId": "opened"
+        },
+        {
+          "text": "Не трогать",
+          "endingId": "left-alone"
+        }
+      ]
+    },
+    {
+      "nodeId": "opened",
+      "text": "Под люками нашлась маленькая кладовая.",
+      "choices": [
+        {
+          "text": "Забрать припасы",
+          "endingId": "took-supplies"
+        }
+      ]
+    }
+  ],
+  "endings": [
+    {
+      "endingId": "left-alone",
+      "text": "Герой решил не будить то, что сидит под землёй.",
+      "rewards": []
+    },
+    {
+      "endingId": "took-supplies",
+      "text": "В кладовой нашлись тыква и банка мёда.",
+      "rewards": [
+        {
+          "supplyTemplateId": "pumpkin",
+          "amount": 1
+        },
+        {
+          "supplyTemplateId": "honey",
+          "amount": 1
+        }
+      ]
+    }
+  ]
+}

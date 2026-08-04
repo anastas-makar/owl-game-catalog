@@ -1,0 +1,32 @@
+{
+  "templateId": "wooden-house",
+  "name": "Деревянный домик",
+  "imageUrl": "https://example.invalid/owl-game/buildings/wooden-house.webp",
+  "cost": 1200,
+  "type": "HOUSE",
+  "rooms": [
+    {
+      "name": "Прихожая",
+      "imageUrl": "https://example.invalid/owl-game/rooms/wooden-house-hall.webp",
+      "roomNumber": 1
+    },
+    {
+      "name": "Жилая комната",
+      "imageUrl": "https://example.invalid/owl-game/rooms/wooden-house-living-room.webp",
+      "roomNumber": 2
+    },
+    {
+      "name": "Кухня",
+      "imageUrl": "https://example.invalid/owl-game/rooms/wooden-house-kitchen.webp",
+      "roomNumber": 3
+    }
+  ],
+  "gardens": [
+    {
+      "name": "Огород",
+      "imageUrl": "https://example.invalid/owl-game/gardens/wooden-house-kitchen-garden.webp",
+      "gardenNumber": 1,
+      "gardenType": "KITCHEN_GARDEN"
+    }
+  ]
+}

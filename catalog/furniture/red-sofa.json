@@ -1,0 +1,9 @@
+{
+  "templateId": "red-sofa",
+  "name": "Красный диван",
+  "price": 350,
+  "imageUrl": "https://example.invalid/owl-game/furniture/red-sofa.webp",
+  "height": 0.19,
+  "width": 0.3,
+  "type": "OTHER"
+}

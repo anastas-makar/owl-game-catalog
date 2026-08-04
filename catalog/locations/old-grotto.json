@@ -1,0 +1,26 @@
+{
+  "templateId": "old-grotto",
+  "name": "Старый грот",
+  "description": "Тихая пещера на краю болота. Внутри слышно журчание воды и шорох из-под камней.",
+  "imageUrl": "https://example.invalid/owl-game/locations/old-grotto.webp",
+  "price": 0,
+  "type": "CAVE",
+  "scenes": [
+    {
+      "name": "Вход в грот",
+      "description": "Каменный проход уходит вниз. В глубине виднеются старые железные люки.",
+      "imageUrl": "https://example.invalid/owl-game/scenes/old-grotto-entrance.webp",
+      "sceneNumber": 1,
+      "questId": "first-hatches",
+      "questButtonText": "Осмотреть люки"
+    },
+    {
+      "name": "Подземный зал",
+      "description": "Низкий зал с мокрыми стенами. В углу лежит покосившийся деревянный ящик.",
+      "imageUrl": "https://example.invalid/owl-game/scenes/old-grotto-underground-hall.webp",
+      "sceneNumber": 2,
+      "questId": null,
+      "questButtonText": null
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "templateId": "pumpkin",
+  "imageUrl": "https://example.invalid/owl-game/supplies/pumpkin.webp",
+  "name": "Тыква",
+  "description": "Сырая тыква. Есть можно, но лучше сначала приготовить.",
+  "effectType": "HEAL",
+  "effectAmount": 25
+}
