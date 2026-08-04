@@ -605,6 +605,29 @@ def validate_catalog(
                 page.get("options"),
             )
 
+            loot_bundle = page.get("lootBundle")
+            ending_id = page.get("endingId")
+            loot_button_text = page.get("lootButtonText")
+
+            if loot_bundle is not None:
+                if not isinstance(loot_bundle, dict):
+                    raise CatalogValidationError(
+                        f"{quest_source}, page {page_number}: "
+                        f"lootBundle must be an object"
+                    )
+
+                if not isinstance(ending_id, str) or not ending_id.strip():
+                    raise CatalogValidationError(
+                        f"{quest_source}, page {page_number}: "
+                        f"lootBundle is allowed only on a page with endingId"
+                    )
+
+            if loot_button_text is not None and loot_bundle is None:
+                raise CatalogValidationError(
+                    f"{quest_source}, page {page_number}: "
+                    f"lootButtonText requires lootBundle"
+                )
+
             for option_index, option in enumerate(
                 options
             ):
