@@ -72,6 +72,19 @@ NESTED_ID_RULES = {
     ),
 }
 
+LOOT_POOL_CATEGORIES = {
+    "buildingLoot": "buildings",
+    "mapLoot": "maps",
+    "gardenItemLoot": "gardenItems",
+    "plantLoot": "plants",
+    "furnitureLoot": "furniture",
+    "recipeLoot": "recipes",
+    "locationLoot": "locations",
+}
+
+QUEST_REWARD = "QUEST_REWARD"
+EXPEDITION_REWARD = "EXPEDITION_REWARD"
+MAP_COMPLETION_REWARD = "MAP_COMPLETION_REWARD"
 
 class CatalogValidationError(Exception):
     pass
@@ -431,6 +444,175 @@ def validate_all_image_references(
                 require_image_keys=require_image_keys,
             )
 
+def acquisition_source_allowed(
+    item: dict[str, Any],
+    source: str,
+) -> bool:
+    allowed_sources = item.get(
+        "allowedAcquisitionSources"
+    )
+
+    # Нет белого списка — разрешён любой источник.
+    if allowed_sources is None:
+        return True
+
+    if not isinstance(allowed_sources, list):
+        raise CatalogValidationError(
+            "allowedAcquisitionSources must be an array or null"
+        )
+
+    return source in allowed_sources
+
+def validate_loot_bundle(
+    source: str,
+    bundle: Any,
+    acquisition_source: str,
+    indexes: dict[str, dict[str, dict[str, Any]]],
+) -> None:
+    if bundle is None:
+        return
+
+    if not isinstance(bundle, dict):
+        raise CatalogValidationError(
+            f"{source}: loot bundle must be an object"
+        )
+
+    for pool_name, category_name in LOOT_POOL_CATEGORIES.items():
+        pool = bundle.get(pool_name)
+
+        if pool is None:
+            continue
+
+        if not isinstance(pool, dict):
+            raise CatalogValidationError(
+                f"{source}, {pool_name}: must be an object"
+            )
+
+        amount = pool.get("amount")
+
+        if amount is not None:
+            if (
+                not isinstance(amount, int)
+                or isinstance(amount, bool)
+                or amount < 1
+            ):
+                raise CatalogValidationError(
+                    f"{source}, {pool_name}: "
+                    f"amount must be a positive integer"
+                )
+
+        drop_chance = pool.get("dropChance")
+
+        if drop_chance is not None:
+            if (
+                not isinstance(drop_chance, (int, float))
+                or isinstance(drop_chance, bool)
+                or not 0 <= drop_chance <= 1
+            ):
+                raise CatalogValidationError(
+                    f"{source}, {pool_name}: "
+                    f"dropChance must be between 0 and 1"
+                )
+
+        template_ids = pool.get("templateIds")
+
+        if template_ids is None:
+            # Любой шаблон категории. Но должен существовать
+            # хотя бы один доступный через нужный источник.
+            available = [
+                template_id
+                for template_id, item
+                in indexes[category_name].items()
+                if acquisition_source_allowed(
+                    item,
+                    acquisition_source,
+                )
+            ]
+
+            if not available:
+                raise CatalogValidationError(
+                    f"{source}, {pool_name}: no "
+                    f"{category_name} are available through "
+                    f"{acquisition_source}"
+                )
+
+            continue
+
+        if not isinstance(template_ids, list):
+            raise CatalogValidationError(
+                f"{source}, {pool_name}: "
+                f"templateIds must be an array or null"
+            )
+
+        if not template_ids:
+            raise CatalogValidationError(
+                f"{source}, {pool_name}: "
+                f"templateIds must not be empty"
+            )
+
+        if len(set(template_ids)) != len(template_ids):
+            raise CatalogValidationError(
+                f"{source}, {pool_name}: "
+                f"duplicate templateIds"
+            )
+
+        for template_id in template_ids:
+            item = indexes[category_name].get(template_id)
+
+            if item is None:
+                raise CatalogValidationError(
+                    f"{source}, {pool_name}: unknown "
+                    f"{category_name} templateId "
+                    f"'{template_id}'"
+                )
+
+            if not acquisition_source_allowed(
+                item,
+                acquisition_source,
+            ):
+                raise CatalogValidationError(
+                    f"{source}, {pool_name}: "
+                    f"'{template_id}' is not available "
+                    f"through {acquisition_source}"
+                )
+
+def validate_diamond_loot(
+    source: str,
+    bundle: dict[str, Any],
+) -> None:
+    pool = bundle.get("diamondLoot")
+
+    if pool is None:
+        return
+
+    if not isinstance(pool, dict):
+        raise CatalogValidationError(
+            f"{source}, diamondLoot: must be an object"
+        )
+
+    amount = pool.get("amount")
+
+    if (
+        not isinstance(amount, int)
+        or isinstance(amount, bool)
+        or amount < 1
+    ):
+        raise CatalogValidationError(
+            f"{source}, diamondLoot: "
+            f"amount must be a positive integer"
+        )
+
+    drop_chance = pool.get("dropChance")
+
+    if drop_chance is not None and (
+        not isinstance(drop_chance, (int, float))
+        or isinstance(drop_chance, bool)
+        or not 0 <= drop_chance <= 1
+    ):
+        raise CatalogValidationError(
+            f"{source}, diamondLoot: "
+            f"dropChance must be between 0 and 1"
+        )
 
 def validate_catalog(
     catalog: dict[str, list[dict[str, Any]]],
@@ -462,6 +644,13 @@ def validate_catalog(
     for map_item in catalog["maps"]:
         map_id = map_item["templateId"]
         map_source = f"Map '{map_id}'"
+
+        validate_loot_bundle(
+            source=f"{map_source}, completion loot",
+            bundle=map_item.get("completionLootBundle"),
+            acquisition_source="EXPEDITION_REWARD",
+            indexes=indexes,
+        )
 
         require_reference(
             map_source,
@@ -568,6 +757,7 @@ def validate_catalog(
         )
 
         page_numbers: set[int] = set()
+        ending_ids: set[str] = set()
 
         for index, page in enumerate(pages):
             number = page.get("number")
@@ -609,18 +799,45 @@ def validate_catalog(
             ending_id = page.get("endingId")
             loot_button_text = page.get("lootButtonText")
 
-            if loot_bundle is not None:
-                if not isinstance(loot_bundle, dict):
+            if ending_id is not None:
+                ending_id = require_non_blank_string(
+                    f"{quest_source}, page {page_number}",
+                    "endingId",
+                    ending_id,
+                )
+
+                if ending_id in ending_ids:
                     raise CatalogValidationError(
-                        f"{quest_source}, page {page_number}: "
-                        f"lootBundle must be an object"
+                        f"{quest_source}: duplicate endingId "
+                        f"'{ending_id}'"
                     )
 
+                ending_ids.add(ending_id)
+
+            if loot_bundle is not None:
                 if not isinstance(ending_id, str) or not ending_id.strip():
                     raise CatalogValidationError(
                         f"{quest_source}, page {page_number}: "
                         f"lootBundle is allowed only on a page with endingId"
                     )
+
+                validate_loot_bundle(
+                    source=(
+                        f"{quest_source}, page "
+                        f"{page_number}, loot"
+                    ),
+                    bundle=loot_bundle,
+                    acquisition_source="QUEST_REWARD",
+                    indexes=indexes,
+                )
+
+                validate_diamond_loot(
+                    source=(
+                        f"{quest_source}, page "
+                        f"{page_number}, loot"
+                    ),
+                    bundle=loot_bundle,
+                )
 
             if loot_button_text is not None and loot_bundle is None:
                 raise CatalogValidationError(
@@ -628,12 +845,8 @@ def validate_catalog(
                     f"lootButtonText requires lootBundle"
                 )
 
-            for option_index, option in enumerate(
-                options
-            ):
-                target = option.get(
-                    "targetPageNumber"
-                )
+            for option_index, option in enumerate(options):
+                target = option.get("targetPageNumber")
 
                 if not isinstance(target, int):
                     raise CatalogValidationError(
