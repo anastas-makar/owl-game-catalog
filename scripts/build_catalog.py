@@ -82,13 +82,49 @@ LOOT_POOL_CATEGORIES = {
     "locationLoot": "locations",
 }
 
+POUCH = "POUCH"
+SHOP = "SHOP"
 QUEST_REWARD = "QUEST_REWARD"
 EXPEDITION_REWARD = "EXPEDITION_REWARD"
-MAP_COMPLETION_REWARD = "MAP_COMPLETION_REWARD"
+
+ACQUISITION_SOURCES = {
+    POUCH,
+    SHOP,
+    QUEST_REWARD,
+    EXPEDITION_REWARD,
+}
 
 class CatalogValidationError(Exception):
     pass
 
+def validate_acquisition_sources(
+    catalog: dict[str, list[dict[str, Any]]],
+) -> None:
+    for category_name, items in catalog.items():
+        for item in items:
+            template_id = item["templateId"]
+            sources = item.get(
+                "allowedAcquisitionSources"
+            )
+
+            if sources is None:
+                continue
+
+            if not isinstance(sources, list):
+                raise CatalogValidationError(
+                    f"{category_name} '{template_id}': "
+                    f"allowedAcquisitionSources must "
+                    f"be an array or null"
+                )
+
+            for index, source in enumerate(sources):
+                if source not in ACQUISITION_SOURCES:
+                    raise CatalogValidationError(
+                        f"{category_name} "
+                        f"'{template_id}': unknown "
+                        f"acquisition source "
+                        f"'{source}' at index {index}"
+                    )
 
 def require_object_list(
     source: str,
@@ -213,6 +249,24 @@ def require_reference(
             f"templateId '{reference_id}'"
         )
 
+def require_required_reference(
+    source: str,
+    reference: Any,
+    target_name: str,
+    target_ids: set[str],
+) -> None:
+    reference_id = require_non_blank_string(
+        source,
+        f"{target_name} templateId reference",
+        reference,
+    )
+
+    if reference_id not in target_ids:
+        raise CatalogValidationError(
+            f"{source}: references unknown "
+            f"{target_name} templateId "
+            f"'{reference_id}'"
+        )
 
 def validate_unique_nested_ids(
     parent_source: str,
@@ -477,6 +531,20 @@ def validate_loot_bundle(
             f"{source}: loot bundle must be an object"
         )
 
+    known_pools = set(LOOT_POOL_CATEGORIES) | {
+        "diamondLoot"
+    }
+
+    has_loot = any(
+        bundle.get(pool_name) is not None
+        for pool_name in known_pools
+    )
+
+    if not has_loot:
+        raise CatalogValidationError(
+            f"{source}: loot bundle contains no loot"
+        )
+
     for pool_name, category_name in LOOT_POOL_CATEGORIES.items():
         pool = bundle.get(pool_name)
 
@@ -550,13 +618,23 @@ def validate_loot_bundle(
                 f"templateIds must not be empty"
             )
 
-        if len(set(template_ids)) != len(template_ids):
-            raise CatalogValidationError(
-                f"{source}, {pool_name}: "
-                f"duplicate templateIds"
+        seen_template_ids: set[str] = set()
+
+        for index, template_id in enumerate(template_ids):
+            template_id = require_non_blank_string(
+                f"{source}, {pool_name}",
+                f"templateIds[{index}]",
+                template_id,
             )
 
-        for template_id in template_ids:
+            if template_id in seen_template_ids:
+                raise CatalogValidationError(
+                    f"{source}, {pool_name}: "
+                    f"duplicate templateId '{template_id}'"
+                )
+
+            seen_template_ids.add(template_id)
+
             item = indexes[category_name].get(template_id)
 
             if item is None:
@@ -575,6 +653,11 @@ def validate_loot_bundle(
                     f"'{template_id}' is not available "
                     f"through {acquisition_source}"
                 )
+
+    validate_diamond_loot(
+        source=source,
+        bundle=bundle,
+    )
 
 def validate_diamond_loot(
     source: str,
@@ -626,6 +709,7 @@ def validate_catalog(
         for category, items in catalog.items()
     }
 
+    validate_acquisition_sources(catalog)
     validate_nested_identifiers(catalog)
 
     # Рекурсивно обходит все категории, включая
@@ -700,7 +784,7 @@ def validate_catalog(
         recipe_id = recipe["templateId"]
         recipe_source = f"Recipe '{recipe_id}'"
 
-        require_reference(
+        require_required_reference(
             f"{recipe_source} result",
             recipe.get("resultSupplyTemplateId"),
             "supply",
@@ -714,11 +798,9 @@ def validate_catalog(
         )
 
         for ingredient in ingredients:
-            require_reference(
+            require_required_reference(
                 f"{recipe_source} ingredient",
-                ingredient.get(
-                    "supplyTemplateId"
-                ),
+                ingredient.get("supplyTemplateId"),
                 "supply",
                 supply_ids,
             )
@@ -762,7 +844,10 @@ def validate_catalog(
         for index, page in enumerate(pages):
             number = page.get("number")
 
-            if not isinstance(number, int):
+            if (
+                not isinstance(number, int)
+                or isinstance(number, bool)
+            ):
                 raise CatalogValidationError(
                     f"{quest_source}, page at index "
                     f"{index}: missing or invalid number"
@@ -779,6 +864,15 @@ def validate_catalog(
         start_page = quest.get(
             "startPageNumber"
         )
+
+        if (
+            not isinstance(start_page, int)
+            or isinstance(start_page, bool)
+        ):
+            raise CatalogValidationError(
+                f"{quest_source}: missing or invalid "
+                f"startPageNumber"
+            )
 
         if start_page not in page_numbers:
             raise CatalogValidationError(
@@ -814,6 +908,12 @@ def validate_catalog(
 
                 ending_ids.add(ending_id)
 
+            if ending_id is not None and options:
+                raise CatalogValidationError(
+                    f"{quest_source}, page {page_number}: "
+                    f"ending page must not have options"
+                )
+
             if loot_bundle is not None:
                 if not isinstance(ending_id, str) or not ending_id.strip():
                     raise CatalogValidationError(
@@ -831,14 +931,6 @@ def validate_catalog(
                     indexes=indexes,
                 )
 
-                validate_diamond_loot(
-                    source=(
-                        f"{quest_source}, page "
-                        f"{page_number}, loot"
-                    ),
-                    bundle=loot_bundle,
-                )
-
             if loot_button_text is not None and loot_bundle is None:
                 raise CatalogValidationError(
                     f"{quest_source}, page {page_number}: "
@@ -848,7 +940,10 @@ def validate_catalog(
             for option_index, option in enumerate(options):
                 target = option.get("targetPageNumber")
 
-                if not isinstance(target, int):
+                if (
+                    not isinstance(target, int)
+                    or isinstance(target, bool)
+                ):
                     raise CatalogValidationError(
                         f"{quest_source}, page "
                         f"{page_number}, option at index "
