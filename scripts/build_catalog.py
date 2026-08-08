@@ -117,7 +117,15 @@ def validate_acquisition_sources(
                     f"be an array or null"
                 )
 
+            seen_sources: set[str] = set()
+
             for index, source in enumerate(sources):
+                source = require_non_blank_string(
+                    f"{category_name} '{template_id}'",
+                    f"allowedAcquisitionSources[{index}]",
+                    source,
+                )
+
                 if source not in ACQUISITION_SOURCES:
                     raise CatalogValidationError(
                         f"{category_name} "
@@ -125,6 +133,15 @@ def validate_acquisition_sources(
                         f"acquisition source "
                         f"'{source}' at index {index}"
                     )
+
+                if source in seen_sources:
+                    raise CatalogValidationError(
+                        f"{category_name} "
+                        f"'{template_id}': duplicate "
+                        f"acquisition source '{source}'"
+                    )
+
+                seen_sources.add(source)
 
 def require_object_list(
     source: str,
