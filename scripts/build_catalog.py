@@ -586,6 +586,11 @@ def validate_loot_bundle(
                     f"amount must be a positive integer"
                 )
 
+        # null означает один выбранный шаблон.
+        effective_amount = (
+            amount if amount is not None else 1
+        )
+
         drop_chance = pool.get("dropChance")
 
         if drop_chance is not None:
@@ -602,8 +607,8 @@ def validate_loot_bundle(
         template_ids = pool.get("templateIds")
 
         if template_ids is None:
-            # Любой шаблон категории. Но должен существовать
-            # хотя бы один доступный через нужный источник.
+            # Можно выбирать из всех шаблонов категории,
+            # разрешённых для данного источника.
             available = [
                 template_id
                 for template_id, item
@@ -614,10 +619,12 @@ def validate_loot_bundle(
                 )
             ]
 
-            if not available:
+            if len(available) < effective_amount:
                 raise CatalogValidationError(
-                    f"{source}, {pool_name}: no "
-                    f"{category_name} are available through "
+                    f"{source}, {pool_name}: "
+                    f"amount is {effective_amount}, but only "
+                    f"{len(available)} {category_name} "
+                    f"template(s) are available through "
                     f"{acquisition_source}"
                 )
 
@@ -670,6 +677,14 @@ def validate_loot_bundle(
                     f"'{template_id}' is not available "
                     f"through {acquisition_source}"
                 )
+
+        if len(seen_template_ids) < effective_amount:
+            raise CatalogValidationError(
+                f"{source}, {pool_name}: "
+                f"amount is {effective_amount}, but "
+                f"templateIds contains only "
+                f"{len(seen_template_ids)} template(s)"
+            )
 
     validate_diamond_loot(
         source=source,
