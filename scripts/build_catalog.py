@@ -9,6 +9,7 @@ from typing import Any
 
 
 CATEGORY_DIRS = {
+    "animals": "animals",
     "buildings": "buildings",
     "enemies": "enemies",
     "furniture": "furniture",
