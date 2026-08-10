@@ -991,6 +991,23 @@ def validate_catalog(
                         f"{target} does not exist"
                     )
 
+    # Animals
+    for animal in catalog["animals"]:
+        animal_id = animal["templateId"]
+        animal_source = f"Animal '{animal_id}'"
+
+        require_non_blank_string(
+            animal_source,
+            "kind",
+            animal.get("kind"),
+        )
+
+        require_non_blank_string(
+            animal_source,
+            "initialDisplayName",
+            animal.get("initialDisplayName"),
+        )
+
 
 def build_catalog(
     catalog_root: Path,
