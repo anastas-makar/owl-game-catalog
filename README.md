@@ -25,7 +25,8 @@
 - [растения](catalog/plants/README.md);
 - [квесты](catalog/quests/README.md);
 - [рецепты](catalog/recipes/README.md);
-- [припасы](catalog/supplies/README.md).
+- [припасы](catalog/supplies/README.md);
+- [животные](catalog/animals/README.md).
 
 ## Для сопровождающего репозитория
 
