@@ -83,6 +83,16 @@ LOOT_POOL_CATEGORIES = {
     "locationLoot": "locations",
 }
 
+ACQUISITION_SOURCE_CATEGORIES = {
+    "buildings",
+    "furniture",
+    "gardenItems",
+    "locations",
+    "maps",
+    "plants",
+    "recipes",
+}
+
 LOCATION_TYPES = {
     "PARK",
     "MONUMENT",
@@ -117,11 +127,23 @@ class CatalogValidationError(Exception):
     pass
 
 def validate_acquisition_sources(
-    catalog: dict[str, list[dict[str, Any]]],
+        catalog: dict[str, list[dict[str, Any]]],
 ) -> None:
     for category_name, items in catalog.items():
         for item in items:
             template_id = item["templateId"]
+
+            if (
+                    "allowedAcquisitionSources" in item
+                    and category_name
+                    not in ACQUISITION_SOURCE_CATEGORIES
+            ):
+                raise CatalogValidationError(
+                    f"{category_name} '{template_id}': "
+                    f"allowedAcquisitionSources is not allowed "
+                    f"for this category"
+                )
+
             sources = item.get(
                 "allowedAcquisitionSources"
             )
@@ -604,6 +626,14 @@ def validate_loot_bundle(
         "diamondLoot"
     }
 
+    unknown_pools = set(bundle) - known_pools
+
+    if unknown_pools:
+        raise CatalogValidationError(
+            f"{source}: unknown loot field(s): "
+            f"{sorted(unknown_pools)}"
+        )
+
     has_loot = any(
         bundle.get(pool_name) is not None
         for pool_name in known_pools
@@ -859,6 +889,12 @@ def validate_catalog(
                 f"{map_source}: completionLootBundle is required"
             )
 
+        if "type" in map_item:
+            raise CatalogValidationError(
+                f"{map_source}: field 'type' is not allowed; "
+                f"map state belongs to player data, not catalog"
+            )
+
         validate_loot_bundle(
             source=f"{map_source}, completion loot",
             bundle=completion_loot_bundle,
@@ -937,17 +973,26 @@ def validate_catalog(
 
                     required_tag_set.add(tag)
 
-                if required_tag_set and not any(
+                if required_tags is None:
+                    required_tag_set = set()
+
+                matching_enemy_exists = any(
                     required_tag_set <= enemy_tags
                     for enemy_tags in enemy_tag_sets
-                ):
+                )
+
+                if not matching_enemy_exists:
                     raise CatalogValidationError(
-                        f"{slot_source}: no enemy matches all "
-                        f"requiredTags "
-                        f"{sorted(required_tag_set)}"
+                        f"{slot_source}: no enemy matches "
+                        f"the slot restrictions"
                     )
 
         for slot in location_slots:
+            if "requiredTags" in slot:
+                raise CatalogValidationError(
+                    f"{slot_source}: field 'requiredTags' is not allowed"
+                )
+
             slot_source = (
                 f"{map_source}, location slot "
                 f"'{slot.get('slotId')}'"
@@ -998,13 +1043,20 @@ def validate_catalog(
                         f"is allowed only for FIXED mode"
                     )
 
-            if slot.get("mode") == "FIXED":
-                require_required_reference(
-                    slot_source,
-                    slot.get("fixedLocationTemplateId"),
-                    "location",
-                    location_ids,
-                )
+                matching_locations = [
+                    location
+                    for location in catalog["locations"]
+                    if (
+                            allowed_types is None
+                            or location.get("type") in allowed_types
+                    )
+                ]
+
+                if not matching_locations:
+                    raise CatalogValidationError(
+                        f"{slot_source}: no location matches "
+                        f"the slot restrictions"
+                    )
 
             allowed_types = slot.get("allowedTypes")
 
@@ -1127,6 +1179,11 @@ def validate_catalog(
                 f"'{location_type}'"
             )
 
+        if "tags" in location:
+            raise CatalogValidationError(
+                f"{location_source}: field 'tags' is not allowed"
+            )
+
         scenes = require_object_list(
             location_source,
             "scenes",
@@ -1242,7 +1299,7 @@ def validate_catalog(
                         f"{page_number}, loot"
                     ),
                     bundle=loot_bundle,
-                    acquisition_source="QUEST_REWARD",
+                    acquisition_source=QUEST_REWARD,
                     indexes=indexes,
                 )
 
