@@ -7,26 +7,43 @@
 ## Для автора игрового контента
 
 1. Создайте ветку от `develop`.
+
 2. Добавьте или измените JSON-файлы внутри `catalog/`.
+
 3. Не добавляйте изображения непосредственно в Git-репозиторий.
+
 4. Если изображения ещё нет в основном хранилище, укажите временный публичный `sourceImageUrl`.
+
 5. Запустите локальную проверку каталога.
+
+   Для запуска в Windows установите Python, затем из корня репозитория выполните:
+
+   ```bat
+   .\scripts\validate-catalog.bat
+   ```
+
+   Если проверка прошла успешно, в конце будет выведено:
+
+   ```text
+   Catalog validation OK
+   ```
+
 6. Откройте pull request в `develop`.
 
 Начните с [общей инструкции для авторов каталога](catalog/README.md), а затем прочитайте `README.md` в нужной директории:
 
-- [здания](catalog/buildings/README.md);
-- [враги](catalog/enemies/README.md);
-- [мебель](catalog/furniture/README.md);
-- [предметы для сада](catalog/garden-items/README.md);
-- [локации](catalog/locations/README.md);
-- [карты](catalog/maps/README.md);
-- [медали](catalog/medals/README.md);
-- [растения](catalog/plants/README.md);
-- [квесты](catalog/quests/README.md);
-- [рецепты](catalog/recipes/README.md);
-- [припасы](catalog/supplies/README.md);
-- [животные](catalog/animals/README.md).
+* [животные](catalog/animals/README.md);
+* [здания](catalog/buildings/README.md);
+* [враги](catalog/enemies/README.md);
+* [мебель](catalog/furniture/README.md);
+* [предметы для сада](catalog/garden-items/README.md);
+* [локации](catalog/locations/README.md);
+* [карты](catalog/maps/README.md);
+* [медали](catalog/medals/README.md);
+* [растения](catalog/plants/README.md);
+* [квесты](catalog/quests/README.md);
+* [рецепты](catalog/recipes/README.md);
+* [припасы](catalog/supplies/README.md).
 
 ## Для сопровождающего репозитория
 
@@ -36,8 +53,8 @@
 
 В репозиторий не следует добавлять:
 
-- изображения и другие тяжёлые бинарные файлы;
-- собранный вручную `catalog-release.json`;
-- MongoDB-поля `id` и `releaseId`;
-- UUID конкретных игровых объектов пользователей;
-- секреты, ключи доступа и адреса внутренних сервисов.
+* изображения и другие тяжёлые бинарные файлы;
+* собранный вручную `catalog-release.json`;
+* MongoDB-поля `id` и `releaseId`;
+* UUID конкретных игровых объектов пользователей;
+* секреты, ключи доступа и адреса внутренних сервисов.

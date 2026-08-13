@@ -83,6 +83,24 @@ LOOT_POOL_CATEGORIES = {
     "locationLoot": "locations",
 }
 
+LOCATION_TYPES = {
+    "PARK",
+    "MONUMENT",
+    "LANDMARK",
+    "PAVILION",
+    "CAVE",
+    "FOUNTAIN",
+    "RESORT",
+    "WATERFALL",
+    "RUINS",
+    "WATER_ANOMALY",
+}
+
+LOCATION_SLOT_MODES = {
+    "FIXED",
+    "RANDOM",
+}
+
 POUCH = "POUCH"
 SHOP = "SHOP"
 QUEST_REWARD = "QUEST_REWARD"
@@ -189,6 +207,39 @@ def require_non_blank_string(
 
     return value
 
+def require_coordinate(
+    source: str,
+    field_name: str,
+    value: Any,
+) -> float:
+    if (
+        not isinstance(value, (int, float))
+        or isinstance(value, bool)
+        or not 0 <= value <= 1
+    ):
+        raise CatalogValidationError(
+            f"{source}: {field_name} must be "
+            f"a number between 0 and 1"
+        )
+
+    return float(value)
+
+def require_positive_integer(
+    source: str,
+    field_name: str,
+    value: Any,
+) -> int:
+    if (
+        not isinstance(value, int)
+        or isinstance(value, bool)
+        or value < 1
+    ):
+        raise CatalogValidationError(
+            f"{source}: {field_name} must be "
+            f"a positive integer"
+        )
+
+    return value
 
 def load_category(
     root: Path,
@@ -757,19 +808,73 @@ def validate_catalog(
     supply_ids = set(indexes["supplies"])
     quest_ids = set(indexes["quests"])
 
+
+    # Enemies
+    enemy_tag_sets: list[set[str]] = []
+
+    for enemy in catalog["enemies"]:
+        enemy_id = enemy["templateId"]
+        enemy_source = f"Enemy '{enemy_id}'"
+
+        tags = enemy.get("tags")
+
+        if tags is None:
+            enemy_tag_sets.append(set())
+            continue
+
+        if not isinstance(tags, list):
+            raise CatalogValidationError(
+                f"{enemy_source}: tags must be an array or null"
+            )
+
+        tag_set: set[str] = set()
+
+        for index, tag in enumerate(tags):
+            tag = require_non_blank_string(
+                enemy_source,
+                f"tags[{index}]",
+                tag,
+            )
+
+            if tag in tag_set:
+                raise CatalogValidationError(
+                    f"{enemy_source}: duplicate tag '{tag}'"
+                )
+
+            tag_set.add(tag)
+
+        enemy_tag_sets.append(tag_set)
+
     # Maps
     for map_item in catalog["maps"]:
         map_id = map_item["templateId"]
         map_source = f"Map '{map_id}'"
 
+        completion_loot_bundle = map_item.get(
+            "completionLootBundle"
+        )
+
+        if completion_loot_bundle is None:
+            raise CatalogValidationError(
+                f"{map_source}: completionLootBundle is required"
+            )
+
         validate_loot_bundle(
             source=f"{map_source}, completion loot",
-            bundle=map_item.get("completionLootBundle"),
-            acquisition_source="EXPEDITION_REWARD",
+            bundle=completion_loot_bundle,
+            acquisition_source=EXPEDITION_REWARD,
             indexes=indexes,
         )
 
-        require_reference(
+        if (
+            "imageKey" not in map_item
+            and "sourceImageUrl" not in map_item
+        ):
+            raise CatalogValidationError(
+                f"{map_source}: map image is required"
+            )
+
+        require_required_reference(
             map_source,
             map_item.get("completionMedalTemplateId"),
             "medal",
@@ -782,25 +887,192 @@ def validate_catalog(
             map_item.get("locationSlots"),
         )
 
+        enemy_slots = require_object_list(
+            map_source,
+            "enemySlots",
+            map_item.get("enemySlots"),
+        )
+
+        for slot in enemy_slots:
+            slot_source = (
+                f"{map_source}, enemy slot "
+                f"'{slot.get('slotId')}'"
+            )
+
+            require_coordinate(
+                slot_source,
+                "x",
+                slot.get("x"),
+            )
+
+            require_coordinate(
+                slot_source,
+                "y",
+                slot.get("y"),
+            )
+
+            required_tags = slot.get("requiredTags")
+
+            if required_tags is not None:
+                if not isinstance(required_tags, list):
+                    raise CatalogValidationError(
+                        f"{slot_source}: "
+                        f"requiredTags must be an array or null"
+                    )
+
+                required_tag_set: set[str] = set()
+
+                for index, tag in enumerate(required_tags):
+                    tag = require_non_blank_string(
+                        slot_source,
+                        f"requiredTags[{index}]",
+                        tag,
+                    )
+
+                    if tag in required_tag_set:
+                        raise CatalogValidationError(
+                            f"{slot_source}: duplicate required tag "
+                            f"'{tag}'"
+                        )
+
+                    required_tag_set.add(tag)
+
+                if required_tag_set and not any(
+                    required_tag_set <= enemy_tags
+                    for enemy_tags in enemy_tag_sets
+                ):
+                    raise CatalogValidationError(
+                        f"{slot_source}: no enemy matches all "
+                        f"requiredTags "
+                        f"{sorted(required_tag_set)}"
+                    )
+
         for slot in location_slots:
-            if slot.get("mode") == "FIXED":
-                require_reference(
-                    f"{map_source}, location slot "
-                    f"'{slot.get('slotId')}'",
-                    slot.get(
-                        "fixedLocationTemplateId"
-                    ),
+            slot_source = (
+                f"{map_source}, location slot "
+                f"'{slot.get('slotId')}'"
+            )
+
+            require_coordinate(
+                slot_source,
+                "x",
+                slot.get("x"),
+            )
+
+            require_coordinate(
+                slot_source,
+                "y",
+                slot.get("y"),
+            )
+
+            mode = require_non_blank_string(
+                slot_source,
+                "mode",
+                slot.get("mode"),
+            )
+
+            if mode not in LOCATION_SLOT_MODES:
+                raise CatalogValidationError(
+                    f"{slot_source}: unknown location slot mode "
+                    f"'{mode}'"
+                )
+
+            if mode == "FIXED":
+                require_required_reference(
+                    slot_source,
+                    slot.get("fixedLocationTemplateId"),
                     "location",
                     location_ids,
                 )
 
+                if slot.get("allowedTypes") is not None:
+                    raise CatalogValidationError(
+                        f"{slot_source}: allowedTypes is allowed "
+                        f"only for RANDOM mode"
+                    )
+
+            if mode == "RANDOM":
+                if slot.get("fixedLocationTemplateId") is not None:
+                    raise CatalogValidationError(
+                        f"{slot_source}: fixedLocationTemplateId "
+                        f"is allowed only for FIXED mode"
+                    )
+
+            if slot.get("mode") == "FIXED":
+                require_required_reference(
+                    slot_source,
+                    slot.get("fixedLocationTemplateId"),
+                    "location",
+                    location_ids,
+                )
+
+            allowed_types = slot.get("allowedTypes")
+
+            if allowed_types is not None:
+                slot_source = (
+                    f"{map_source}, location slot "
+                    f"'{slot.get('slotId')}'"
+                )
+
+                if not isinstance(allowed_types, list):
+                    raise CatalogValidationError(
+                        f"{slot_source}: "
+                        f"allowedTypes must be an array or null"
+                    )
+
+                if not allowed_types:
+                    raise CatalogValidationError(
+                        f"{slot_source}: "
+                        f"allowedTypes must not be empty; "
+                        f"omit the field if there is no restriction"
+                    )
+
+                seen_types: set[str] = set()
+
+                for index, location_type in enumerate(
+                    allowed_types
+                ):
+                    location_type = require_non_blank_string(
+                        slot_source,
+                        f"allowedTypes[{index}]",
+                        location_type,
+                    )
+
+                    if location_type not in LOCATION_TYPES:
+                        raise CatalogValidationError(
+                            f"{slot_source}: unknown location type "
+                            f"'{location_type}'"
+                        )
+
+                    if location_type in seen_types:
+                        raise CatalogValidationError(
+                            f"{slot_source}: duplicate location type "
+                            f"'{location_type}'"
+                        )
+
+                    seen_types.add(location_type)
+
     # Plants
     for plant in catalog["plants"]:
-        require_reference(
+        require_required_reference(
             f"Plant '{plant['templateId']}'",
             plant.get("supplyTemplateId"),
             "supply",
             supply_ids,
+        )
+
+        plant_source = f"Plant '{plant['templateId']}'"
+
+        require_positive_integer(
+            plant_source,
+            "supplyAmount",
+            plant.get("supplyAmount"),
+        )
+
+        require_positive_integer(
+            plant_source,
+            "seedAmount",
+            plant.get("seedAmount"),
         )
 
     # Garden items
@@ -841,9 +1113,19 @@ def validate_catalog(
     # Locations -> quests
     for location in catalog["locations"]:
         location_id = location["templateId"]
-        location_source = (
-            f"Location '{location_id}'"
+        location_source = f"Location '{location_id}'"
+
+        location_type = require_non_blank_string(
+            location_source,
+            "type",
+            location.get("type"),
         )
+
+        if location_type not in LOCATION_TYPES:
+            raise CatalogValidationError(
+                f"{location_source}: unknown location type "
+                f"'{location_type}'"
+            )
 
         scenes = require_object_list(
             location_source,
