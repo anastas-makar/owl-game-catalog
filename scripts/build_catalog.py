@@ -1213,12 +1213,20 @@ def validate_catalog(
         page_numbers: set[int] = set()
         ending_ids: set[str] = set()
 
+        # Граф переходов:
+        # номер страницы -> номера страниц, на которые она ведёт.
+        adjacency: dict[int, set[int]] = {}
+
+        # Номера конечных страниц.
+        ending_pages: set[int] = set()
+
+        # Сначала собираем и проверяем номера всех страниц.
         for index, page in enumerate(pages):
             number = page.get("number")
 
             if (
-                not isinstance(number, int)
-                or isinstance(number, bool)
+                    not isinstance(number, int)
+                    or isinstance(number, bool)
             ):
                 raise CatalogValidationError(
                     f"{quest_source}, page at index "
@@ -1232,14 +1240,15 @@ def validate_catalog(
                 )
 
             page_numbers.add(number)
+            adjacency[number] = set()
 
         start_page = quest.get(
             "startPageNumber"
         )
 
         if (
-            not isinstance(start_page, int)
-            or isinstance(start_page, bool)
+                not isinstance(start_page, int)
+                or isinstance(start_page, bool)
         ):
             raise CatalogValidationError(
                 f"{quest_source}: missing or invalid "
@@ -1252,6 +1261,7 @@ def validate_catalog(
                 f"{start_page} does not exist"
             )
 
+        # Проверяем содержимое страниц и строим граф переходов.
         for page in pages:
             page_number = page["number"]
 
@@ -1279,18 +1289,31 @@ def validate_catalog(
                     )
 
                 ending_ids.add(ending_id)
+                ending_pages.add(page_number)
 
+            # Конечная страница не должна иметь вариантов продолжения.
             if ending_id is not None and options:
                 raise CatalogValidationError(
                     f"{quest_source}, page {page_number}: "
                     f"ending page must not have options"
                 )
 
+            # Неконечная страница должна куда-нибудь вести.
+            if ending_id is None and not options:
+                raise CatalogValidationError(
+                    f"{quest_source}, page {page_number}: "
+                    f"non-ending page must have at least one option"
+                )
+
             if loot_bundle is not None:
-                if not isinstance(ending_id, str) or not ending_id.strip():
+                if (
+                        not isinstance(ending_id, str)
+                        or not ending_id.strip()
+                ):
                     raise CatalogValidationError(
                         f"{quest_source}, page {page_number}: "
-                        f"lootBundle is allowed only on a page with endingId"
+                        f"lootBundle is allowed only on a page "
+                        f"with endingId"
                     )
 
                 validate_loot_bundle(
@@ -1303,7 +1326,10 @@ def validate_catalog(
                     indexes=indexes,
                 )
 
-            if loot_button_text is not None and loot_bundle is None:
+            if (
+                    loot_button_text is not None
+                    and loot_bundle is None
+            ):
                 raise CatalogValidationError(
                     f"{quest_source}, page {page_number}: "
                     f"lootButtonText requires lootBundle"
@@ -1313,8 +1339,8 @@ def validate_catalog(
                 target = option.get("targetPageNumber")
 
                 if (
-                    not isinstance(target, int)
-                    or isinstance(target, bool)
+                        not isinstance(target, int)
+                        or isinstance(target, bool)
                 ):
                     raise CatalogValidationError(
                         f"{quest_source}, page "
@@ -1329,6 +1355,299 @@ def validate_catalog(
                         f"{page_number}: target page "
                         f"{target} does not exist"
                     )
+
+                adjacency[page_number].add(target)
+
+        # У квеста должна быть хотя бы одна концовка.
+        if not ending_pages:
+            raise CatalogValidationError(
+                f"{quest_source}: quest has no ending pages"
+            )
+
+        # Проверяем, что все страницы достижимы
+        # от startPageNumber.
+        reachable: set[int] = set()
+        stack = [start_page]
+
+        while stack:
+            page_number = stack.pop()
+
+            if page_number in reachable:
+                continue
+
+            reachable.add(page_number)
+            stack.extend(adjacency[page_number])
+
+        unreachable = page_numbers - reachable
+
+        if unreachable:
+            raise CatalogValidationError(
+                f"{quest_source}: unreachable page(s) from "
+                f"startPageNumber {start_page}: "
+                f"{sorted(unreachable)}"
+            )
+
+        # Строим обратный граф:
+        # страница -> страницы, которые ведут на неё.
+        reverse_adjacency: dict[int, set[int]] = {
+            page_number: set()
+            for page_number in page_numbers
+        }
+
+        for source_page, targets in adjacency.items():
+            for target_page in targets:
+                reverse_adjacency[target_page].add(
+                    source_page
+                )
+
+        # Идём назад от всех концовок.
+        # Так получаем все страницы, из которых
+        # существует хотя бы один путь к концовке.
+        can_reach_ending: set[int] = set()
+        stack = list(ending_pages)
+
+        while stack:
+            page_number = stack.pop()
+
+            if page_number in can_reach_ending:
+                continue
+
+            can_reach_ending.add(page_number)
+            stack.extend(
+                reverse_adjacency[page_number]
+            )
+
+        trapped_pages = reachable - can_reach_ending
+
+        if trapped_pages:
+            raise CatalogValidationError(
+                f"{quest_source}: page(s) cannot reach "
+                f"any ending: {sorted(trapped_pages)}"
+            )# Quest pages
+    for quest in catalog["quests"]:
+        quest_id = quest["templateId"]
+        quest_source = f"Quest '{quest_id}'"
+
+        pages = require_object_list(
+            quest_source,
+            "pages",
+            quest.get("pages"),
+        )
+
+        page_numbers: set[int] = set()
+        ending_ids: set[str] = set()
+
+        # Граф переходов:
+        # номер страницы -> номера страниц, на которые она ведёт.
+        adjacency: dict[int, set[int]] = {}
+
+        # Номера конечных страниц.
+        ending_pages: set[int] = set()
+
+        # Сначала собираем и проверяем номера всех страниц.
+        for index, page in enumerate(pages):
+            number = page.get("number")
+
+            if (
+                    not isinstance(number, int)
+                    or isinstance(number, bool)
+            ):
+                raise CatalogValidationError(
+                    f"{quest_source}, page at index "
+                    f"{index}: missing or invalid number"
+                )
+
+            if number in page_numbers:
+                raise CatalogValidationError(
+                    f"{quest_source}: duplicate "
+                    f"page number {number}"
+                )
+
+            page_numbers.add(number)
+            adjacency[number] = set()
+
+        start_page = quest.get(
+            "startPageNumber"
+        )
+
+        if (
+                not isinstance(start_page, int)
+                or isinstance(start_page, bool)
+        ):
+            raise CatalogValidationError(
+                f"{quest_source}: missing or invalid "
+                f"startPageNumber"
+            )
+
+        if start_page not in page_numbers:
+            raise CatalogValidationError(
+                f"{quest_source}: startPageNumber "
+                f"{start_page} does not exist"
+            )
+
+        # Проверяем содержимое страниц и строим граф переходов.
+        for page in pages:
+            page_number = page["number"]
+
+            options = require_object_list(
+                f"{quest_source}, page {page_number}",
+                "options",
+                page.get("options"),
+            )
+
+            loot_bundle = page.get("lootBundle")
+            ending_id = page.get("endingId")
+            loot_button_text = page.get("lootButtonText")
+
+            if ending_id is not None:
+                ending_id = require_non_blank_string(
+                    f"{quest_source}, page {page_number}",
+                    "endingId",
+                    ending_id,
+                )
+
+                if ending_id in ending_ids:
+                    raise CatalogValidationError(
+                        f"{quest_source}: duplicate endingId "
+                        f"'{ending_id}'"
+                    )
+
+                ending_ids.add(ending_id)
+                ending_pages.add(page_number)
+
+            # Конечная страница не должна иметь вариантов продолжения.
+            if ending_id is not None and options:
+                raise CatalogValidationError(
+                    f"{quest_source}, page {page_number}: "
+                    f"ending page must not have options"
+                )
+
+            # Неконечная страница должна куда-нибудь вести.
+            if ending_id is None and not options:
+                raise CatalogValidationError(
+                    f"{quest_source}, page {page_number}: "
+                    f"non-ending page must have at least one option"
+                )
+
+            if loot_bundle is not None:
+                if (
+                        not isinstance(ending_id, str)
+                        or not ending_id.strip()
+                ):
+                    raise CatalogValidationError(
+                        f"{quest_source}, page {page_number}: "
+                        f"lootBundle is allowed only on a page "
+                        f"with endingId"
+                    )
+
+                validate_loot_bundle(
+                    source=(
+                        f"{quest_source}, page "
+                        f"{page_number}, loot"
+                    ),
+                    bundle=loot_bundle,
+                    acquisition_source=QUEST_REWARD,
+                    indexes=indexes,
+                )
+
+            if (
+                    loot_button_text is not None
+                    and loot_bundle is None
+            ):
+                raise CatalogValidationError(
+                    f"{quest_source}, page {page_number}: "
+                    f"lootButtonText requires lootBundle"
+                )
+
+            for option_index, option in enumerate(options):
+                target = option.get("targetPageNumber")
+
+                if (
+                        not isinstance(target, int)
+                        or isinstance(target, bool)
+                ):
+                    raise CatalogValidationError(
+                        f"{quest_source}, page "
+                        f"{page_number}, option at index "
+                        f"{option_index}: missing or invalid "
+                        f"targetPageNumber"
+                    )
+
+                if target not in page_numbers:
+                    raise CatalogValidationError(
+                        f"{quest_source}, page "
+                        f"{page_number}: target page "
+                        f"{target} does not exist"
+                    )
+
+                adjacency[page_number].add(target)
+
+        # У квеста должна быть хотя бы одна концовка.
+        if not ending_pages:
+            raise CatalogValidationError(
+                f"{quest_source}: quest has no ending pages"
+            )
+
+        # Проверяем, что все страницы достижимы
+        # от startPageNumber.
+        reachable: set[int] = set()
+        stack = [start_page]
+
+        while stack:
+            page_number = stack.pop()
+
+            if page_number in reachable:
+                continue
+
+            reachable.add(page_number)
+            stack.extend(adjacency[page_number])
+
+        unreachable = page_numbers - reachable
+
+        if unreachable:
+            raise CatalogValidationError(
+                f"{quest_source}: unreachable page(s) from "
+                f"startPageNumber {start_page}: "
+                f"{sorted(unreachable)}"
+            )
+
+        # Строим обратный граф:
+        # страница -> страницы, которые ведут на неё.
+        reverse_adjacency: dict[int, set[int]] = {
+            page_number: set()
+            for page_number in page_numbers
+        }
+
+        for source_page, targets in adjacency.items():
+            for target_page in targets:
+                reverse_adjacency[target_page].add(
+                    source_page
+                )
+
+        # Идём назад от всех концовок.
+        # Так получаем все страницы, из которых
+        # существует хотя бы один путь к концовке.
+        can_reach_ending: set[int] = set()
+        stack = list(ending_pages)
+
+        while stack:
+            page_number = stack.pop()
+
+            if page_number in can_reach_ending:
+                continue
+
+            can_reach_ending.add(page_number)
+            stack.extend(
+                reverse_adjacency[page_number]
+            )
+
+        trapped_pages = reachable - can_reach_ending
+
+        if trapped_pages:
+            raise CatalogValidationError(
+                f"{quest_source}: page(s) cannot reach "
+                f"any ending: {sorted(trapped_pages)}"
+            )
 
     # Animals
     for animal in catalog["animals"]:
