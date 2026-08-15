@@ -185,9 +185,9 @@ def validate_acquisition_sources(
                 seen_sources.add(source)
 
 def require_object_list(
-    source: str,
-    field_name: str,
-    value: Any,
+        source: str,
+        field_name: str,
+        value: Any,
 ) -> list[dict[str, Any]]:
     """
     Возвращает массив объектов.
@@ -234,9 +234,9 @@ def require_non_negative_integer(
     return value
 
 def require_non_blank_string(
-    source: str,
-    field_name: str,
-    value: Any,
+        source: str,
+        field_name: str,
+        value: Any,
 ) -> str:
     if not isinstance(value, str) or not value.strip():
         raise CatalogValidationError(
@@ -246,14 +246,14 @@ def require_non_blank_string(
     return value
 
 def require_coordinate(
-    source: str,
-    field_name: str,
-    value: Any,
+        source: str,
+        field_name: str,
+        value: Any,
 ) -> float:
     if (
-        not isinstance(value, (int, float))
-        or isinstance(value, bool)
-        or not 0 <= value <= 1
+            not isinstance(value, (int, float))
+            or isinstance(value, bool)
+            or not 0 <= value <= 1
     ):
         raise CatalogValidationError(
             f"{source}: {field_name} must be "
@@ -263,14 +263,14 @@ def require_coordinate(
     return float(value)
 
 def require_positive_integer(
-    source: str,
-    field_name: str,
-    value: Any,
+        source: str,
+        field_name: str,
+        value: Any,
 ) -> int:
     if (
-        not isinstance(value, int)
-        or isinstance(value, bool)
-        or value < 1
+            not isinstance(value, int)
+            or isinstance(value, bool)
+            or value < 1
     ):
         raise CatalogValidationError(
             f"{source}: {field_name} must be "
@@ -280,8 +280,8 @@ def require_positive_integer(
     return value
 
 def load_category(
-    root: Path,
-    directory_name: str,
+        root: Path,
+        directory_name: str,
 ) -> list[dict[str, Any]]:
     directory = root / directory_name
 
@@ -316,8 +316,8 @@ def load_category(
 
 
 def index_by_template_id(
-    category_name: str,
-    items: list[dict[str, Any]],
+        category_name: str,
+        items: list[dict[str, Any]],
 ) -> dict[str, dict[str, Any]]:
     result: dict[str, dict[str, Any]] = {}
 
@@ -336,10 +336,10 @@ def index_by_template_id(
 
 
 def require_reference(
-    source: str,
-    reference: Any,
-    target_name: str,
-    target_ids: set[str],
+        source: str,
+        reference: Any,
+        target_name: str,
+        target_ids: set[str],
 ) -> None:
     if reference is None:
         return
@@ -357,10 +357,10 @@ def require_reference(
         )
 
 def require_required_reference(
-    source: str,
-    reference: Any,
-    target_name: str,
-    target_ids: set[str],
+        source: str,
+        reference: Any,
+        target_name: str,
+        target_ids: set[str],
 ) -> None:
     reference_id = require_non_blank_string(
         source,
@@ -376,11 +376,11 @@ def require_required_reference(
         )
 
 def validate_unique_nested_ids(
-    parent_source: str,
-    field_name: str,
-    child_label: str,
-    id_field: str,
-    children: list[dict[str, Any]],
+        parent_source: str,
+        field_name: str,
+        child_label: str,
+        id_field: str,
+        children: list[dict[str, Any]],
 ) -> None:
     """
     Проверяет наличие и уникальность идентификатора
@@ -416,7 +416,7 @@ def validate_unique_nested_ids(
 
 
 def validate_nested_identifiers(
-    catalog: dict[str, list[dict[str, Any]]],
+        catalog: dict[str, list[dict[str, Any]]],
 ) -> None:
     """
     Применяет правила из NESTED_ID_RULES.
@@ -429,10 +429,10 @@ def validate_nested_identifiers(
             parent_id = item["templateId"]
 
             for (
-                parent_label,
-                field_name,
-                child_label,
-                id_field,
+                    parent_label,
+                    field_name,
+                    child_label,
+                    id_field,
             ) in rules:
                 parent_source = (
                     f"{parent_label} '{parent_id}'"
@@ -454,9 +454,9 @@ def validate_nested_identifiers(
 
 
 def validate_image_reference(
-    source: str,
-    value: dict[str, Any],
-    require_image_key: bool,
+        source: str,
+        value: dict[str, Any],
+        require_image_key: bool,
 ) -> None:
     """
     Проверяет один объект, в котором найдено одно из полей:
@@ -530,7 +530,7 @@ def validate_image_reference(
         )
 
     if not source_image_url.startswith(
-        ("https://", "http://")
+            ("https://", "http://")
     ):
         raise CatalogValidationError(
             f"{source}: sourceImageUrl must be "
@@ -539,9 +539,9 @@ def validate_image_reference(
 
 
 def validate_image_references_recursively(
-    value: Any,
-    source: str,
-    require_image_keys: bool,
+        value: Any,
+        source: str,
+        require_image_keys: bool,
 ) -> None:
     """
     Рекурсивно обходит весь объект каталога.
@@ -552,9 +552,9 @@ def validate_image_references_recursively(
     """
     if isinstance(value, dict):
         if (
-            "imageKey" in value
-            or "sourceImageUrl" in value
-            or "imageUrl" in value
+                "imageKey" in value
+                or "sourceImageUrl" in value
+                or "imageUrl" in value
         ):
             validate_image_reference(
                 source=source,
@@ -588,8 +588,8 @@ def validate_image_references_recursively(
 
 
 def validate_all_image_references(
-    catalog: dict[str, list[dict[str, Any]]],
-    require_image_keys: bool,
+        catalog: dict[str, list[dict[str, Any]]],
+        require_image_keys: bool,
 ) -> None:
     """
     Запускает рекурсивный обход для каждой корневой
@@ -606,8 +606,8 @@ def validate_all_image_references(
             )
 
 def acquisition_source_allowed(
-    item: dict[str, Any],
-    source: str,
+        item: dict[str, Any],
+        source: str,
 ) -> bool:
     allowed_sources = item.get(
         "allowedAcquisitionSources"
@@ -625,10 +625,10 @@ def acquisition_source_allowed(
     return source in allowed_sources
 
 def validate_loot_bundle(
-    source: str,
-    bundle: Any,
-    acquisition_source: str,
-    indexes: dict[str, dict[str, dict[str, Any]]],
+        source: str,
+        bundle: Any,
+        acquisition_source: str,
+        indexes: dict[str, dict[str, dict[str, Any]]],
 ) -> None:
     if bundle is None:
         return
@@ -675,9 +675,9 @@ def validate_loot_bundle(
 
         if amount is not None:
             if (
-                not isinstance(amount, int)
-                or isinstance(amount, bool)
-                or amount < 1
+                    not isinstance(amount, int)
+                    or isinstance(amount, bool)
+                    or amount < 1
             ):
                 raise CatalogValidationError(
                     f"{source}, {pool_name}: "
@@ -693,9 +693,9 @@ def validate_loot_bundle(
 
         if drop_chance is not None:
             if (
-                not isinstance(drop_chance, (int, float))
-                or isinstance(drop_chance, bool)
-                or not 0 <= drop_chance <= 1
+                    not isinstance(drop_chance, (int, float))
+                    or isinstance(drop_chance, bool)
+                    or not 0 <= drop_chance <= 1
             ):
                 raise CatalogValidationError(
                     f"{source}, {pool_name}: "
@@ -767,8 +767,8 @@ def validate_loot_bundle(
                 )
 
             if not acquisition_source_allowed(
-                item,
-                acquisition_source,
+                    item,
+                    acquisition_source,
             ):
                 raise CatalogValidationError(
                     f"{source}, {pool_name}: "
@@ -790,8 +790,8 @@ def validate_loot_bundle(
     )
 
 def validate_diamond_loot(
-    source: str,
-    bundle: dict[str, Any],
+        source: str,
+        bundle: dict[str, Any],
 ) -> None:
     pool = bundle.get("diamondLoot")
 
@@ -806,9 +806,9 @@ def validate_diamond_loot(
     amount = pool.get("amount")
 
     if (
-        not isinstance(amount, int)
-        or isinstance(amount, bool)
-        or amount < 1
+            not isinstance(amount, int)
+            or isinstance(amount, bool)
+            or amount < 1
     ):
         raise CatalogValidationError(
             f"{source}, diamondLoot: "
@@ -818,9 +818,9 @@ def validate_diamond_loot(
     drop_chance = pool.get("dropChance")
 
     if drop_chance is not None and (
-        not isinstance(drop_chance, (int, float))
-        or isinstance(drop_chance, bool)
-        or not 0 <= drop_chance <= 1
+            not isinstance(drop_chance, (int, float))
+            or isinstance(drop_chance, bool)
+            or not 0 <= drop_chance <= 1
     ):
         raise CatalogValidationError(
             f"{source}, diamondLoot: "
@@ -828,8 +828,8 @@ def validate_diamond_loot(
         )
 
 def validate_catalog(
-    catalog: dict[str, list[dict[str, Any]]],
-    require_image_keys: bool,
+        catalog: dict[str, list[dict[str, Any]]],
+        require_image_keys: bool,
 ) -> None:
     indexes = {
         category: index_by_template_id(
@@ -919,8 +919,8 @@ def validate_catalog(
         )
 
         if (
-            "imageKey" not in map_item
-            and "sourceImageUrl" not in map_item
+                "imageKey" not in map_item
+                and "sourceImageUrl" not in map_item
         ):
             raise CatalogValidationError(
                 f"{map_source}: map image is required"
@@ -964,6 +964,7 @@ def validate_catalog(
             )
 
             required_tags = slot.get("requiredTags")
+            required_tag_set: set[str] = set()
 
             if required_tags is not None:
                 if not isinstance(required_tags, list):
@@ -971,8 +972,6 @@ def validate_catalog(
                         f"{slot_source}: "
                         f"requiredTags must be an array or null"
                     )
-
-                required_tag_set: set[str] = set()
 
                 for index, tag in enumerate(required_tags):
                     tag = require_non_blank_string(
@@ -989,30 +988,27 @@ def validate_catalog(
 
                     required_tag_set.add(tag)
 
-                if required_tags is None:
-                    required_tag_set = set()
+            matching_enemy_exists = any(
+                required_tag_set <= enemy_tags
+                for enemy_tags in enemy_tag_sets
+            )
 
-                matching_enemy_exists = any(
-                    required_tag_set <= enemy_tags
-                    for enemy_tags in enemy_tag_sets
+            if not matching_enemy_exists:
+                raise CatalogValidationError(
+                    f"{slot_source}: no enemy matches "
+                    f"the slot restrictions"
                 )
-
-                if not matching_enemy_exists:
-                    raise CatalogValidationError(
-                        f"{slot_source}: no enemy matches "
-                        f"the slot restrictions"
-                    )
 
         for slot in location_slots:
-            if "requiredTags" in slot:
-                raise CatalogValidationError(
-                    f"{slot_source}: field 'requiredTags' is not allowed"
-                )
-
             slot_source = (
                 f"{map_source}, location slot "
                 f"'{slot.get('slotId')}'"
             )
+
+            if "requiredTags" in slot:
+                raise CatalogValidationError(
+                    f"{slot_source}: field 'requiredTags' is not allowed"
+                )
 
             require_coordinate(
                 slot_source,
@@ -1038,6 +1034,45 @@ def validate_catalog(
                     f"'{mode}'"
                 )
 
+            allowed_types = slot.get("allowedTypes")
+
+            if allowed_types is not None:
+                if not isinstance(allowed_types, list):
+                    raise CatalogValidationError(
+                        f"{slot_source}: "
+                        f"allowedTypes must be an array or null"
+                    )
+
+                if not allowed_types:
+                    raise CatalogValidationError(
+                        f"{slot_source}: "
+                        f"allowedTypes must not be empty; "
+                        f"omit the field if there is no restriction"
+                    )
+
+                seen_types: set[str] = set()
+
+                for index, location_type in enumerate(allowed_types):
+                    location_type = require_non_blank_string(
+                        slot_source,
+                        f"allowedTypes[{index}]",
+                        location_type,
+                    )
+
+                    if location_type not in LOCATION_TYPES:
+                        raise CatalogValidationError(
+                            f"{slot_source}: unknown location type "
+                            f"'{location_type}'"
+                        )
+
+                    if location_type in seen_types:
+                        raise CatalogValidationError(
+                            f"{slot_source}: duplicate location type "
+                            f"'{location_type}'"
+                        )
+
+                    seen_types.add(location_type)
+
             if mode == "FIXED":
                 require_required_reference(
                     slot_source,
@@ -1046,7 +1081,7 @@ def validate_catalog(
                     location_ids,
                 )
 
-                if slot.get("allowedTypes") is not None:
+                if allowed_types is not None:
                     raise CatalogValidationError(
                         f"{slot_source}: allowedTypes is allowed "
                         f"only for RANDOM mode"
@@ -1073,52 +1108,6 @@ def validate_catalog(
                         f"{slot_source}: no location matches "
                         f"the slot restrictions"
                     )
-
-            allowed_types = slot.get("allowedTypes")
-
-            if allowed_types is not None:
-                slot_source = (
-                    f"{map_source}, location slot "
-                    f"'{slot.get('slotId')}'"
-                )
-
-                if not isinstance(allowed_types, list):
-                    raise CatalogValidationError(
-                        f"{slot_source}: "
-                        f"allowedTypes must be an array or null"
-                    )
-
-                if not allowed_types:
-                    raise CatalogValidationError(
-                        f"{slot_source}: "
-                        f"allowedTypes must not be empty; "
-                        f"omit the field if there is no restriction"
-                    )
-
-                seen_types: set[str] = set()
-
-                for index, location_type in enumerate(
-                    allowed_types
-                ):
-                    location_type = require_non_blank_string(
-                        slot_source,
-                        f"allowedTypes[{index}]",
-                        location_type,
-                    )
-
-                    if location_type not in LOCATION_TYPES:
-                        raise CatalogValidationError(
-                            f"{slot_source}: unknown location type "
-                            f"'{location_type}'"
-                        )
-
-                    if location_type in seen_types:
-                        raise CatalogValidationError(
-                            f"{slot_source}: duplicate location type "
-                            f"'{location_type}'"
-                        )
-
-                    seen_types.add(location_type)
 
     # Plants
     for plant in catalog["plants"]:
@@ -1183,6 +1172,26 @@ def validate_catalog(
         location_id = location["templateId"]
         location_source = f"Location '{location_id}'"
 
+        require_non_blank_string(
+            location_source,
+            "name",
+            location.get("name"),
+        )
+
+        require_non_blank_string(
+            location_source,
+            "description",
+            location.get("description"),
+        )
+
+        if (
+                "imageKey" not in location
+                and "sourceImageUrl" not in location
+        ):
+            raise CatalogValidationError(
+                f"{location_source}: location image is required"
+            )
+
         location_type = require_non_blank_string(
             location_source,
             "type",
@@ -1235,9 +1244,25 @@ def validate_catalog(
                 f"'{scene.get('templateId')}'"
             )
 
+            require_non_blank_string(
+                scene_source,
+                "description",
+                scene.get("description"),
+            )
+
+            if (
+                    "imageKey" not in scene
+                    and "sourceImageUrl" not in scene
+            ):
+                raise CatalogValidationError(
+                    f"{scene_source}: scene image is required"
+                )
+
+            quest_template_id = scene.get("questTemplateId")
+
             require_reference(
                 scene_source,
-                scene.get("questTemplateId"),
+                quest_template_id,
                 "quest",
                 quest_ids,
             )
@@ -1266,7 +1291,7 @@ def validate_catalog(
 
             if (
                     quest_button_text is not None
-                    and scene.get("questTemplateId") is None
+                    and quest_template_id is None
             ):
                 raise CatalogValidationError(
                     f"{scene_source}: "
@@ -1282,230 +1307,6 @@ def validate_catalog(
                 )
 
     # Quest pages
-    for quest in catalog["quests"]:
-        quest_id = quest["templateId"]
-        quest_source = f"Quest '{quest_id}'"
-
-        pages = require_object_list(
-            quest_source,
-            "pages",
-            quest.get("pages"),
-        )
-
-        page_numbers: set[int] = set()
-        ending_ids: set[str] = set()
-
-        # Граф переходов:
-        # номер страницы -> номера страниц, на которые она ведёт.
-        adjacency: dict[int, set[int]] = {}
-
-        # Номера конечных страниц.
-        ending_pages: set[int] = set()
-
-        # Сначала собираем и проверяем номера всех страниц.
-        for index, page in enumerate(pages):
-            number = page.get("number")
-
-            if (
-                    not isinstance(number, int)
-                    or isinstance(number, bool)
-            ):
-                raise CatalogValidationError(
-                    f"{quest_source}, page at index "
-                    f"{index}: missing or invalid number"
-                )
-
-            if number in page_numbers:
-                raise CatalogValidationError(
-                    f"{quest_source}: duplicate "
-                    f"page number {number}"
-                )
-
-            page_numbers.add(number)
-            adjacency[number] = set()
-
-        start_page = quest.get(
-            "startPageNumber"
-        )
-
-        if (
-                not isinstance(start_page, int)
-                or isinstance(start_page, bool)
-        ):
-            raise CatalogValidationError(
-                f"{quest_source}: missing or invalid "
-                f"startPageNumber"
-            )
-
-        if start_page not in page_numbers:
-            raise CatalogValidationError(
-                f"{quest_source}: startPageNumber "
-                f"{start_page} does not exist"
-            )
-
-        # Проверяем содержимое страниц и строим граф переходов.
-        for page in pages:
-            page_number = page["number"]
-
-            options = require_object_list(
-                f"{quest_source}, page {page_number}",
-                "options",
-                page.get("options"),
-            )
-
-            loot_bundle = page.get("lootBundle")
-            ending_id = page.get("endingId")
-            loot_button_text = page.get("lootButtonText")
-
-            if ending_id is not None:
-                ending_id = require_non_blank_string(
-                    f"{quest_source}, page {page_number}",
-                    "endingId",
-                    ending_id,
-                )
-
-                if ending_id in ending_ids:
-                    raise CatalogValidationError(
-                        f"{quest_source}: duplicate endingId "
-                        f"'{ending_id}'"
-                    )
-
-                ending_ids.add(ending_id)
-                ending_pages.add(page_number)
-
-            # Конечная страница не должна иметь вариантов продолжения.
-            if ending_id is not None and options:
-                raise CatalogValidationError(
-                    f"{quest_source}, page {page_number}: "
-                    f"ending page must not have options"
-                )
-
-            # Неконечная страница должна куда-нибудь вести.
-            if ending_id is None and not options:
-                raise CatalogValidationError(
-                    f"{quest_source}, page {page_number}: "
-                    f"non-ending page must have at least one option"
-                )
-
-            if loot_bundle is not None:
-                if (
-                        not isinstance(ending_id, str)
-                        or not ending_id.strip()
-                ):
-                    raise CatalogValidationError(
-                        f"{quest_source}, page {page_number}: "
-                        f"lootBundle is allowed only on a page "
-                        f"with endingId"
-                    )
-
-                validate_loot_bundle(
-                    source=(
-                        f"{quest_source}, page "
-                        f"{page_number}, loot"
-                    ),
-                    bundle=loot_bundle,
-                    acquisition_source=QUEST_REWARD,
-                    indexes=indexes,
-                )
-
-            if (
-                    loot_button_text is not None
-                    and loot_bundle is None
-            ):
-                raise CatalogValidationError(
-                    f"{quest_source}, page {page_number}: "
-                    f"lootButtonText requires lootBundle"
-                )
-
-            for option_index, option in enumerate(options):
-                target = option.get("targetPageNumber")
-
-                if (
-                        not isinstance(target, int)
-                        or isinstance(target, bool)
-                ):
-                    raise CatalogValidationError(
-                        f"{quest_source}, page "
-                        f"{page_number}, option at index "
-                        f"{option_index}: missing or invalid "
-                        f"targetPageNumber"
-                    )
-
-                if target not in page_numbers:
-                    raise CatalogValidationError(
-                        f"{quest_source}, page "
-                        f"{page_number}: target page "
-                        f"{target} does not exist"
-                    )
-
-                adjacency[page_number].add(target)
-
-        # У квеста должна быть хотя бы одна концовка.
-        if not ending_pages:
-            raise CatalogValidationError(
-                f"{quest_source}: quest has no ending pages"
-            )
-
-        # Проверяем, что все страницы достижимы
-        # от startPageNumber.
-        reachable: set[int] = set()
-        stack = [start_page]
-
-        while stack:
-            page_number = stack.pop()
-
-            if page_number in reachable:
-                continue
-
-            reachable.add(page_number)
-            stack.extend(adjacency[page_number])
-
-        unreachable = page_numbers - reachable
-
-        if unreachable:
-            raise CatalogValidationError(
-                f"{quest_source}: unreachable page(s) from "
-                f"startPageNumber {start_page}: "
-                f"{sorted(unreachable)}"
-            )
-
-        # Строим обратный граф:
-        # страница -> страницы, которые ведут на неё.
-        reverse_adjacency: dict[int, set[int]] = {
-            page_number: set()
-            for page_number in page_numbers
-        }
-
-        for source_page, targets in adjacency.items():
-            for target_page in targets:
-                reverse_adjacency[target_page].add(
-                    source_page
-                )
-
-        # Идём назад от всех концовок.
-        # Так получаем все страницы, из которых
-        # существует хотя бы один путь к концовке.
-        can_reach_ending: set[int] = set()
-        stack = list(ending_pages)
-
-        while stack:
-            page_number = stack.pop()
-
-            if page_number in can_reach_ending:
-                continue
-
-            can_reach_ending.add(page_number)
-            stack.extend(
-                reverse_adjacency[page_number]
-            )
-
-        trapped_pages = reachable - can_reach_ending
-
-        if trapped_pages:
-            raise CatalogValidationError(
-                f"{quest_source}: page(s) cannot reach "
-                f"any ending: {sorted(trapped_pages)}"
-            )# Quest pages
     for quest in catalog["quests"]:
         quest_id = quest["templateId"]
         quest_source = f"Quest '{quest_id}'"
@@ -1750,11 +1551,11 @@ def validate_catalog(
 
 
 def build_catalog(
-    catalog_root: Path,
-    version: str,
-    schema_version: int,
-    commit_sha: str,
-    require_image_keys: bool,
+        catalog_root: Path,
+        version: str,
+        schema_version: int,
+        commit_sha: str,
+        require_image_keys: bool,
 ) -> dict[str, Any]:
     catalog: dict[
         str,
@@ -1762,8 +1563,8 @@ def build_catalog(
     ] = {}
 
     for (
-        category_name,
-        directory_name,
+            category_name,
+            directory_name,
     ) in CATEGORY_DIRS.items():
         catalog[category_name] = load_category(
             catalog_root,
@@ -1855,8 +1656,8 @@ def main() -> int:
         )
 
         with output.open(
-            "w",
-            encoding="utf-8",
+                "w",
+                encoding="utf-8",
         ) as file:
             json.dump(
                 result,
@@ -1880,8 +1681,8 @@ def main() -> int:
         )
 
         for (
-            category,
-            values,
+                category,
+                values,
         ) in result["catalog"].items():
             print(
                 f"  {category}: {len(values)}"
