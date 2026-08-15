@@ -111,6 +111,27 @@ LOCATION_SLOT_MODES = {
     "RANDOM",
 }
 
+GARDEN_TYPES = {
+    "KITCHEN_GARDEN",
+    "GARDEN",
+    "POOL",
+}
+
+GARDEN_ITEM_TYPES = {
+    "TREE",
+    "FISH",
+    "WATER_PLANT",
+    "HIVE",
+    "ANIMAL_HOUSE",
+    "NEST",
+    "MUSHROOM",
+}
+
+GARDEN_ITEM_GARDEN_TYPES = {
+    "GARDEN",
+    "POOL",
+}
+
 POUCH = "POUCH"
 SHOP = "SHOP"
 QUEST_REWARD = "QUEST_REWARD"
@@ -1134,12 +1155,45 @@ def validate_catalog(
 
     # Garden items
     for item in catalog["gardenItems"]:
-        require_reference(
-            f"Garden item '{item['templateId']}'",
+        item_id = item["templateId"]
+        item_source = f"Garden item '{item_id}'"
+
+        require_required_reference(
+            item_source,
             item.get("supplyTemplateId"),
             "supply",
             supply_ids,
         )
+
+        require_positive_integer(
+            item_source,
+            "supplyAmount",
+            item.get("supplyAmount"),
+        )
+
+        garden_type = require_non_blank_string(
+            item_source,
+            "gardenType",
+            item.get("gardenType"),
+        )
+
+        if garden_type not in GARDEN_ITEM_GARDEN_TYPES:
+            raise CatalogValidationError(
+                f"{item_source}: gardenType must be "
+                f"'GARDEN' or 'POOL'"
+            )
+
+        item_type = require_non_blank_string(
+            item_source,
+            "itemType",
+            item.get("itemType"),
+        )
+
+        if item_type not in GARDEN_ITEM_TYPES:
+            raise CatalogValidationError(
+                f"{item_source}: unknown garden item type "
+                f"'{item_type}'"
+            )
 
     # Recipes
     for recipe in catalog["recipes"]:
