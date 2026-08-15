@@ -216,6 +216,22 @@ def require_object_list(
 
     return result
 
+def require_non_negative_integer(
+        source: str,
+        field_name: str,
+        value: Any,
+) -> int:
+    if (
+            not isinstance(value, int)
+            or isinstance(value, bool)
+            or value < 0
+    ):
+        raise CatalogValidationError(
+            f"{source}: {field_name} must be "
+            f"a non-negative integer"
+        )
+
+    return value
 
 def require_non_blank_string(
     source: str,
@@ -1179,6 +1195,27 @@ def validate_catalog(
                 f"'{location_type}'"
             )
 
+        build_price = location.get("buildPrice")
+
+        if build_price is not None:
+            require_non_negative_integer(
+                location_source,
+                "buildPrice",
+                build_price,
+            )
+
+        allowed_sources = location.get(
+            "allowedAcquisitionSources"
+        )
+
+        if build_price is None:
+            if allowed_sources != []:
+                raise CatalogValidationError(
+                    f"{location_source}: location without "
+                    f"buildPrice cannot be acquired separately; "
+                    f"allowedAcquisitionSources must be an empty array"
+                )
+
         if "tags" in location:
             raise CatalogValidationError(
                 f"{location_source}: field 'tags' is not allowed"
@@ -1190,14 +1227,59 @@ def validate_catalog(
             location.get("scenes"),
         )
 
+        scene_numbers: set[int] = set()
+
         for scene in scenes:
-            require_reference(
+            scene_source = (
                 f"{location_source}, scene "
-                f"'{scene.get('templateId')}'",
+                f"'{scene.get('templateId')}'"
+            )
+
+            require_reference(
+                scene_source,
                 scene.get("questTemplateId"),
                 "quest",
                 quest_ids,
             )
+
+            scene_number = scene.get("sceneNumber")
+
+            if (
+                    not isinstance(scene_number, int)
+                    or isinstance(scene_number, bool)
+                    or scene_number < 1
+            ):
+                raise CatalogValidationError(
+                    f"{scene_source}: "
+                    f"sceneNumber must be a positive integer"
+                )
+
+            if scene_number in scene_numbers:
+                raise CatalogValidationError(
+                    f"{location_source}: duplicate sceneNumber "
+                    f"{scene_number}"
+                )
+
+            scene_numbers.add(scene_number)
+
+            quest_button_text = scene.get("questButtonText")
+
+            if (
+                    quest_button_text is not None
+                    and scene.get("questTemplateId") is None
+            ):
+                raise CatalogValidationError(
+                    f"{scene_source}: "
+                    f"questButtonText requires questTemplateId"
+                )
+
+            if quest_button_text is not None:
+
+                require_non_blank_string(
+                    scene_source,
+                    "questButtonText",
+                    quest_button_text,
+                )
 
     # Quest pages
     for quest in catalog["quests"]:
