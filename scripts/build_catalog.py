@@ -905,32 +905,66 @@ def validate_catalog(
         enemy_id = enemy["templateId"]
         enemy_source = f"Enemy '{enemy_id}'"
 
-        tags = enemy.get("tags")
+        require_non_blank_string(
+            enemy_source,
+            "name",
+            enemy.get("name"),
+        )
 
-        if tags is None:
-            enemy_tag_sets.append(set())
-            continue
+        require_non_blank_string(
+            enemy_source,
+            "description",
+            enemy.get("description"),
+        )
 
-        if not isinstance(tags, list):
+        if (
+                "imageKey" not in enemy
+                and "sourceImageUrl" not in enemy
+        ):
             raise CatalogValidationError(
-                f"{enemy_source}: tags must be an array or null"
+                f"{enemy_source}: enemy image is required"
             )
 
+        require_positive_integer(
+            enemy_source,
+            "health",
+            enemy.get("health"),
+        )
+
+        require_positive_integer(
+            enemy_source,
+            "damage",
+            enemy.get("damage"),
+        )
+
+        if "type" in enemy:
+            raise CatalogValidationError(
+                f"{enemy_source}: field 'type' is not allowed; "
+                f"enemy types are no longer used"
+            )
+
+        tags = enemy.get("tags")
         tag_set: set[str] = set()
 
-        for index, tag in enumerate(tags):
-            tag = require_non_blank_string(
-                enemy_source,
-                f"tags[{index}]",
-                tag,
-            )
-
-            if tag in tag_set:
+        if tags is not None:
+            if not isinstance(tags, list):
                 raise CatalogValidationError(
-                    f"{enemy_source}: duplicate tag '{tag}'"
+                    f"{enemy_source}: tags must be an array or null"
                 )
 
-            tag_set.add(tag)
+            for index, tag in enumerate(tags):
+                tag = require_non_blank_string(
+                    enemy_source,
+                    f"tags[{index}]",
+                    tag,
+                )
+
+                if tag in tag_set:
+                    raise CatalogValidationError(
+                        f"{enemy_source}: duplicate tag '{tag}'"
+                    )
+
+                tag_set.add(tag)
 
         enemy_tag_sets.append(tag_set)
 
