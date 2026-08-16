@@ -132,6 +132,11 @@ GARDEN_ITEM_GARDEN_TYPES = {
     "POOL",
 }
 
+FURNITURE_TYPES = {
+    "REFRIGERATOR",
+    "OTHER",
+}
+
 POUCH = "POUCH"
 SHOP = "SHOP"
 QUEST_REWARD = "QUEST_REWARD"
@@ -253,6 +258,23 @@ def require_non_negative_integer(
         )
 
     return value
+
+def require_fraction(
+        source: str,
+        field_name: str,
+        value: Any,
+) -> float:
+    if (
+            not isinstance(value, (int, float))
+            or isinstance(value, bool)
+            or not 0 < value <= 1
+    ):
+        raise CatalogValidationError(
+            f"{source}: {field_name} must be "
+            f"a number greater than 0 and at most 1"
+        )
+
+    return float(value)
 
 def require_non_blank_string(
         source: str,
@@ -1194,6 +1216,47 @@ def validate_catalog(
                 f"{item_source}: unknown garden item type "
                 f"'{item_type}'"
             )
+
+    # Furniture
+    for item in catalog["furniture"]:
+        item_id = item["templateId"]
+        item_source = f"Furniture '{item_id}'"
+
+        require_non_blank_string(
+            item_source,
+            "name",
+            item.get("name"),
+        )
+
+        require_non_negative_integer(
+            item_source,
+            "price",
+            item.get("price"),
+        )
+
+        furniture_type = require_non_blank_string(
+            item_source,
+            "type",
+            item.get("type"),
+        )
+
+        if furniture_type not in FURNITURE_TYPES:
+            raise CatalogValidationError(
+                f"{item_source}: unknown furniture type "
+                f"'{furniture_type}'"
+            )
+
+        require_fraction(
+            item_source,
+            "width",
+            item.get("width"),
+        )
+
+        require_fraction(
+            item_source,
+            "height",
+            item.get("height"),
+        )
 
     # Recipes
     for recipe in catalog["recipes"]:
