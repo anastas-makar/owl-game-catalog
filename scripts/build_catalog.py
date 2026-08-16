@@ -1180,6 +1180,32 @@ def validate_catalog(
         item_id = item["templateId"]
         item_source = f"Garden item '{item_id}'"
 
+        require_non_blank_string(
+            item_source,
+            "name",
+            item.get("name"),
+        )
+
+        require_non_blank_string(
+            item_source,
+            "description",
+            item.get("description"),
+        )
+
+        if (
+                "imageKey" not in item
+                and "sourceImageUrl" not in item
+        ):
+            raise CatalogValidationError(
+                f"{item_source}: garden item image is required"
+            )
+
+        if "price" in item:
+            raise CatalogValidationError(
+                f"{item_source}: field 'price' is not allowed; "
+                f"garden items are placed for free"
+            )
+
         require_required_reference(
             item_source,
             item.get("supplyTemplateId"),
@@ -1227,6 +1253,14 @@ def validate_catalog(
             "name",
             item.get("name"),
         )
+
+        if (
+                "imageKey" not in item
+                and "sourceImageUrl" not in item
+        ):
+            raise CatalogValidationError(
+                f"{item_source}: furniture image is required"
+            )
 
         require_non_negative_integer(
             item_source,
@@ -1428,6 +1462,12 @@ def validate_catalog(
         quest_id = quest["templateId"]
         quest_source = f"Quest '{quest_id}'"
 
+        require_non_blank_string(
+            quest_source,
+            "title",
+            quest.get("title"),
+        )
+
         pages = require_object_list(
             quest_source,
             "pages",
@@ -1488,9 +1528,22 @@ def validate_catalog(
         # Проверяем содержимое страниц и строим граф переходов.
         for page in pages:
             page_number = page["number"]
+            page_source = f"{quest_source}, page {page_number}"
+
+            require_non_blank_string(
+                page_source,
+                "name",
+                page.get("name"),
+            )
+
+            require_non_blank_string(
+                page_source,
+                "description",
+                page.get("description"),
+            )
 
             options = require_object_list(
-                f"{quest_source}, page {page_number}",
+                page_source,
                 "options",
                 page.get("options"),
             )
@@ -1559,7 +1612,25 @@ def validate_catalog(
                     f"lootButtonText requires lootBundle"
                 )
 
+            if loot_button_text is not None:
+                require_non_blank_string(
+                    page_source,
+                    "lootButtonText",
+                    loot_button_text,
+                )
+
             for option_index, option in enumerate(options):
+                option_source = (
+                    f"{quest_source}, page {page_number}, "
+                    f"option at index {option_index}"
+                )
+
+                require_non_blank_string(
+                    option_source,
+                    "description",
+                    option.get("description"),
+                )
+
                 target = option.get("targetPageNumber")
 
                 if (
