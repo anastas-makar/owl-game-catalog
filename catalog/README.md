@@ -211,13 +211,14 @@ completionMedalTemplateId
 Запуск из корня репозитория:
 
 ```bash
-python scripts/build_catalog.py \
+python3 scripts/build_catalog.py \
   --catalog-dir catalog \
   --output build/catalog-release.json \
   --version dev-local \
-  --schema-version 1 \
   --commit-sha local
 ```
+
+В Linux/macOS используйте python3; в Windows команда обычно называется python.
 
 В pull request в `develop` разрешён `sourceImageUrl`. Строгая проверка `main` выполняется сопровождающим проекта.
 
@@ -234,3 +235,12 @@ python scripts/build_catalog.py \
 - [Квесты](quests/README.md)
 - [Рецепты](recipes/README.md)
 - [Припасы](supplies/README.md)
+
+## Версия формата каталога
+
+Текущая версия схемы каталога: **1**.
+
+Версия схемы изменяется, когда меняются структура JSON, обязательные поля или правила обработки данных так, 
+что существующие файлы каталога, backend или клиент требуют изменений.
+
+История изменений находится в [`CHANGELOG.md`](CHANGELOG.md).
