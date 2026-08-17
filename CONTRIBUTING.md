@@ -2,7 +2,7 @@
 
 Этот документ предназначен прежде всего для владельца репозитория и разработчиков backend. Инструкции для авторов игрового контента находятся в [`catalog/README.md`](catalog/README.md) и в `README.md` соответствующих категорий.
 
-Текущая версия схемы каталога задаётся константой `CATALOG_SCHEMA_VERSION` в [`scripts/build\_catalog.py`](scripts/build_catalog.py).
+Текущая версия схемы каталога задаётся константой `CATALOG_SCHEMA_VERSION` в [`scripts/build_catalog.py`](scripts/build_catalog.py).
 
 Изменения структуры каталога, правил валидации и требований к контрибьюторам фиксируются в [`catalog/CHANGELOG.md`](catalog/CHANGELOG.md).
 
@@ -78,25 +78,25 @@ git checkout -b catalog/add-stone-fortress
 Обычная локальная проверка, соответствующая работе с `develop`:
 
 ```bash
-python scripts/build\_catalog.py \\
-  --catalog-dir catalog \\
-  --output build/catalog-release.json \\
-  --version dev-local \\
+python3 scripts/build_catalog.py \
+  --catalog-dir catalog \
+  --output build/catalog-release.json \
+  --version dev-local \
   --commit-sha local
 ```
 
 Строгая проверка перед `main` и релизом:
 
 ```bash
-python scripts/build\_catalog.py \\
-  --catalog-dir catalog \\
-  --output build/catalog-release.json \\
-  --version dev-local \\
-  --commit-sha local \\
+python3 scripts/build_catalog.py \
+  --catalog-dir catalog \
+  --output build/catalog-release.json \
+  --version dev-local \
+  --commit-sha local \
   --require-image-keys
 ```
 
-`schemaVersion` указывать не нужно: сборщик берёт его из `CATALOG\_SCHEMA\_VERSION`.
+`schemaVersion` указывать не нужно: сборщик берёт его из `CATALOG_SCHEMA_VERSION`.
 
 Сгенерированный `build/catalog-release.json` не редактируется вручную.
 
@@ -199,8 +199,8 @@ UUID зданий, комнат и других объектов игрока н
 ```json
 {
   "templateId": "quest-sword",
-  "allowedAcquisitionSources": \[
-    "QUEST\_REWARD"
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
   ]
 }
 ```
@@ -210,7 +210,7 @@ UUID зданий, комнат и других объектов игрока н
 ```json
 {
   "templateId": "unfinished-statue",
-  "allowedAcquisitionSources": \[]
+  "allowedAcquisitionSources": []
 }
 ```
 
