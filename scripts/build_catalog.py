@@ -94,6 +94,11 @@ ACQUISITION_SOURCE_CATEGORIES = {
     "recipes",
 }
 
+BUILDING_TYPES = {
+    "HOUSE",
+    "FORTRESS",
+}
+
 LOCATION_TYPES = {
     "PARK",
     "MONUMENT",
@@ -242,6 +247,21 @@ def require_object_list(
         result.append(item)
 
     return result
+
+def require_integer(
+        source: str,
+        field_name: str,
+        value: Any,
+) -> int:
+    if (
+            not isinstance(value, int)
+            or isinstance(value, bool)
+    ):
+        raise CatalogValidationError(
+            f"{source}: {field_name} must be an integer"
+        )
+
+    return value
 
 def require_non_negative_integer(
         source: str,
@@ -968,6 +988,180 @@ def validate_catalog(
                 tag_set.add(tag)
 
         enemy_tag_sets.append(tag_set)
+
+    # Buildings
+    for building in catalog["buildings"]:
+        building_id = building["templateId"]
+        building_source = f"Building '{building_id}'"
+
+        require_non_blank_string(
+            building_source,
+            "name",
+            building.get("name"),
+        )
+
+        if (
+                "imageKey" not in building
+                and "sourceImageUrl" not in building
+        ):
+            raise CatalogValidationError(
+                f"{building_source}: building image is required"
+            )
+
+        require_positive_integer(
+            building_source,
+            "cost",
+            building.get("cost"),
+        )
+
+        building_type = require_non_blank_string(
+            building_source,
+            "type",
+            building.get("type"),
+        )
+
+        if building_type not in BUILDING_TYPES:
+            raise CatalogValidationError(
+                f"{building_source}: unknown building type "
+                f"'{building_type}'"
+            )
+
+        rooms = require_object_list(
+            building_source,
+            "rooms",
+            building.get("rooms"),
+        )
+
+        gardens = require_object_list(
+            building_source,
+            "gardens",
+            building.get("gardens"),
+        )
+
+        if building_type == "HOUSE" and len(rooms) < 1:
+            raise CatalogValidationError(
+                f"{building_source}: HOUSE must have "
+                f"at least one room"
+            )
+
+        if building_type == "FORTRESS" and len(rooms) < 2:
+            raise CatalogValidationError(
+                f"{building_source}: FORTRESS must have "
+                f"at least two rooms"
+            )
+
+        room_numbers: set[int] = set()
+
+        for room in rooms:
+            room_source = (
+                f"{building_source}, room "
+                f"'{room.get('templateId')}'"
+            )
+
+            require_non_blank_string(
+                room_source,
+                "name",
+                room.get("name"),
+            )
+
+            if (
+                    "imageKey" not in room
+                    and "sourceImageUrl" not in room
+            ):
+                raise CatalogValidationError(
+                    f"{room_source}: room image is required"
+                )
+
+            room_number = require_integer(
+                room_source,
+                "roomNumber",
+                room.get("roomNumber"),
+            )
+
+            if room_number in room_numbers:
+                raise CatalogValidationError(
+                    f"{building_source}: duplicate roomNumber "
+                    f"{room_number}"
+                )
+
+            room_numbers.add(room_number)
+
+        garden_numbers: set[int] = set()
+        garden_types: list[str] = []
+
+        for garden in gardens:
+            garden_source = (
+                f"{building_source}, garden "
+                f"'{garden.get('templateId')}'"
+            )
+
+            require_non_blank_string(
+                garden_source,
+                "name",
+                garden.get("name"),
+            )
+
+            if (
+                    "imageKey" not in garden
+                    and "sourceImageUrl" not in garden
+            ):
+                raise CatalogValidationError(
+                    f"{garden_source}: garden image is required"
+                )
+
+            garden_number = require_integer(
+                garden_source,
+                "gardenNumber",
+                garden.get("gardenNumber"),
+            )
+
+            if garden_number in garden_numbers:
+                raise CatalogValidationError(
+                    f"{building_source}: duplicate gardenNumber "
+                    f"{garden_number}"
+                )
+
+            garden_numbers.add(garden_number)
+
+            garden_type = require_non_blank_string(
+                garden_source,
+                "gardenType",
+                garden.get("gardenType"),
+            )
+
+            if garden_type not in GARDEN_TYPES:
+                raise CatalogValidationError(
+                    f"{garden_source}: unknown gardenType "
+                    f"'{garden_type}'"
+                )
+
+            garden_types.append(garden_type)
+
+        if building_type == "HOUSE":
+            if (
+                    len(garden_types) != 1
+                    or garden_types[0] != "KITCHEN_GARDEN"
+            ):
+                raise CatalogValidationError(
+                    f"{building_source}: HOUSE must have exactly "
+                    f"one KITCHEN_GARDEN and no GARDEN or POOL"
+                )
+
+        if building_type == "FORTRESS":
+            required_garden_types = {
+                "KITCHEN_GARDEN",
+                "GARDEN",
+                "POOL",
+            }
+
+            if (
+                    len(garden_types) != 3
+                    or set(garden_types) != required_garden_types
+            ):
+                raise CatalogValidationError(
+                    f"{building_source}: FORTRESS must have exactly "
+                    f"one KITCHEN_GARDEN, one GARDEN and one POOL"
+                )
 
     # Maps
     for map_item in catalog["maps"]:
