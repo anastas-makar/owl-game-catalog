@@ -7,6 +7,7 @@ import sys
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+CATALOG_SCHEMA_VERSION = 1
 
 CATEGORY_DIRS = {
     "animals": "animals",
@@ -1775,7 +1776,6 @@ def validate_catalog(
 def build_catalog(
         catalog_root: Path,
         version: str,
-        schema_version: int,
         commit_sha: str,
         require_image_keys: bool,
 ) -> dict[str, Any]:
@@ -1813,7 +1813,7 @@ def build_catalog(
 
     return {
         "version": version,
-        "schemaVersion": schema_version,
+        "schemaVersion": CATALOG_SCHEMA_VERSION,
         "commitSha": commit_sha,
         "contentHash": content_hash,
         "catalog": catalog,
@@ -1839,12 +1839,6 @@ def main() -> int:
     )
 
     parser.add_argument(
-        "--schema-version",
-        type=int,
-        default=1,
-    )
-
-    parser.add_argument(
         "--commit-sha",
         required=True,
     )
@@ -1866,7 +1860,6 @@ def main() -> int:
                 args.catalog_dir
             ),
             version=args.version,
-            schema_version=args.schema_version,
             commit_sha=args.commit_sha,
             require_image_keys=args.require_image_keys,
         )
