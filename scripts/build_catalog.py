@@ -143,6 +143,12 @@ FURNITURE_TYPES = {
     "OTHER",
 }
 
+EFFECT_TYPES = {
+    "HEAL",
+    "DAMAGE",
+    "NO_EFFECT",
+}
+
 POUCH = "POUCH"
 SHOP = "SHOP"
 QUEST_REWARD = "QUEST_REWARD"
@@ -1168,6 +1174,12 @@ def validate_catalog(
         map_id = map_item["templateId"]
         map_source = f"Map '{map_id}'"
 
+        require_non_blank_string(
+            map_source,
+            "name",
+            map_item.get("name"),
+        )
+
         completion_loot_bundle = map_item.get(
             "completionLootBundle"
         )
@@ -1381,16 +1393,104 @@ def validate_catalog(
                         f"the slot restrictions"
                     )
 
+    # Medals
+    for medal in catalog["medals"]:
+        medal_id = medal["templateId"]
+        medal_source = f"Medal '{medal_id}'"
+
+        require_non_blank_string(
+            medal_source,
+            "title",
+            medal.get("title"),
+        )
+
+        require_non_blank_string(
+            medal_source,
+            "description",
+            medal.get("description"),
+        )
+
+        if (
+                "imageKey" not in medal
+                and "sourceImageUrl" not in medal
+        ):
+            raise CatalogValidationError(
+                f"{medal_source}: medal image is required"
+            )
+
+    # Supplies
+    for supply in catalog["supplies"]:
+        supply_id = supply["templateId"]
+        supply_source = f"Supply '{supply_id}'"
+
+        require_non_blank_string(
+            supply_source,
+            "name",
+            supply.get("name"),
+        )
+
+        require_non_blank_string(
+            supply_source,
+            "description",
+            supply.get("description"),
+        )
+
+        if (
+                "imageKey" not in supply
+                and "sourceImageUrl" not in supply
+        ):
+            raise CatalogValidationError(
+                f"{supply_source}: supply image is required"
+            )
+
+        effect_type = require_non_blank_string(
+            supply_source,
+            "effectType",
+            supply.get("effectType"),
+        )
+
+        if effect_type not in EFFECT_TYPES:
+            raise CatalogValidationError(
+                f"{supply_source}: unknown effectType "
+                f"'{effect_type}'"
+            )
+
+        require_integer(
+            supply_source,
+            "effectAmount",
+            supply.get("effectAmount"),
+        )
+
     # Plants
     for plant in catalog["plants"]:
+        plant_source = f"Plant '{plant['templateId']}'"
+
+        require_non_blank_string(
+            plant_source,
+            "name",
+            plant.get("name"),
+        )
+
+        require_non_blank_string(
+            plant_source,
+            "description",
+            plant.get("description"),
+        )
+
+        if (
+                "imageKey" not in plant
+                and "sourceImageUrl" not in plant
+        ):
+            raise CatalogValidationError(
+                f"{plant_source}: plant image is required"
+            )
+
         require_required_reference(
-            f"Plant '{plant['templateId']}'",
+            plant_source,
             plant.get("supplyTemplateId"),
             "supply",
             supply_ids,
         )
-
-        plant_source = f"Plant '{plant['templateId']}'"
 
         require_positive_integer(
             plant_source,
@@ -1526,6 +1626,12 @@ def validate_catalog(
         recipe_id = recipe["templateId"]
         recipe_source = f"Recipe '{recipe_id}'"
 
+        require_non_blank_string(
+            recipe_source,
+            "description",
+            recipe.get("description"),
+        )
+
         require_required_reference(
             f"{recipe_source} result",
             recipe.get("resultSupplyTemplateId"),
@@ -1539,12 +1645,22 @@ def validate_catalog(
             recipe.get("ingredients"),
         )
 
-        for ingredient in ingredients:
+        for index, ingredient in enumerate(ingredients):
+            ingredient_source = (
+                f"{recipe_source}, ingredient at index {index}"
+            )
+
             require_required_reference(
-                f"{recipe_source} ingredient",
+                ingredient_source,
                 ingredient.get("supplyTemplateId"),
                 "supply",
                 supply_ids,
+            )
+
+            require_positive_integer(
+                ingredient_source,
+                "amount",
+                ingredient.get("amount"),
             )
 
     # Locations -> quests
@@ -1622,6 +1738,12 @@ def validate_catalog(
             scene_source = (
                 f"{location_source}, scene "
                 f"'{scene.get('templateId')}'"
+            )
+
+            require_non_blank_string(
+                scene_source,
+                "name",
+                scene.get("name"),
             )
 
             require_non_blank_string(
@@ -2109,3 +2231,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
