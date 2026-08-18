@@ -45,13 +45,13 @@ quests/first-hatches.json
 
 Файл должен:
 
-- содержать один JSON-объект в корне;
-- использовать UTF-8;
-- использовать двойные кавычки;
-- не содержать комментариев и завершающих запятых;
-- иметь корневой `templateId`;
-- соответствовать актуальному import DTO;
-- не содержать `id`, `releaseId` и UUID пользовательских объектов.
+* содержать один JSON-объект в корне;
+* использовать UTF-8;
+* использовать двойные кавычки;
+* не содержать комментариев и завершающих запятых;
+* иметь корневой `templateId`;
+* соответствовать актуальному import DTO;
+* не содержать `id`, `releaseId` и UUID пользовательских объектов.
 
 Правильно:
 
@@ -66,7 +66,7 @@ quests/first-hatches.json
 
 ```json
 {
-  "templateId": "Red_Sofa_v2",
+  "templateId": "Red\_Sofa\_v2",
   "id": "0f88d63c-...",
   "releaseId": "..."
 }
@@ -126,7 +126,7 @@ red-sofa
 
 ```json
 {
-  "allowedAcquisitionSources": [
+  "allowedAcquisitionSources": \[
     "POUCH",
     "SHOP"
   ]
@@ -193,6 +193,7 @@ red-sofa
 Большинство сущностей можно получать любым способом, поэтому поле ограничения обычно не нужно.
 
 
+
 ## Ссылки между сущностями
 
 Поля вида:
@@ -208,33 +209,43 @@ completionMedalTemplateId
 
 ## Проверка
 
-Запуск из корня репозитория:
+Запускайте проверку из корня репозитория.
 
-```bash
-python3 scripts/build_catalog.py \
-  --catalog-dir catalog \
-  --output build/catalog-release.json \
-  --version dev-local \
-  --commit-sha local
+В Windows:
+
+```bat
+.\scripts\validate-catalog.bat
 ```
 
-В Linux/macOS используйте python3; в Windows команда обычно называется python.
+В Linux:
 
-В pull request в `develop` разрешён `sourceImageUrl`. Строгая проверка `main` выполняется сопровождающим проекта.
+```bash
+sh ./scripts/validate-catalog.sh
+```
+
+Если `validate-catalog.sh` имеет право на выполнение:
+
+```bash
+./scripts/validate-catalog.sh
+```
+
+Эта проверка соответствует работе с `develop` и разрешает временные `sourceImageUrl`.
+
+Строгая проверка перед `main` выполняется сопровождающим проекта.
 
 ## Инструкции по категориям
 
-- [Здания](buildings/README.md)
-- [Враги](enemies/README.md)
-- [Мебель](furniture/README.md)
-- [Предметы для сада](garden-items/README.md)
-- [Локации](locations/README.md)
-- [Карты](maps/README.md)
-- [Медали](medals/README.md)
-- [Растения](plants/README.md)
-- [Квесты](quests/README.md)
-- [Рецепты](recipes/README.md)
-- [Припасы](supplies/README.md)
+* [Здания](buildings/README.md)
+* [Враги](enemies/README.md)
+* [Мебель](furniture/README.md)
+* [Предметы для сада](garden-items/README.md)
+* [Локации](locations/README.md)
+* [Карты](maps/README.md)
+* [Медали](medals/README.md)
+* [Растения](plants/README.md)
+* [Квесты](quests/README.md)
+* [Рецепты](recipes/README.md)
+* [Припасы](supplies/README.md)
 
 ## Версия формата каталога
 
@@ -244,3 +255,4 @@ python3 scripts/build_catalog.py \
 что существующие файлы каталога, backend или клиент требуют изменений.
 
 История изменений находится в [`CHANGELOG.md`](CHANGELOG.md).
+

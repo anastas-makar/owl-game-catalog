@@ -75,28 +75,53 @@ git checkout -b catalog/add-stone-fortress
 
 ## Сборка и проверка
 
-Обычная локальная проверка, соответствующая работе с `develop`:
+Все команды ниже запускаются из корня репозитория.
 
-```bash
-python3 scripts/build_catalog.py \
-  --catalog-dir catalog \
-  --output build/catalog-release.json \
-  --version dev-local \
-  --commit-sha local
+### Обычная проверка для `develop`
+
+Эта проверка разрешает временные `sourceImageUrl`.
+
+В Windows:
+
+```bat
+.\scripts\validate-catalog.bat
 ```
 
-Строгая проверка перед `main` и релизом:
+В Linux:
 
 ```bash
-python3 scripts/build_catalog.py \
-  --catalog-dir catalog \
-  --output build/catalog-release.json \
-  --version dev-local \
-  --commit-sha local \
-  --require-image-keys
+sh ./scripts/validate-catalog.sh
 ```
 
-`schemaVersion` указывать не нужно: сборщик берёт его из `CATALOG_SCHEMA_VERSION`.
+Если `validate-catalog.sh` имеет право на выполнение:
+
+```bash
+./scripts/validate-catalog.sh
+```
+
+### Строгая проверка перед `main` и релизом
+
+Строгая проверка требует, чтобы все изображения уже использовали `imageKey`, и запускает сборщик с `--require-image-keys`.
+
+В Windows:
+
+```bat
+.\scripts\validate-catalog-strict.bat
+```
+
+В Linux:
+
+```bash
+sh ./scripts/validate-catalog-strict.sh
+```
+
+Если `validate-catalog-strict.sh` имеет право на выполнение:
+
+```bash
+./scripts/validate-catalog-strict.sh
+```
+
+Оба варианта используют текущую версию схемы из `CATALOG_SCHEMA_VERSION`; передавать `schemaVersion` вручную не нужно.
 
 Сгенерированный `build/catalog-release.json` не редактируется вручную.
 
