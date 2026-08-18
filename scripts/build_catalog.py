@@ -9,6 +9,9 @@ from typing import Any
 
 CATALOG_SCHEMA_VERSION = 1
 
+JAVA_INT_MIN = -2_147_483_648
+JAVA_INT_MAX = 2_147_483_647
+
 CATEGORY_DIRS = {
     "animals": "animals",
     "buildings": "buildings",
@@ -207,16 +210,13 @@ def validate_acquisition_sources(
 
                 if source not in ACQUISITION_SOURCES:
                     raise CatalogValidationError(
-                        f"{category_name} "
-                        f"'{template_id}': unknown "
-                        f"acquisition source "
-                        f"'{source}' at index {index}"
+                        f"{category_name} '{template_id}': unknown "
+                        f"acquisition source '{source}' at index {index}"
                     )
 
                 if source in seen_sources:
                     raise CatalogValidationError(
-                        f"{category_name} "
-                        f"'{template_id}': duplicate "
+                        f"{category_name} '{template_id}': duplicate "
                         f"acquisition source '{source}'"
                     )
 
@@ -262,9 +262,12 @@ def require_integer(
     if (
             not isinstance(value, int)
             or isinstance(value, bool)
+            or value < JAVA_INT_MIN
+            or value > JAVA_INT_MAX
     ):
         raise CatalogValidationError(
-            f"{source}: {field_name} must be an integer"
+            f"{source}: {field_name} must be "
+            f"a 32-bit integer"
         )
 
     return value
@@ -274,11 +277,13 @@ def require_non_negative_integer(
         field_name: str,
         value: Any,
 ) -> int:
-    if (
-            not isinstance(value, int)
-            or isinstance(value, bool)
-            or value < 0
-    ):
+    value = require_integer(
+        source,
+        field_name,
+        value,
+    )
+
+    if value < 0:
         raise CatalogValidationError(
             f"{source}: {field_name} must be "
             f"a non-negative integer"
@@ -337,11 +342,13 @@ def require_positive_integer(
         field_name: str,
         value: Any,
 ) -> int:
-    if (
-            not isinstance(value, int)
-            or isinstance(value, bool)
-            or value < 1
-    ):
+    value = require_integer(
+        source,
+        field_name,
+        value,
+    )
+
+    if value < 1:
         raise CatalogValidationError(
             f"{source}: {field_name} must be "
             f"a positive integer"
@@ -744,15 +751,11 @@ def validate_loot_bundle(
         amount = pool.get("amount")
 
         if amount is not None:
-            if (
-                    not isinstance(amount, int)
-                    or isinstance(amount, bool)
-                    or amount < 1
-            ):
-                raise CatalogValidationError(
-                    f"{source}, {pool_name}: "
-                    f"amount must be a positive integer"
-                )
+            amount = require_positive_integer(
+                f"{source}, {pool_name}",
+                "amount",
+                amount,
+            )
 
         # null означает один выбранный шаблон.
         effective_amount = (
@@ -873,17 +876,11 @@ def validate_diamond_loot(
             f"{source}, diamondLoot: must be an object"
         )
 
-    amount = pool.get("amount")
-
-    if (
-            not isinstance(amount, int)
-            or isinstance(amount, bool)
-            or amount < 1
-    ):
-        raise CatalogValidationError(
-            f"{source}, diamondLoot: "
-            f"amount must be a positive integer"
-        )
+    amount = require_positive_integer(
+        f"{source}, diamondLoot",
+        "amount",
+        pool.get("amount"),
+    )
 
     drop_chance = pool.get("dropChance")
 
@@ -1769,17 +1766,11 @@ def validate_catalog(
                 quest_ids,
             )
 
-            scene_number = scene.get("sceneNumber")
-
-            if (
-                    not isinstance(scene_number, int)
-                    or isinstance(scene_number, bool)
-                    or scene_number < 1
-            ):
-                raise CatalogValidationError(
-                    f"{scene_source}: "
-                    f"sceneNumber must be a positive integer"
-                )
+            scene_number = require_positive_integer(
+                scene_source,
+                "sceneNumber",
+                scene.get("sceneNumber"),
+            )
 
             if scene_number in scene_numbers:
                 raise CatalogValidationError(
@@ -1837,16 +1828,11 @@ def validate_catalog(
 
         # Сначала собираем и проверяем номера всех страниц.
         for index, page in enumerate(pages):
-            number = page.get("number")
-
-            if (
-                    not isinstance(number, int)
-                    or isinstance(number, bool)
-            ):
-                raise CatalogValidationError(
-                    f"{quest_source}, page at index "
-                    f"{index}: missing or invalid number"
-                )
+            number = require_integer(
+                f"{quest_source}, page at index {index}",
+                "number",
+                page.get("number"),
+            )
 
             if number in page_numbers:
                 raise CatalogValidationError(
@@ -1857,18 +1843,11 @@ def validate_catalog(
             page_numbers.add(number)
             adjacency[number] = set()
 
-        start_page = quest.get(
-            "startPageNumber"
+        start_page = require_integer(
+            quest_source,
+            "startPageNumber",
+            quest.get("startPageNumber"),
         )
-
-        if (
-                not isinstance(start_page, int)
-                or isinstance(start_page, bool)
-        ):
-            raise CatalogValidationError(
-                f"{quest_source}: missing or invalid "
-                f"startPageNumber"
-            )
 
         if start_page not in page_numbers:
             raise CatalogValidationError(
@@ -1982,18 +1961,11 @@ def validate_catalog(
                     option.get("description"),
                 )
 
-                target = option.get("targetPageNumber")
-
-                if (
-                        not isinstance(target, int)
-                        or isinstance(target, bool)
-                ):
-                    raise CatalogValidationError(
-                        f"{quest_source}, page "
-                        f"{page_number}, option at index "
-                        f"{option_index}: missing or invalid "
-                        f"targetPageNumber"
-                    )
+                target = require_integer(
+                    option_source,
+                    "targetPageNumber",
+                    option.get("targetPageNumber"),
+                )
 
                 if target not in page_numbers:
                     raise CatalogValidationError(
