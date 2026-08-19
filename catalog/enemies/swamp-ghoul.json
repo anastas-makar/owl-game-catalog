@@ -1,0 +1,12 @@
+{
+  "templateId": "swamp-ghoul",
+  "name": "Болотный упырь",
+  "description": "Опасный противник, скрывающийся возле болот и старых дорог.",
+  "imageKey": "enemies/swamp-ghoul.webp",
+  "health": 110,
+  "damage": 90,
+  "tags": [
+    "swamp",
+    "undead"
+  ]
+}

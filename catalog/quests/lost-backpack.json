@@ -1,0 +1,51 @@
+{
+  "templateId": "lost-backpack",
+  "title": "Потерянный рюкзак",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "У потухшего костра",
+      "description": "Возле потухшего костра лежит старый рюкзак. Можно осмотреть его или пройти мимо.",
+      "imageKey": "quests/lost-backpack/page-10.webp",
+      "options": [
+        {
+          "description": "Осмотреть рюкзак",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Не трогать и уйти",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Полезная находка",
+      "description": "Внутри оказался аккуратно записанный рецепт и несколько бриллиантов.",
+      "imageKey": "quests/lost-backpack/page-20.webp",
+      "options": [],
+      "endingId": "found-backpack",
+      "lootButtonText": "Забрать находку",
+      "lootBundle": {
+        "recipeLoot": {
+          "templateIds": [
+            "carrot-soup-recipe"
+          ],
+          "amount": 1
+        },
+        "diamondLoot": {
+          "amount": 20
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Дорога дальше",
+      "description": "Животное решает не задерживаться и продолжает путь.",
+      "imageKey": "quests/lost-backpack/page-30.webp",
+      "options": [],
+      "endingId": "walk-away"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "templateId": "carrot-plant",
+  "name": "Морковь",
+  "description": "Огородное растение, дающее морковь и новые семена.",
+  "imageKey": "plants/carrot-plant.webp",
+  "supplyTemplateId": "carrot",
+  "supplyAmount": 3,
+  "seedAmount": 2
+}

@@ -1,0 +1,24 @@
+{
+  "templateId": "cozy-house",
+  "name": "Уютный дом",
+  "imageKey": "buildings/cozy-house.webp",
+  "cost": 900,
+  "type": "HOUSE",
+  "rooms": [
+    {
+      "templateId": "living-room",
+      "name": "Жилая комната",
+      "imageKey": "buildings/cozy-house/living-room.webp",
+      "roomNumber": 10
+    }
+  ],
+  "gardens": [
+    {
+      "templateId": "kitchen-garden",
+      "name": "Огород",
+      "imageKey": "buildings/cozy-house/kitchen-garden.webp",
+      "gardenNumber": 10,
+      "gardenType": "KITCHEN_GARDEN"
+    }
+  ]
+}
