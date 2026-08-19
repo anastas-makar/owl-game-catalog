@@ -1,0 +1,20 @@
+{
+  "templateId": "abandoned-camp",
+  "name": "Заброшенный лагерь",
+  "description": "Старый лагерь с несколькими палатками и давно остывшим костром.",
+  "imageKey": "locations/abandoned-camp.webp",
+  "type": "PAVILION",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "campfire",
+      "name": "Старый костёр",
+      "description": "Возле костра остались брошенные вещи прежних хозяев лагеря.",
+      "imageKey": "locations/abandoned-camp/campfire.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "lost-backpack",
+      "questButtonText": "Осмотреть лагерь"
+    }
+  ]
+}

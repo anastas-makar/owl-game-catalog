@@ -1,0 +1,8 @@
+{
+  "templateId": "honey",
+  "name": "Мёд",
+  "description": "Сладкий мёд из садового улья.",
+  "imageKey": "supplies/honey.webp",
+  "effectType": "HEAL",
+  "effectAmount": 3
+}

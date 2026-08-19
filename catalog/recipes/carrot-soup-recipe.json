@@ -1,0 +1,15 @@
+{
+  "templateId": "carrot-soup-recipe",
+  "description": "Рецепт простого морковного супа.",
+  "resultSupplyTemplateId": "carrot-soup",
+  "ingredients": [
+    {
+      "supplyTemplateId": "carrot",
+      "amount": 2
+    },
+    {
+      "supplyTemplateId": "honey",
+      "amount": 1
+    }
+  ]
+}

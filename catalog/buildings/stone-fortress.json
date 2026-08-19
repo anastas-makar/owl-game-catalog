@@ -1,0 +1,44 @@
+{
+  "templateId": "stone-fortress",
+  "name": "Каменный замок",
+  "imageKey": "buildings/stone-fortress.webp",
+  "cost": 5000,
+  "type": "FORTRESS",
+  "rooms": [
+    {
+      "templateId": "great-hall",
+      "name": "Большой зал",
+      "imageKey": "buildings/stone-fortress/great-hall.webp",
+      "roomNumber": 10
+    },
+    {
+      "templateId": "kitchen",
+      "name": "Кухня",
+      "imageKey": "buildings/stone-fortress/kitchen.webp",
+      "roomNumber": 20
+    }
+  ],
+  "gardens": [
+    {
+      "templateId": "kitchen-garden",
+      "name": "Огород",
+      "imageKey": "buildings/stone-fortress/kitchen-garden.webp",
+      "gardenNumber": 10,
+      "gardenType": "KITCHEN_GARDEN"
+    },
+    {
+      "templateId": "main-garden",
+      "name": "Сад",
+      "imageKey": "buildings/stone-fortress/main-garden.webp",
+      "gardenNumber": 20,
+      "gardenType": "GARDEN"
+    },
+    {
+      "templateId": "pond",
+      "name": "Пруд",
+      "imageKey": "buildings/stone-fortress/pond.webp",
+      "gardenNumber": 30,
+      "gardenType": "POOL"
+    }
+  ]
+}

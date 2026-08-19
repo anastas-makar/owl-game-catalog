@@ -1,0 +1,17 @@
+{
+  "templateId": "birch-park",
+  "name": "Берёзовый парк",
+  "description": "Тихий парк с дорожками среди молодых берёз.",
+  "imageKey": "locations/birch-park.webp",
+  "type": "PARK",
+  "buildPrice": 250,
+  "scenes": [
+    {
+      "templateId": "birch-alley",
+      "name": "Берёзовая аллея",
+      "description": "Светлая аллея, по которой приятно пройтись после экспедиции.",
+      "imageKey": "locations/birch-park/birch-alley.webp",
+      "sceneNumber": 10
+    }
+  ]
+}
