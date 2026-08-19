@@ -1,0 +1,12 @@
+{
+  "templateId": "small-refrigerator",
+  "name": "Маленький холодильник",
+  "imageKey": "furniture/small-refrigerator.webp",
+  "price": 300,
+  "height": 0.55,
+  "width": 0.35,
+  "type": "REFRIGERATOR",
+  "allowedAcquisitionSources": [
+    "SHOP"
+  ]
+}

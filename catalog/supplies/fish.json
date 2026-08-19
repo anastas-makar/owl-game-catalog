@@ -1,0 +1,8 @@
+{
+  "templateId": "fish",
+  "name": "Рыба",
+  "description": "Свежая рыба из пруда.",
+  "imageKey": "supplies/fish.webp",
+  "effectType": "HEAL",
+  "effectAmount": 4
+}

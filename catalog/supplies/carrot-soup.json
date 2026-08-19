@@ -1,0 +1,8 @@
+{
+  "templateId": "carrot-soup",
+  "name": "Морковный суп",
+  "description": "Простой горячий суп из моркови с ложкой мёда.",
+  "imageKey": "supplies/carrot-soup.webp",
+  "effectType": "HEAL",
+  "effectAmount": 8
+}

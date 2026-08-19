@@ -1,0 +1,54 @@
+{
+  "templateId": "swamp-outskirts",
+  "name": "Болотная окраина",
+  "imageKey": "maps/swamp-outskirts.webp",
+  "locationSlots": [
+    {
+      "slotId": "camp",
+      "x": 0.25,
+      "y": 0.35,
+      "mode": "FIXED",
+      "fixedLocationTemplateId": "abandoned-camp"
+    },
+    {
+      "slotId": "park",
+      "x": 0.72,
+      "y": 0.58,
+      "mode": "RANDOM",
+      "allowedTypes": [
+        "PARK"
+      ]
+    }
+  ],
+  "enemySlots": [
+    {
+      "slotId": "enemy-1",
+      "x": 0.38,
+      "y": 0.46,
+      "requiredTags": [
+        "swamp",
+        "weak"
+      ]
+    },
+    {
+      "slotId": "enemy-2",
+      "x": 0.61,
+      "y": 0.67,
+      "requiredTags": [
+        "swamp"
+      ]
+    }
+  ],
+  "completionMedalTemplateId": "first-liberation",
+  "completionLootBundle": {
+    "gardenItemLoot": {
+      "templateIds": [
+        "garden-beehive"
+      ],
+      "amount": 1
+    },
+    "diamondLoot": {
+      "amount": 25
+    }
+  }
+}

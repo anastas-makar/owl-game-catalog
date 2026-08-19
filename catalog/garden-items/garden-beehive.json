@@ -1,0 +1,10 @@
+{
+  "templateId": "garden-beehive",
+  "name": "Улей",
+  "description": "Садовый улей, из которого можно получать мёд.",
+  "imageKey": "garden-items/garden-beehive.webp",
+  "supplyTemplateId": "honey",
+  "supplyAmount": 1,
+  "itemType": "HIVE",
+  "gardenType": "GARDEN"
+}
