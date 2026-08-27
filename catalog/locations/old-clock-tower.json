@@ -1,0 +1,20 @@
+{
+  "templateId": "old-clock-tower",
+  "name": "Старая часовая башня",
+  "description": "Башня с замершими стрелками возвышается над пустой площадью.",
+  "imageKey": "locations/old-clock-tower.webp",
+  "type": "LANDMARK",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "clockwork-room",
+      "name": "Комната механизма",
+      "description": "За узкой дверцей слышно редкое металлическое постукивание.",
+      "imageKey": "locations/old-clock-tower/clockwork-room.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "silent-clockwork",
+      "questButtonText": "Осмотреть механизм"
+    }
+  ]
+}

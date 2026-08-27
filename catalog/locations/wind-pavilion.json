@@ -1,0 +1,23 @@
+{
+  "templateId": "wind-pavilion",
+  "name": "Павильон ветров",
+  "description": "Лёгкий павильон увешан лентами и стеклянными колокольчиками.",
+  "imageKey": "locations/wind-pavilion.webp",
+  "type": "PAVILION",
+  "buildPrice": 200,
+  "allowedAcquisitionSources": [
+    "SHOP",
+    "QUEST_REWARD"
+  ],
+  "scenes": [
+    {
+      "templateId": "silent-bell",
+      "name": "Молчащий колокольчик",
+      "description": "Все колокольчики звенят, кроме одного, совершенно прозрачного.",
+      "imageKey": "locations/wind-pavilion/silent-bell.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "silent-bell",
+      "questButtonText": "Коснуться колокольчика"
+    }
+  ]
+}

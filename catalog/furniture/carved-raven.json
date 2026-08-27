@@ -1,0 +1,12 @@
+{
+  "templateId": "carved-raven",
+  "name": "Резной ворон",
+  "imageKey": "furniture/carved-raven.webp",
+  "price": 65,
+  "height": 0.25,
+  "width": 0.18,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

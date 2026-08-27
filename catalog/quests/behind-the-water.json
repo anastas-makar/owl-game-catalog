@@ -1,0 +1,48 @@
+{
+  "templateId": "behind-the-water",
+  "title": "За водяной завесой",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Скользкий уступ",
+      "description": "Уступ ведёт к сухой нише, но камень под ногами покрыт мхом.",
+      "imageKey": "quests/behind-the-water/page-10.webp",
+      "options": [
+        {
+          "description": "Идти вдоль стены",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Перепрыгнуть мокрый участок",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Солнечные часы",
+      "description": "В сухой нише стоят маленькие каменные солнечные часы.",
+      "imageKey": "quests/behind-the-water/page-20.webp",
+      "options": [],
+      "endingId": "sundial-found",
+      "lootButtonText": "Забрать часы",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "stone-sundial"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Холодный душ",
+      "description": "Вы поскальзываетесь и оказываетесь прямо под ледяной струёй. До ниши добраться не удаётся.",
+      "imageKey": "quests/behind-the-water/page-30.webp",
+      "options": [],
+      "endingId": "washed-out"
+    }
+  ]
+}

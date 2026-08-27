@@ -1,0 +1,68 @@
+{
+  "templateId": "fountain-glint",
+  "title": "Блеск на дне",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Что-то блестит",
+      "description": "Между ленивыми рыбами лежит овальная вещица. До неё можно дотянуться рукой или попробовать поддеть её длинной веткой.",
+      "imageKey": "quests/fountain-glint/page-10.webp",
+      "options": [
+        {
+          "description": "Опустить руку в воду",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Поддеть находку веткой",
+          "targetPageNumber": 30
+        },
+        {
+          "description": "Оставить рыб в покое",
+          "targetPageNumber": 40
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Быстрые зубы",
+      "description": "Одна из рыб оказывается куда смелее остальных. Она кусает вас за палец, и находка снова скрывается под плавниками.",
+      "imageKey": "quests/fountain-glint/page-20.webp",
+      "options": [],
+      "endingId": "bitten-by-fish",
+      "scenePatch": {
+        "description": "Рыбы кружат над блестящей вещицей и явно не собираются её отдавать.",
+        "imageKey": "locations/city-fountain/fish-basin-guarded.webp"
+      }
+    },
+    {
+      "number": 30,
+      "name": "Камея",
+      "description": "Ветка подцепляет маленькую старинную камею. Рыбы провожают её недовольными взглядами.",
+      "imageKey": "quests/fountain-glint/page-30.webp",
+      "options": [],
+      "endingId": "cameo-retrieved",
+      "scenePatch": {
+        "description": "На дне остались только камешки. Рыбы снова плавают спокойно.",
+        "imageKey": "locations/city-fountain/fish-basin-empty.webp"
+      },
+      "lootButtonText": "Забрать камею",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "cameo"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 40,
+      "name": "Тихая вода",
+      "description": "Вы решаете ничего не трогать. Блестящая вещица остаётся загадкой.",
+      "imageKey": "quests/fountain-glint/page-40.webp",
+      "options": [],
+      "endingId": "left-the-glint"
+    }
+  ]
+}

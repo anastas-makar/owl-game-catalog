@@ -1,0 +1,20 @@
+{
+  "templateId": "whispering-waterfall",
+  "name": "Шепчущий водопад",
+  "description": "Вода падает тонкими струями и будто произносит отдельные слова.",
+  "imageKey": "locations/whispering-waterfall.webp",
+  "type": "WATERFALL",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "stone-ledge",
+      "name": "Уступ за водой",
+      "description": "За водяной завесой угадывается узкий каменный уступ.",
+      "imageKey": "locations/whispering-waterfall/stone-ledge.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "behind-the-water",
+      "questButtonText": "Зайти за водопад"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "templateId": "mineral-baths",
+  "name": "Минеральные купальни",
+  "description": "Тёплые источники наполняют несколько каменных бассейнов.",
+  "imageKey": "locations/mineral-baths.webp",
+  "type": "RESORT",
+  "buildPrice": 280,
+  "allowedAcquisitionSources": [
+    "SHOP"
+  ],
+  "scenes": [
+    {
+      "templateId": "steam-pool",
+      "name": "Паровой бассейн",
+      "description": "Над водой клубится тёплый пар с запахом хвои.",
+      "imageKey": "locations/mineral-baths/steam-pool.webp",
+      "sceneNumber": 10
+    }
+  ]
+}

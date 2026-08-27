@@ -1,0 +1,12 @@
+{
+  "templateId": "glass-fishing-float",
+  "name": "Стеклянный рыбацкий поплавок",
+  "imageKey": "furniture/glass-fishing-float.webp",
+  "price": 45,
+  "height": 0.18,
+  "width": 0.14,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

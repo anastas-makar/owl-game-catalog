@@ -1,0 +1,68 @@
+{
+  "templateId": "tower-in-reflection",
+  "title": "Башня в отражении",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Небо под водой",
+      "description": "Отражённая башня качается на воде. На её крыше вращается медный флюгер.",
+      "imageKey": "quests/tower-in-reflection/page-10.webp",
+      "options": [
+        {
+          "description": "Коснуться отражения",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Бросить в воду камешек",
+          "targetPageNumber": 30
+        },
+        {
+          "description": "Отойти от пруда",
+          "targetPageNumber": 40
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Холодная глубина",
+      "description": "Рука на мгновение проходит сквозь гладь и возвращается с маленьким медным флюгером.",
+      "imageKey": "quests/tower-in-reflection/page-20.webp",
+      "options": [],
+      "endingId": "weather-vane-retrieved",
+      "scenePatch": {
+        "description": "В воде отражается башня без флюгера на крыше.",
+        "imageKey": "locations/mirror-pond/reflection-without-vane.webp"
+      },
+      "lootButtonText": "Забрать флюгер",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "copper-weather-vane"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Круги на воде",
+      "description": "Отражение распадается на круги. Когда вода успокаивается, видна только обычная облачность.",
+      "imageKey": "quests/tower-in-reflection/page-30.webp",
+      "options": [],
+      "endingId": "reflection-dispersed",
+      "scenePatch": {
+        "description": "Пруд отражает только настоящее небо.",
+        "imageKey": "locations/mirror-pond/ordinary-reflection.webp"
+      }
+    },
+    {
+      "number": 40,
+      "name": "Далёкая башня",
+      "description": "Вы уходите, а невозможная башня продолжает качаться в глубине.",
+      "imageKey": "quests/tower-in-reflection/page-40.webp",
+      "options": [],
+      "endingId": "tower-left"
+    }
+  ]
+}

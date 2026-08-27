@@ -1,0 +1,12 @@
+{
+  "templateId": "old-station-clock",
+  "name": "Станционные часы",
+  "imageKey": "furniture/old-station-clock.webp",
+  "price": 110,
+  "height": 0.30,
+  "width": 0.30,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

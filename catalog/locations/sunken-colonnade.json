@@ -1,0 +1,20 @@
+{
+  "templateId": "sunken-colonnade",
+  "name": "Затопленная колоннада",
+  "description": "Белые колонны стоят по колено в прозрачной воде.",
+  "imageKey": "locations/sunken-colonnade.webp",
+  "type": "RUINS",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "mosaic-floor",
+      "name": "Мозаичный пол",
+      "description": "Под водой виден рисунок, но часть узора скрыта илом.",
+      "imageKey": "locations/sunken-colonnade/mosaic-floor.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "mosaic-under-silt",
+      "questButtonText": "Расчистить мозаику"
+    }
+  ]
+}

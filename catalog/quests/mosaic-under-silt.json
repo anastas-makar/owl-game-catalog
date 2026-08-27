@@ -1,0 +1,62 @@
+{
+  "templateId": "mosaic-under-silt",
+  "title": "Узор под водой",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Слой ила",
+      "description": "Под тонким слоем ила угадывается изображение птицы.",
+      "imageKey": "quests/mosaic-under-silt/page-10.webp",
+      "options": [
+        {
+          "description": "Смести ил ладонью",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Поднять край расшатанной плитки",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Целый рисунок",
+      "description": "На полу открывается мозаика с летящей совой. Узор остаётся на своём месте.",
+      "imageKey": "quests/mosaic-under-silt/page-20.webp",
+      "options": [],
+      "endingId": "mosaic-cleaned",
+      "scenePatch": {
+        "description": "Под прозрачной водой видна очищенная мозаика с летящей совой.",
+        "imageKey": "locations/sunken-colonnade/mosaic-cleaned.webp"
+      },
+      "lootButtonText": "Получить награду",
+      "lootBundle": {
+        "diamondLoot": {
+          "amount": 15
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Отделившийся фрагмент",
+      "description": "Плитка легко выходит из старого раствора. На ней сохранилась часть золотого крыла.",
+      "imageKey": "quests/mosaic-under-silt/page-30.webp",
+      "options": [],
+      "endingId": "fragment-taken",
+      "scenePatch": {
+        "description": "В мозаике не хватает одного небольшого фрагмента.",
+        "imageKey": "locations/sunken-colonnade/mosaic-missing-piece.webp"
+      },
+      "lootButtonText": "Забрать фрагмент",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "mosaic-fragment"
+          ],
+          "amount": 1
+        }
+      }
+    }
+  ]
+}

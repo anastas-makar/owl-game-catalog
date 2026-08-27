@@ -1,0 +1,22 @@
+{
+  "templateId": "forgotten-sculptor",
+  "name": "Памятник забытому скульптору",
+  "description": "Бронзовый мастер держит в руке молоток, а у подножия лежит незаконченная фигура.",
+  "imageKey": "locations/forgotten-sculptor.webp",
+  "type": "MONUMENT",
+  "buildPrice": 140,
+  "allowedAcquisitionSources": [
+    "SHOP"
+  ],
+  "scenes": [
+    {
+      "templateId": "hollow-pedestal",
+      "name": "Полый постамент",
+      "description": "Одна из плит постамента отзывается пустым звуком.",
+      "imageKey": "locations/forgotten-sculptor/hollow-pedestal.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "secret-in-pedestal",
+      "questButtonText": "Проверить плиту"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "templateId": "silent-bell",
+  "title": "Молчащий колокольчик",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Беззвучное стекло",
+      "description": "Колокольчик холоден и совершенно неподвижен даже на ветру.",
+      "imageKey": "quests/silent-bell/page-10.webp",
+      "options": [
+        {
+          "description": "Легко ударить по краю",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Снять колокольчик с ленты",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Один чистый звук",
+      "description": "Раздаётся единственная прозрачная нота, и колокольчик рассыпается в сияющую пыль.",
+      "imageKey": "quests/silent-bell/page-20.webp",
+      "options": [],
+      "endingId": "bell-rang",
+      "lootButtonText": "Собрать сияние",
+      "lootBundle": {
+        "diamondLoot": {
+          "amount": 25
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Хрустальный колокольчик",
+      "description": "Узел легко развязывается. В руках колокольчик снова становится обычным и звонким.",
+      "imageKey": "quests/silent-bell/page-30.webp",
+      "options": [],
+      "endingId": "bell-taken",
+      "scenePatch": {
+        "description": "Среди цветных лент осталось пустое место.",
+        "imageKey": "locations/wind-pavilion/bell-removed.webp"
+      },
+      "lootButtonText": "Забрать колокольчик",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "crystal-bell"
+          ],
+          "amount": 1
+        }
+      }
+    }
+  ]
+}
