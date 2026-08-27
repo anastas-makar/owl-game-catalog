@@ -1,0 +1,34 @@
+{
+  "templateId": "lantern-forest",
+  "name": "Лес фонарей",
+  "description": "На ветвях старых елей висят светящиеся плоды, похожие на маленькие фонари.",
+  "imageKey": "locations/lantern-forest.webp",
+  "type": "PARK",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "glowing-path",
+      "name": "Светящаяся тропа",
+      "description": "Опавшие иголки мерцают под ногами и складываются в извилистую дорожку.",
+      "imageKey": "locations/lantern-forest/glowing-path.webp",
+      "sceneNumber": 10
+    },
+    {
+      "templateId": "hollow-fir",
+      "name": "Дупло старой ели",
+      "description": "Из глубокого дупла льётся тёплый свет, хотя внутри не видно ни огня, ни лампы.",
+      "imageKey": "locations/lantern-forest/hollow-fir.webp",
+      "sceneNumber": 20,
+      "questTemplateId": "light-in-hollow",
+      "questButtonText": "Заглянуть в дупло"
+    },
+    {
+      "templateId": "moth-clearing",
+      "name": "Поляна ночных мотыльков",
+      "description": "Крупные серебристые мотыльки медленно кружат между светящимися плодами.",
+      "imageKey": "locations/lantern-forest/moth-clearing.webp",
+      "sceneNumber": 30
+    }
+  ]
+}

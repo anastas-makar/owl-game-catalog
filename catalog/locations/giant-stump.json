@@ -1,0 +1,34 @@
+{
+  "templateId": "giant-stump",
+  "name": "Исполинский пень",
+  "description": "Пень древнего дерева возвышается над молодым лесом, как круглая башня.",
+  "imageKey": "locations/giant-stump.webp",
+  "type": "LANDMARK",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "root-arches",
+      "name": "Арки из корней",
+      "description": "Толстые корни образуют проходы, в которых свободно помещается взрослое животное.",
+      "imageKey": "locations/giant-stump/root-arches.webp",
+      "sceneNumber": 10
+    },
+    {
+      "templateId": "ring-platform",
+      "name": "Площадка годичных колец",
+      "description": "На срезе видны сотни колец и несколько тёмных отметин неизвестного происхождения.",
+      "imageKey": "locations/giant-stump/ring-platform.webp",
+      "sceneNumber": 20,
+      "questTemplateId": "message-in-rings",
+      "questButtonText": "Изучить отметины"
+    },
+    {
+      "templateId": "fern-balcony",
+      "name": "Папоротниковый балкон",
+      "description": "На выступе пня вырос целый сад папоротников и красных лесных цветов.",
+      "imageKey": "locations/giant-stump/fern-balcony.webp",
+      "sceneNumber": 30
+    }
+  ]
+}

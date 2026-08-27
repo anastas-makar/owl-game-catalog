@@ -1,0 +1,52 @@
+{
+  "templateId": "light-in-hollow",
+  "title": "Свет в дупле",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Тёплое сияние",
+      "description": "В глубине дупла висит светящийся плод. Тонкие корни вокруг него медленно шевелятся.",
+      "imageKey": "quests/light-in-hollow/page-10.webp",
+      "options": [
+        {
+          "description": "Осторожно раздвинуть корни",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Сорвать плод одним движением",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Лесной фонарь",
+      "description": "Корни расступаются, и плод превращается в маленький фонарь с живым золотистым светом.",
+      "imageKey": "quests/light-in-hollow/page-20.webp",
+      "options": [],
+      "endingId": "forest-lantern-found",
+      "scenePatch": {
+        "description": "Дупло опустело, но в древесине осталось мягкое золотое свечение.",
+        "imageKey": "locations/lantern-forest/hollow-fir-empty.webp"
+      },
+      "lootButtonText": "Забрать фонарь",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "forest-lantern"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Погасший плод",
+      "description": "Корни захлопываются, плод падает и сразу гаснет.",
+      "imageKey": "quests/light-in-hollow/page-30.webp",
+      "options": [],
+      "endingId": "light-extinguished"
+    }
+  ]
+}

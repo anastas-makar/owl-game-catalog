@@ -1,0 +1,34 @@
+{
+  "templateId": "echo-orchard",
+  "name": "Сад отголосков",
+  "description": "Заброшенный фруктовый сад повторяет звуки с задержкой в несколько минут.",
+  "imageKey": "locations/echo-orchard.webp",
+  "type": "PARK",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "late-birds",
+      "name": "Запоздалые птицы",
+      "description": "Птичьи голоса слышны уже после того, как стая исчезает за горизонтом.",
+      "imageKey": "locations/echo-orchard/late-birds.webp",
+      "sceneNumber": 10
+    },
+    {
+      "templateId": "answering-well",
+      "name": "Отвечающий колодец",
+      "description": "Колодец возвращает не сказанные слова, а чей-то тихий ответ.",
+      "imageKey": "locations/echo-orchard/answering-well.webp",
+      "sceneNumber": 20,
+      "questTemplateId": "voice-in-well",
+      "questButtonText": "Задать вопрос колодцу"
+    },
+    {
+      "templateId": "glass-apples",
+      "name": "Стеклянные яблоки",
+      "description": "На одном дереве растут прозрачные яблоки, звенящие при каждом порыве ветра.",
+      "imageKey": "locations/echo-orchard/glass-apples.webp",
+      "sceneNumber": 30
+    }
+  ]
+}

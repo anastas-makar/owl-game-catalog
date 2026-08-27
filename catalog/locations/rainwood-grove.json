@@ -1,0 +1,34 @@
+{
+  "templateId": "rainwood-grove",
+  "name": "Дождливая роща",
+  "description": "Под кронами этой рощи всегда идёт мелкий тёплый дождь, даже в ясный день.",
+  "imageKey": "locations/rainwood-grove.webp",
+  "type": "PARK",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "dry-circle",
+      "name": "Сухой круг",
+      "description": "Небольшой круг земли остаётся совершенно сухим, хотя вокруг непрерывно капает вода.",
+      "imageKey": "locations/rainwood-grove/dry-circle.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "rainwood-circle",
+      "questButtonText": "Встать в сухой круг"
+    },
+    {
+      "templateId": "droplet-webs",
+      "name": "Паутинки с каплями",
+      "description": "Между кустами натянуты сотни паутинок, каждая капля на них отражает своё небо.",
+      "imageKey": "locations/rainwood-grove/droplet-webs.webp",
+      "sceneNumber": 20
+    },
+    {
+      "templateId": "singing-gutter",
+      "name": "Поющий жёлоб",
+      "description": "Полый ствол собирает дождевую воду и гудит низким спокойным голосом.",
+      "imageKey": "locations/rainwood-grove/singing-gutter.webp",
+      "sceneNumber": 30
+    }
+  ]
+}

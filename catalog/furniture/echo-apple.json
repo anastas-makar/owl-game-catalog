@@ -1,0 +1,12 @@
+{
+  "templateId": "echo-apple",
+  "name": "Звенящее яблоко",
+  "imageKey": "furniture/echo-apple.webp",
+  "price": 60,
+  "height": 0.16,
+  "width": 0.14,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

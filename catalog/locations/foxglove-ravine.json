@@ -1,0 +1,34 @@
+{
+  "templateId": "foxglove-ravine",
+  "name": "Наперстянковый овраг",
+  "description": "Склоны глубокого оврага заросли высокими фиолетовыми цветами.",
+  "imageKey": "locations/foxglove-ravine.webp",
+  "type": "PARK",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "flower-slope",
+      "name": "Цветущий склон",
+      "description": "Колокольчики наперстянки покачиваются без ветра, будто переговариваются.",
+      "imageKey": "locations/foxglove-ravine/flower-slope.webp",
+      "sceneNumber": 10
+    },
+    {
+      "templateId": "fallen-bridge",
+      "name": "Упавший мостик",
+      "description": "Старый мостик лежит поперёк ручья и весь покрыт мягким мхом.",
+      "imageKey": "locations/foxglove-ravine/fallen-bridge.webp",
+      "sceneNumber": 20
+    },
+    {
+      "templateId": "herbalists-stone",
+      "name": "Камень травника",
+      "description": "На плоском камне разложены высохшие травы и маленькая янтарная вещица.",
+      "imageKey": "locations/foxglove-ravine/herbalists-stone.webp",
+      "sceneNumber": 30,
+      "questTemplateId": "herbalists-keepsake",
+      "questButtonText": "Осмотреть находку"
+    }
+  ]
+}
