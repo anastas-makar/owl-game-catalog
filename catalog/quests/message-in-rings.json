@@ -1,0 +1,52 @@
+{
+  "templateId": "message-in-rings",
+  "title": "Послание в кольцах",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Тёмные отметины",
+      "description": "Отметины повторяются через равные промежутки и складываются в силуэт стола.",
+      "imageKey": "quests/message-in-rings/page-10.webp",
+      "options": [
+        {
+          "description": "Провести пальцем по рисунку",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Пересчитать кольца",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Деревянный круг",
+      "description": "Из поверхности медленно поднимается круглый столик, будто выращенный самим деревом.",
+      "imageKey": "quests/message-in-rings/page-20.webp",
+      "options": [],
+      "endingId": "ring-table-grown",
+      "scenePatch": {
+        "description": "На срезе остался светлый круг без тёмных отметин.",
+        "imageKey": "locations/giant-stump/ring-platform-cleared.webp"
+      },
+      "lootButtonText": "Забрать столик",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "tree-ring-table"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Возраст исполина",
+      "description": "Колец оказывается столько, что счёт сбивается. Загадка отметин остаётся неразгаданной.",
+      "imageKey": "quests/message-in-rings/page-30.webp",
+      "options": [],
+      "endingId": "rings-counted"
+    }
+  ]
+}

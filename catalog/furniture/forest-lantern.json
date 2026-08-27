@@ -1,0 +1,12 @@
+{
+  "templateId": "forest-lantern",
+  "name": "Лесной фонарь",
+  "imageKey": "furniture/forest-lantern.webp",
+  "price": 70,
+  "height": 0.24,
+  "width": 0.16,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

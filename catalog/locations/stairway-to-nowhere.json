@@ -1,0 +1,34 @@
+{
+  "templateId": "stairway-to-nowhere",
+  "name": "Лестница в никуда",
+  "description": "Каменная лестница поднимается над вересковой пустошью и обрывается в воздухе.",
+  "imageKey": "locations/stairway-to-nowhere.webp",
+  "type": "RUINS",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "first-steps",
+      "name": "Нижние ступени",
+      "description": "На каждой ступени выбито одно и то же незнакомое созвездие.",
+      "imageKey": "locations/stairway-to-nowhere/first-steps.webp",
+      "sceneNumber": 10
+    },
+    {
+      "templateId": "top-landing",
+      "name": "Верхняя площадка",
+      "description": "На последней ступени лежит тень двери, хотя самой двери нет.",
+      "imageKey": "locations/stairway-to-nowhere/top-landing.webp",
+      "sceneNumber": 20,
+      "questTemplateId": "shadow-door",
+      "questButtonText": "Шагнуть в тень"
+    },
+    {
+      "templateId": "view-below",
+      "name": "Вид сверху",
+      "description": "С высоты пустошь кажется картой страны, которой нет ни в одном атласе.",
+      "imageKey": "locations/stairway-to-nowhere/view-below.webp",
+      "sceneNumber": 30
+    }
+  ]
+}

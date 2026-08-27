@@ -1,0 +1,12 @@
+{
+  "templateId": "window-room-model",
+  "name": "Комната за стеклом",
+  "imageKey": "furniture/window-room-model.webp",
+  "price": 130,
+  "height": 0.26,
+  "width": 0.32,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

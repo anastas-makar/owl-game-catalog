@@ -1,0 +1,52 @@
+{
+  "templateId": "rainwood-circle",
+  "title": "Место без дождя",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Тишина в круге",
+      "description": "Внутри круга исчезают шум дождя и запах мокрой земли. В воздухе висит неподвижная капля.",
+      "imageKey": "quests/rainwood-circle/page-10.webp",
+      "options": [
+        {
+          "description": "Подставить под каплю бутылку",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Коснуться капли",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Дождевое стекло",
+      "description": "Капля растягивается и становится прозрачной бутылью, внутри которой продолжает идти дождь.",
+      "imageKey": "quests/rainwood-circle/page-20.webp",
+      "options": [],
+      "endingId": "rain-bottled",
+      "lootButtonText": "Забрать бутыль",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "rain-glass-bottle"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Внезапный ливень",
+      "description": "Капля лопается, и сухой круг на несколько секунд накрывает настоящий ливень.",
+      "imageKey": "quests/rainwood-circle/page-30.webp",
+      "options": [],
+      "endingId": "circle-flooded",
+      "scenePatch": {
+        "description": "Земля внутри круга мокрая, но новый дождь снова обходит её стороной.",
+        "imageKey": "locations/rainwood-grove/dry-circle-wet.webp"
+      }
+    }
+  ]
+}

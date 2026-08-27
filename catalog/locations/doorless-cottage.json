@@ -1,0 +1,34 @@
+{
+  "templateId": "doorless-cottage",
+  "name": "Дом без дверей",
+  "description": "Посреди поля стоит маленький дом с окнами, трубой и совершенно гладкими стенами.",
+  "imageKey": "locations/doorless-cottage.webp",
+  "type": "LANDMARK",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "lit-window",
+      "name": "Освещённое окно",
+      "description": "За стеклом видна уютная комната, но её мебель иногда меняет положение.",
+      "imageKey": "locations/doorless-cottage/lit-window.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "room-behind-glass",
+      "questButtonText": "Постучать в окно"
+    },
+    {
+      "templateId": "cold-chimney",
+      "name": "Холодная труба",
+      "description": "Из трубы поднимается дым, хотя кирпичи совершенно холодные.",
+      "imageKey": "locations/doorless-cottage/cold-chimney.webp",
+      "sceneNumber": 20
+    },
+    {
+      "templateId": "footprints-wall",
+      "name": "Следы у стены",
+      "description": "Цепочка маленьких следов заканчивается прямо у глухой стены дома.",
+      "imageKey": "locations/doorless-cottage/footprints-wall.webp",
+      "sceneNumber": 30
+    }
+  ]
+}

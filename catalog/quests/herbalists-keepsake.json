@@ -1,0 +1,62 @@
+{
+  "templateId": "herbalists-keepsake",
+  "title": "Память травника",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Янтарная капля",
+      "description": "В прозрачном янтаре застыл крошечный цветок. Рядом лежит записка, размытая дождём.",
+      "imageKey": "quests/herbalists-keepsake/page-10.webp",
+      "options": [
+        {
+          "description": "Забрать янтарь",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Положить его среди трав",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Янтарь травника",
+      "description": "Камень тёплый, а заключённый в нём цветок остаётся свежим.",
+      "imageKey": "quests/herbalists-keepsake/page-20.webp",
+      "options": [],
+      "endingId": "amber-taken",
+      "scenePatch": {
+        "description": "На камне остались только аккуратно разложенные сухие травы.",
+        "imageKey": "locations/foxglove-ravine/herbalists-stone-empty.webp"
+      },
+      "lootButtonText": "Забрать янтарь",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "herbalists-amber"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Фиолетовое цветение",
+      "description": "Стоит коснуться янтарём трав, как вокруг распускается кольцо молодых цветов.",
+      "imageKey": "quests/herbalists-keepsake/page-30.webp",
+      "options": [],
+      "endingId": "flowers-restored",
+      "scenePatch": {
+        "description": "Камень окружён свежими фиолетовыми цветами.",
+        "imageKey": "locations/foxglove-ravine/herbalists-stone-blooming.webp"
+      },
+      "lootButtonText": "Получить награду",
+      "lootBundle": {
+        "diamondLoot": {
+          "amount": 20
+        }
+      }
+    }
+  ]
+}

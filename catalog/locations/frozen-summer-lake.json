@@ -1,0 +1,34 @@
+{
+  "templateId": "frozen-summer-lake",
+  "name": "Летнее ледяное озеро",
+  "description": "В разгар лета озеро покрыто прозрачным тёплым льдом.",
+  "imageKey": "locations/frozen-summer-lake.webp",
+  "type": "WATER_ANOMALY",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "warm-ice",
+      "name": "Тёплый лёд",
+      "description": "Лёд тёплый на ощупь и слегка пружинит под ногами.",
+      "imageKey": "locations/frozen-summer-lake/warm-ice.webp",
+      "sceneNumber": 10
+    },
+    {
+      "templateId": "trapped-sunbeam",
+      "name": "Пойманный солнечный луч",
+      "description": "Подо льдом медленно движется золотая полоска света.",
+      "imageKey": "locations/frozen-summer-lake/trapped-sunbeam.webp",
+      "sceneNumber": 20,
+      "questTemplateId": "sunbeam-under-ice",
+      "questButtonText": "Проследить за лучом"
+    },
+    {
+      "templateId": "summer-reeds",
+      "name": "Летний камыш",
+      "description": "По краям замёрзшего озера зеленеет камыш, полный стрекоз.",
+      "imageKey": "locations/frozen-summer-lake/summer-reeds.webp",
+      "sceneNumber": 30
+    }
+  ]
+}

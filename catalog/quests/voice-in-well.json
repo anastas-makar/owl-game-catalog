@@ -1,0 +1,54 @@
+{
+  "templateId": "voice-in-well",
+  "title": "Ответ из колодца",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Чей-то голос",
+      "description": "Колодец спрашивает: «Что вы хотите услышать снова?»",
+      "imageKey": "quests/voice-in-well/page-10.webp",
+      "options": [
+        {
+          "description": "Смех старого друга",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Звон стеклянных яблок",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Добрый отголосок",
+      "description": "Из глубины доносится знакомый смех, и на несколько минут сад кажется обитаемым.",
+      "imageKey": "quests/voice-in-well/page-20.webp",
+      "options": [],
+      "endingId": "friendly-echo",
+      "lootButtonText": "Получить награду",
+      "lootBundle": {
+        "diamondLoot": {
+          "amount": 20
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Звенящее яблоко",
+      "description": "Одно прозрачное яблоко падает с ветки и мягко ложится у колодца.",
+      "imageKey": "quests/voice-in-well/page-30.webp",
+      "options": [],
+      "endingId": "echo-apple-found",
+      "lootButtonText": "Забрать яблоко",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "echo-apple"
+          ],
+          "amount": 1
+        }
+      }
+    }
+  ]
+}
