@@ -1,0 +1,34 @@
+{
+  "templateId": "owlstone-circle",
+  "name": "Круг совиных камней",
+  "description": "На лесной поляне стоят девять валунов, напоминающих нахохлившихся сов.",
+  "imageKey": "locations/owlstone-circle.webp",
+  "type": "MONUMENT",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "watching-stones",
+      "name": "Наблюдающие камни",
+      "description": "С какой стороны ни подойти, каменные глаза будто следят за посетителем.",
+      "imageKey": "locations/owlstone-circle/watching-stones.webp",
+      "sceneNumber": 10
+    },
+    {
+      "templateId": "central-feather",
+      "name": "Каменное перо",
+      "description": "В центре круга торчит длинное каменное перо с узкой щелью у основания.",
+      "imageKey": "locations/owlstone-circle/central-feather.webp",
+      "sceneNumber": 20,
+      "questTemplateId": "ninth-owl",
+      "questButtonText": "Осмотреть каменное перо"
+    },
+    {
+      "templateId": "moon-moss",
+      "name": "Лунный мох",
+      "description": "Северные стороны валунов покрыты бледным мхом, светящимся даже днём.",
+      "imageKey": "locations/owlstone-circle/moon-moss.webp",
+      "sceneNumber": 30
+    }
+  ]
+}

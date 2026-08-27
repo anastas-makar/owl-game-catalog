@@ -1,0 +1,52 @@
+{
+  "templateId": "ninth-owl",
+  "title": "Девятая сова",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Щель в пере",
+      "description": "В щель входит край одной из плоских каменных пластинок у основания валунов.",
+      "imageKey": "quests/ninth-owl/page-10.webp",
+      "options": [
+        {
+          "description": "Вставить пластинку",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Посветить в щель",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Маленький хранитель",
+      "description": "Каменное перо раскрывается, и внутри оказывается фигурка совы.",
+      "imageKey": "quests/ninth-owl/page-20.webp",
+      "options": [],
+      "endingId": "stone-owl-found",
+      "scenePatch": {
+        "description": "Каменное перо раскрылось, оставив пустое углубление.",
+        "imageKey": "locations/owlstone-circle/central-feather-open.webp"
+      },
+      "lootButtonText": "Забрать сову",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "stone-owl"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Глаза в темноте",
+      "description": "Луч света отражается девятью парами каменных глаз. Больше ничего не происходит.",
+      "imageKey": "quests/ninth-owl/page-30.webp",
+      "options": [],
+      "endingId": "eyes-lit"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "templateId": "tree-ring-table",
+  "name": "Столик «Годичные кольца»",
+  "imageKey": "furniture/tree-ring-table.webp",
+  "price": 120,
+  "height": 0.25,
+  "width": 0.38,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

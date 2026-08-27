@@ -1,0 +1,58 @@
+{
+  "templateId": "shadow-door",
+  "title": "Дверь без двери",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Тёмный порог",
+      "description": "Тень кажется глубже камня. За ней слышен ветер и далёкий звон.",
+      "imageKey": "quests/shadow-door/page-10.webp",
+      "options": [
+        {
+          "description": "Шагнуть в тень",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Очертить тень мелом",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Незнакомая страна",
+      "description": "На миг вы оказываетесь под чужими звёздами, но следующий шаг возвращает вас на лестницу.",
+      "imageKey": "quests/shadow-door/page-20.webp",
+      "options": [],
+      "endingId": "other-country-seen",
+      "lootButtonText": "Получить награду",
+      "lootBundle": {
+        "diamondLoot": {
+          "amount": 30
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Перенесённая дверь",
+      "description": "Когда контур замыкается, тень отделяется от камня и сворачивается, как ковёр.",
+      "imageKey": "quests/shadow-door/page-30.webp",
+      "options": [],
+      "endingId": "shadow-door-taken",
+      "scenePatch": {
+        "description": "На последней ступени остался только белый меловой прямоугольник.",
+        "imageKey": "locations/stairway-to-nowhere/top-landing-empty.webp"
+      },
+      "lootButtonText": "Забрать тень",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "shadow-door"
+          ],
+          "amount": 1
+        }
+      }
+    }
+  ]
+}

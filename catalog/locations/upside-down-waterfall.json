@@ -1,0 +1,34 @@
+{
+  "templateId": "upside-down-waterfall",
+  "name": "Водопад наоборот",
+  "description": "Поток воды поднимается из озера к облакам и исчезает в высоте.",
+  "imageKey": "locations/upside-down-waterfall.webp",
+  "type": "WATERFALL",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "rising-stream",
+      "name": "Восходящий поток",
+      "description": "Капли падают вверх и набирают скорость, приближаясь к облакам.",
+      "imageKey": "locations/upside-down-waterfall/rising-stream.webp",
+      "sceneNumber": 10
+    },
+    {
+      "templateId": "floating-stones",
+      "name": "Парящие камни",
+      "description": "Над берегом неподвижно висят мокрые речные камни разных размеров.",
+      "imageKey": "locations/upside-down-waterfall/floating-stones.webp",
+      "sceneNumber": 20,
+      "questTemplateId": "stone-that-falls",
+      "questButtonText": "Коснуться парящего камня"
+    },
+    {
+      "templateId": "empty-riverbed",
+      "name": "Сухое русло",
+      "description": "За озером тянется русло, по которому вода когда-то текла обычным образом.",
+      "imageKey": "locations/upside-down-waterfall/empty-riverbed.webp",
+      "sceneNumber": 30
+    }
+  ]
+}

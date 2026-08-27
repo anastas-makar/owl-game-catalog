@@ -1,0 +1,52 @@
+{
+  "templateId": "stone-that-falls",
+  "title": "Камень, который падает",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Невесомый камень",
+      "description": "Камень дрожит от прикосновения и начинает медленно вращаться.",
+      "imageKey": "quests/stone-that-falls/page-10.webp",
+      "options": [
+        {
+          "description": "Потянуть камень вниз",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Толкнуть его к потоку",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Послушная тяжесть",
+      "description": "Камень уменьшается и остаётся висеть над ладонью, послушный малейшему движению.",
+      "imageKey": "quests/stone-that-falls/page-20.webp",
+      "options": [],
+      "endingId": "floating-stone-taken",
+      "scenePatch": {
+        "description": "Среди парящих камней осталось заметное пустое место.",
+        "imageKey": "locations/upside-down-waterfall/floating-stones-gap.webp"
+      },
+      "lootButtonText": "Забрать камень",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "floating-river-stone"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Путь в облака",
+      "description": "Поток подхватывает камень, и тот быстро исчезает в облаках.",
+      "imageKey": "quests/stone-that-falls/page-30.webp",
+      "options": [],
+      "endingId": "stone-ascended"
+    }
+  ]
+}

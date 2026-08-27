@@ -1,0 +1,52 @@
+{
+  "templateId": "sunbeam-under-ice",
+  "title": "Луч подо льдом",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Золотая дорожка",
+      "description": "Луч приводит к прозрачному пузырю, застывшему глубоко под тёплым льдом.",
+      "imageKey": "quests/sunbeam-under-ice/page-10.webp",
+      "options": [
+        {
+          "description": "Нагреть лёд ладонями",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Постучать по льду",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Свет в пузыре",
+      "description": "Лёд становится мягким, и пузырь со светом всплывает прямо в руки.",
+      "imageKey": "quests/sunbeam-under-ice/page-20.webp",
+      "options": [],
+      "endingId": "sunbeam-captured",
+      "scenePatch": {
+        "description": "Под тёплым льдом больше нет золотой полосы света.",
+        "imageKey": "locations/frozen-summer-lake/trapped-sunbeam-gone.webp"
+      },
+      "lootButtonText": "Забрать свет",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "captured-sunbeam"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Солнечные зайчики",
+      "description": "Луч рассыпается на десятки золотых пятен и разбегается по всему озеру.",
+      "imageKey": "quests/sunbeam-under-ice/page-30.webp",
+      "options": [],
+      "endingId": "sunbeam-scattered"
+    }
+  ]
+}

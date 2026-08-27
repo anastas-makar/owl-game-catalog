@@ -1,0 +1,52 @@
+{
+  "templateId": "room-behind-glass",
+  "title": "Комната за стеклом",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Три тихих стука",
+      "description": "После третьего стука мебель внутри замирает, а на подоконнике появляется крошечная копия комнаты.",
+      "imageKey": "quests/room-behind-glass/page-10.webp",
+      "options": [
+        {
+          "description": "Постучать ещё раз",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Взять маленькую комнату",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Пустое окно",
+      "description": "Свет гаснет. За стеклом остаётся только тёмная пустая комната.",
+      "imageKey": "quests/room-behind-glass/page-20.webp",
+      "options": [],
+      "endingId": "room-darkened",
+      "scenePatch": {
+        "description": "За окном темно, и движения больше не видно.",
+        "imageKey": "locations/doorless-cottage/lit-window-dark.webp"
+      }
+    },
+    {
+      "number": 30,
+      "name": "Дом внутри дома",
+      "description": "Миниатюрная комната остаётся освещённой, а её мебель продолжает едва заметно двигаться.",
+      "imageKey": "quests/room-behind-glass/page-30.webp",
+      "options": [],
+      "endingId": "room-model-taken",
+      "lootButtonText": "Забрать модель",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "window-room-model"
+          ],
+          "amount": 1
+        }
+      }
+    }
+  ]
+}
