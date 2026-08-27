@@ -1,0 +1,12 @@
+{
+  "templateId": "copper-weather-vane",
+  "name": "Медный флюгер",
+  "imageKey": "furniture/copper-weather-vane.webp",
+  "price": 100,
+  "height": 0.35,
+  "width": 0.32,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "templateId": "silent-clockwork",
+  "title": "Остановившиеся часы",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Застывший механизм",
+      "description": "Между шестернями застрял свёрнутый лист металла. Рычаг рядом покрыт ржавчиной.",
+      "imageKey": "quests/silent-clockwork/page-10.webp",
+      "options": [
+        {
+          "description": "Потянуть за рычаг",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Осторожно вынуть свёрток",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Грохот шестерён",
+      "description": "Механизм вздрагивает, делает один оборот и окончательно заклинивает. Свёрток падает в шахту.",
+      "imageKey": "quests/silent-clockwork/page-20.webp",
+      "options": [],
+      "endingId": "clockwork-jammed",
+      "scenePatch": {
+        "description": "Механизм перекошен и больше не постукивает.",
+        "imageKey": "locations/old-clock-tower/clockwork-jammed.webp"
+      }
+    },
+    {
+      "number": 30,
+      "name": "Старые часы",
+      "description": "В свёртке оказывается небольшой циферблат со станции, закрытой много лет назад.",
+      "imageKey": "quests/silent-clockwork/page-30.webp",
+      "options": [],
+      "endingId": "station-clock-found",
+      "lootButtonText": "Забрать часы",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "old-station-clock"
+          ],
+          "amount": 1
+        }
+      }
+    }
+  ]
+}

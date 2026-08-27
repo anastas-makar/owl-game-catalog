@@ -1,0 +1,48 @@
+{
+  "templateId": "fallen-star-chart",
+  "title": "Карта упавшей звезды",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Яркая точка",
+      "description": "В окуляре видно не звезду, а блестящий предмет на соседнем склоне. На столе лежит старая карта.",
+      "imageKey": "quests/fallen-star-chart/page-10.webp",
+      "options": [
+        {
+          "description": "Отметить место на карте и спуститься",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Настроить телескоп точнее",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Латунная труба",
+      "description": "На склоне лежит старая латунная подзорная труба, поймавшая солнечный луч.",
+      "imageKey": "quests/fallen-star-chart/page-20.webp",
+      "options": [],
+      "endingId": "telescope-found",
+      "lootButtonText": "Забрать трубу",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "brass-telescope"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Обычный отблеск",
+      "description": "После настройки становится ясно: это всего лишь осколок бутылочного стекла.",
+      "imageKey": "quests/fallen-star-chart/page-30.webp",
+      "options": [],
+      "endingId": "glint-explained"
+    }
+  ]
+}

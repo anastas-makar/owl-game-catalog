@@ -1,0 +1,20 @@
+{
+  "templateId": "rose-terrace",
+  "name": "Розовая терраса",
+  "description": "Сад из старых роз поднимается по солнечному склону.",
+  "imageKey": "locations/rose-terrace.webp",
+  "type": "PARK",
+  "buildPrice": 160,
+  "allowedAcquisitionSources": [
+    "SHOP"
+  ],
+  "scenes": [
+    {
+      "templateId": "upper-arbor",
+      "name": "Верхняя беседка",
+      "description": "Из беседки видны весь сад и дальние холмы.",
+      "imageKey": "locations/rose-terrace/upper-arbor.webp",
+      "sceneNumber": 10
+    }
+  ]
+}

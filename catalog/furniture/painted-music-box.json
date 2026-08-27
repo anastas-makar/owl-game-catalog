@@ -1,0 +1,12 @@
+{
+  "templateId": "painted-music-box",
+  "name": "Расписная музыкальная шкатулка",
+  "imageKey": "furniture/painted-music-box.webp",
+  "price": 75,
+  "height": 0.14,
+  "width": 0.20,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

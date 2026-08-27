@@ -1,0 +1,64 @@
+{
+  "templateId": "rope-under-pier",
+  "title": "Верёвка под причалом",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Тяжёлый узел",
+      "description": "Верёвка натянута, словно к ней привязано что-то тяжёлое.",
+      "imageKey": "quests/rope-under-pier/page-10.webp",
+      "options": [
+        {
+          "description": "Тянуть медленно",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Рвануть изо всех сил",
+          "targetPageNumber": 30
+        },
+        {
+          "description": "Отвязать верёвку",
+          "targetPageNumber": 40
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Стеклянный шар",
+      "description": "Из воды показывается сеть со старым стеклянным поплавком.",
+      "imageKey": "quests/rope-under-pier/page-20.webp",
+      "options": [],
+      "endingId": "float-recovered",
+      "lootButtonText": "Забрать поплавок",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "glass-fishing-float"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Оборванная верёвка",
+      "description": "Верёвка лопается, и тяжесть уходит на дно.",
+      "imageKey": "quests/rope-under-pier/page-30.webp",
+      "options": [],
+      "endingId": "rope-snapped",
+      "scenePatch": {
+        "description": "На столбе болтается короткий обрывок мокрой верёвки.",
+        "imageKey": "locations/foggy-pier/rope-snapped.webp"
+      }
+    },
+    {
+      "number": 40,
+      "name": "В тумане",
+      "description": "Освободившаяся верёвка быстро скользит под воду и исчезает.",
+      "imageKey": "quests/rope-under-pier/page-40.webp",
+      "options": [],
+      "endingId": "rope-released"
+    }
+  ]
+}

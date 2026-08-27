@@ -1,0 +1,12 @@
+{
+  "templateId": "crystal-bell",
+  "name": "Хрустальный колокольчик",
+  "imageKey": "furniture/crystal-bell.webp",
+  "price": 80,
+  "height": 0.20,
+  "width": 0.15,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

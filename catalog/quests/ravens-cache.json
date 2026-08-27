@@ -1,0 +1,60 @@
+{
+  "templateId": "ravens-cache",
+  "title": "Вороний тайник",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Блестящая куча",
+      "description": "Среди перьев лежит резная деревянная птица. Сверху доносится хлопанье крыльев.",
+      "imageKey": "quests/ravens-cache/page-10.webp",
+      "options": [
+        {
+          "description": "Быстро схватить фигурку",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Оставить взамен несколько бриллиантов",
+          "targetPageNumber": 30
+        },
+        {
+          "description": "Не трогать тайник",
+          "targetPageNumber": 40
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Разгневанные хозяева",
+      "description": "Вороны поднимают шум, и фигурку приходится бросить.",
+      "imageKey": "quests/ravens-cache/page-20.webp",
+      "options": [],
+      "endingId": "ravens-angry"
+    },
+    {
+      "number": 30,
+      "name": "Честный обмен",
+      "description": "Вороны внимательно считают блестящие камни и позволяют унести резную фигурку.",
+      "imageKey": "quests/ravens-cache/page-30.webp",
+      "options": [],
+      "endingId": "raven-traded",
+      "lootButtonText": "Забрать фигурку",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "carved-raven"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 40,
+      "name": "Нетронутый тайник",
+      "description": "Вы отходите от ниши, не потревожив её хозяев.",
+      "imageKey": "quests/ravens-cache/page-40.webp",
+      "options": [],
+      "endingId": "cache-left"
+    }
+  ]
+}
