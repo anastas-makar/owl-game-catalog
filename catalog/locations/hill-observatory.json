@@ -1,0 +1,23 @@
+{
+  "templateId": "hill-observatory",
+  "name": "Обсерватория на холме",
+  "description": "Небольшой купол стоит выше облаков и городских огней.",
+  "imageKey": "locations/hill-observatory.webp",
+  "type": "LANDMARK",
+  "buildPrice": 320,
+  "allowedAcquisitionSources": [
+    "SHOP",
+    "QUEST_REWARD"
+  ],
+  "scenes": [
+    {
+      "templateId": "open-dome",
+      "name": "Открытый купол",
+      "description": "Телескоп направлен в участок неба, где одна звезда мерцает особенно ярко.",
+      "imageKey": "locations/hill-observatory/open-dome.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "fallen-star-chart",
+      "questButtonText": "Навести телескоп"
+    }
+  ]
+}

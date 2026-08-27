@@ -1,0 +1,20 @@
+{
+  "templateId": "raven-grotto",
+  "name": "Вороний грот",
+  "description": "Тёмный грот отмечен множеством царапин, похожих на птичьи следы.",
+  "imageKey": "locations/raven-grotto.webp",
+  "type": "CAVE",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "feather-niche",
+      "name": "Ниша с перьями",
+      "description": "В каменной нише сложены перья, пуговицы и блестящие камешки.",
+      "imageKey": "locations/raven-grotto/feather-niche.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "ravens-cache",
+      "questButtonText": "Осмотреть тайник"
+    }
+  ]
+}

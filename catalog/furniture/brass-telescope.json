@@ -1,0 +1,12 @@
+{
+  "templateId": "brass-telescope",
+  "name": "Латунная подзорная труба",
+  "imageKey": "furniture/brass-telescope.webp",
+  "price": 120,
+  "height": 0.32,
+  "width": 0.28,
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

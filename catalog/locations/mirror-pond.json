@@ -1,0 +1,20 @@
+{
+  "templateId": "mirror-pond",
+  "name": "Зеркальный пруд",
+  "description": "Гладь пруда отражает небо даже тогда, когда над водой клубится туман.",
+  "imageKey": "locations/mirror-pond.webp",
+  "type": "WATER_ANOMALY",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "wrong-reflection",
+      "name": "Чужое отражение",
+      "description": "На дне отражается башня, которой поблизости нет.",
+      "imageKey": "locations/mirror-pond/wrong-reflection.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "tower-in-reflection",
+      "questButtonText": "Всмотреться в отражение"
+    }
+  ]
+}

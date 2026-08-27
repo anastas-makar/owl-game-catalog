@@ -1,0 +1,23 @@
+{
+  "templateId": "city-fountain",
+  "name": "Городской фонтан",
+  "description": "Старый фонтан с каменной чашей и стайкой любопытных рыб.",
+  "imageKey": "locations/city-fountain.webp",
+  "type": "FOUNTAIN",
+  "buildPrice": 180,
+  "allowedAcquisitionSources": [
+    "SHOP",
+    "QUEST_REWARD"
+  ],
+  "scenes": [
+    {
+      "templateId": "fish-basin",
+      "name": "Рыбы в чаше",
+      "description": "Между рыбами на дне поблёскивает маленький овальный предмет.",
+      "imageKey": "locations/city-fountain/fish-basin.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "fountain-glint",
+      "questButtonText": "Рассмотреть блеск"
+    }
+  ]
+}

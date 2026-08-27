@@ -1,0 +1,20 @@
+{
+  "templateId": "foggy-pier",
+  "name": "Туманный причал",
+  "description": "Деревянный причал уходит в серую воду и растворяется в тумане.",
+  "imageKey": "locations/foggy-pier.webp",
+  "type": "WATER_ANOMALY",
+  "buildPrice": null,
+  "allowedAcquisitionSources": [],
+  "scenes": [
+    {
+      "templateId": "mooring-post",
+      "name": "Швартовочный столб",
+      "description": "К столбу привязана мокрая верёвка, уходящая под настил.",
+      "imageKey": "locations/foggy-pier/mooring-post.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "rope-under-pier",
+      "questButtonText": "Потянуть за верёвку"
+    }
+  ]
+}
