@@ -1,0 +1,14 @@
+{
+  "templateId": "musical-goat",
+  "name": "Музыкальная коза",
+  "description": "Коза из консерватории. Лучше всего даёт молоко после спокойной гаммы.",
+  "imageKey": "garden-items/musical-goat.webp",
+  "supplyTemplateId": "milk",
+  "supplyAmount": 1,
+  "itemType": "ANIMAL_HOUSE",
+  "gardenType": "GARDEN",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD",
+    "SHOP"
+  ]
+}
