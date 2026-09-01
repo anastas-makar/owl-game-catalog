@@ -3,7 +3,7 @@
   "name": "Зеркальный пруд",
   "description": "Гладь пруда отражает небо даже тогда, когда над водой клубится туман.",
   "imageKey": "locations/mirror-pond.webp",
-  "type": "WATER_ANOMALY",
+  "type": "WATER_LOCATION",
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [

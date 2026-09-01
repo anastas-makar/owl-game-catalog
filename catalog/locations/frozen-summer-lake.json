@@ -3,7 +3,7 @@
   "name": "Летнее ледяное озеро",
   "description": "В разгар лета озеро покрыто прозрачным тёплым льдом.",
   "imageKey": "locations/frozen-summer-lake.webp",
-  "type": "WATER_ANOMALY",
+  "type": "WATER_LOCATION",
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [

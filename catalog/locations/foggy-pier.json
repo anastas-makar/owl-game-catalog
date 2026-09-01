@@ -3,7 +3,7 @@
   "name": "Туманный причал",
   "description": "Деревянный причал уходит в серую воду и растворяется в тумане.",
   "imageKey": "locations/foggy-pier.webp",
-  "type": "WATER_ANOMALY",
+  "type": "WATER_LOCATION",
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [
