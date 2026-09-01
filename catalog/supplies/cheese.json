@@ -1,0 +1,8 @@
+{
+  "templateId": "cheese",
+  "name": "Сыр",
+  "description": "Плотный домашний сыр с золотистой корочкой.",
+  "imageKey": "supplies/cheese.webp",
+  "effectType": "HEAL",
+  "effectAmount": 80
+}

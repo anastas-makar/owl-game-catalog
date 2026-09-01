@@ -1,0 +1,45 @@
+{
+  "templateId": "conservatory",
+  "name": "Консерватория",
+  "description": "Большое старое здание с концертным залом, учебными классами, органом и бесконечными коридорами, из которых постоянно доносится музыка.",
+  "imageKey": "locations/conservatory.webp",
+  "type": "LANDMARK",
+  "buildPrice": 600,
+  "allowedAcquisitionSources": [
+    "SHOP"
+  ],
+  "scenes": [
+    {
+      "templateId": "grand-hall",
+      "name": "Большой зал",
+      "description": "На пустой сцене перед оркестровой ямой висит переливающийся шар. В самой его середине отчётливо видна нота ля-диез.",
+      "imageKey": "locations/conservatory/grand-hall.webp",
+      "sceneNumber": 10,
+      "questTemplateId": "sharp-note-orb",
+      "questButtonText": "Подойти к шару"
+    },
+    {
+      "templateId": "practice-room",
+      "name": "Класс для репетиций",
+      "description": "В тесном классе стоят рояль, несколько пюпитров и огромный контрабас. Из-за контрабаса время от времени слышится очень немузыкальное блеяние.",
+      "imageKey": "locations/conservatory/practice-room.webp",
+      "sceneNumber": 20,
+      "questTemplateId": "goat-behind-double-bass",
+      "questButtonText": "Проверить, кто там"
+    },
+    {
+      "templateId": "organ-balcony",
+      "name": "Органный балкон",
+      "description": "С высоты видно весь зал. Старый орган молчит, но иногда одна из труб тихо отвечает на шаги низким гулом.",
+      "imageKey": "locations/conservatory/organ-balcony.webp",
+      "sceneNumber": 30
+    },
+    {
+      "templateId": "buffet",
+      "name": "Буфет",
+      "description": "За стеклом стоят чашки, пирожки и кувшины с молоком. На стене висит выцветшая записка: «Хороший сыр начинается с хорошего молока и терпения».",
+      "imageKey": "locations/conservatory/buffet.webp",
+      "sceneNumber": 40
+    }
+  ]
+}

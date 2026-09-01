@@ -1,0 +1,64 @@
+{
+  "templateId": "goat-behind-double-bass",
+  "title": "Коза за контрабасом",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Подозрительный контрабас",
+      "description": "Из-за контрабаса снова слышится блеяние. Инструмент слегка покачивается, хотя в комнате нет ни сквозняка, ни музыкантов.",
+      "imageKey": "quests/goat-behind-double-bass/page-10.webp",
+      "options": [
+        {
+          "description": "Сыграть на рояле спокойную гамму",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Сразу заглянуть за контрабас",
+          "targetPageNumber": 30
+        },
+        {
+          "description": "Сделать вид, что ничего не слышали",
+          "targetPageNumber": 40
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Музыкальная коза",
+      "description": "На третьей ноте из-за контрабаса осторожно выходит небольшая коза. Она дослушивает гамму до конца, удовлетворённо кивает и решительно идёт за вами. Похоже, теперь у вас есть очень музыкальный поставщик молока.",
+      "imageKey": "quests/goat-behind-double-bass/page-20.webp",
+      "options": [],
+      "endingId": "goat-followed-music",
+      "scenePatch": {
+        "description": "За контрабасом теперь пусто. На полу остались только несколько следов копыт и забытый нотный лист.",
+        "imageKey": "locations/conservatory/practice-room-after-goat.webp"
+      },
+      "lootButtonText": "Забрать козу",
+      "lootBundle": {
+        "gardenItemLoot": {
+          "templateIds": [
+            "musical-goat"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Неловкое знакомство",
+      "description": "Вы резко выглядываете из-за контрабаса и встречаетесь нос к носу с козой. Коза возмущённо блеет, перепрыгивает через табурет и скрывается в коридоре. Через минуту она снова оказывается за контрабасом, но теперь смотрит на вас с большим подозрением.",
+      "imageKey": "quests/goat-behind-double-bass/page-30.webp",
+      "options": [],
+      "endingId": "goat-startled"
+    },
+    {
+      "number": 40,
+      "name": "Репетиция продолжается",
+      "description": "Вы решаете не вмешиваться. Через некоторое время из-за контрабаса раздаётся ещё одно тихое блеяние, на удивление точно попадающее в тон старого рояля.",
+      "imageKey": "quests/goat-behind-double-bass/page-40.webp",
+      "options": [],
+      "endingId": "left-goat-alone"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "templateId": "cheese-recipe",
+  "description": "Рецепт домашнего сыра из молока.",
+  "resultSupplyTemplateId": "cheese",
+  "ingredients": [
+    {
+      "supplyTemplateId": "milk",
+      "amount": 3
+    }
+  ],
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
+}

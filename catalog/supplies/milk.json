@@ -1,0 +1,8 @@
+{
+  "templateId": "milk",
+  "name": "Молоко",
+  "description": "Свежее молоко. Можно выпить сразу или использовать для приготовления сыра.",
+  "imageKey": "supplies/milk.webp",
+  "effectType": "HEAL",
+  "effectAmount": 15
+}
