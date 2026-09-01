@@ -112,7 +112,7 @@ LOCATION_TYPES = {
     "RESORT",
     "WATERFALL",
     "RUINS",
-    "WATER_ANOMALY",
+    "WATER_LOCATION",
 }
 
 LOCATION_SLOT_MODES = {
@@ -1286,10 +1286,30 @@ def validate_catalog(
                 f"'{slot.get('slotId')}'"
             )
 
-            if "requiredTags" in slot:
-                raise CatalogValidationError(
-                    f"{slot_source}: field 'requiredTags' is not allowed"
-                )
+            required_tags = slot.get("requiredTags")
+            required_tag_set: set[str] = set()
+
+            if required_tags is not None:
+                if not isinstance(required_tags, list):
+                    raise CatalogValidationError(
+                        f"{slot_source}: "
+                        f"requiredTags must be an array or null"
+                    )
+
+                for index, tag in enumerate(required_tags):
+                    tag = require_non_blank_string(
+                        slot_source,
+                        f"requiredTags[{index}]",
+                        tag,
+                    )
+
+                    if tag in required_tag_set:
+                        raise CatalogValidationError(
+                            f"{slot_source}: duplicate required tag "
+                            f"'{tag}'"
+                        )
+
+                    required_tag_set.add(tag)
 
             require_coordinate(
                 slot_source,
@@ -1368,6 +1388,12 @@ def validate_catalog(
                         f"only for RANDOM mode"
                     )
 
+                if required_tags is not None:
+                    raise CatalogValidationError(
+                        f"{slot_source}: requiredTags is allowed "
+                        f"only for RANDOM mode"
+                    )
+
             if mode == "RANDOM":
                 if slot.get("fixedLocationTemplateId") is not None:
                     raise CatalogValidationError(
@@ -1381,6 +1407,9 @@ def validate_catalog(
                     if (
                             allowed_types is None
                             or location.get("type") in allowed_types
+                    )
+                    and required_tag_set <= set(
+                        location.get("tags") or []
                     )
                 ]
 
@@ -1718,10 +1747,29 @@ def validate_catalog(
                     f"allowedAcquisitionSources must be an empty array"
                 )
 
-        if "tags" in location:
-            raise CatalogValidationError(
-                f"{location_source}: field 'tags' is not allowed"
-            )
+        tags = location.get("tags")
+
+        if tags is not None:
+            if not isinstance(tags, list):
+                raise CatalogValidationError(
+                    f"{location_source}: tags must be an array or null"
+                )
+
+            seen_tags: set[str] = set()
+
+            for index, tag in enumerate(tags):
+                tag = require_non_blank_string(
+                    location_source,
+                    f"tags[{index}]",
+                    tag,
+                )
+
+                if tag in seen_tags:
+                    raise CatalogValidationError(
+                        f"{location_source}: duplicate tag '{tag}'"
+                    )
+
+                seen_tags.add(tag)
 
         scenes = require_object_list(
             location_source,
