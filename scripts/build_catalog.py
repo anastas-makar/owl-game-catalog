@@ -22,6 +22,7 @@ CATEGORY_DIRS = {
     "maps": "maps",
     "medals": "medals",
     "plants": "plants",
+    "pouches": "pouches",
     "quests": "quests",
     "recipes": "recipes",
     "supplies": "supplies",
@@ -920,6 +921,48 @@ def validate_catalog(
     medal_ids = set(indexes["medals"])
     supply_ids = set(indexes["supplies"])
     quest_ids = set(indexes["quests"])
+
+    if not catalog["pouches"]:
+        raise CatalogValidationError(
+            "catalog.pouches must contain at least one pouch"
+        )
+
+    # Pouches are decorative catalog templates. They are not player-world
+    # entities and are never granted or copied into user_* collections.
+    for pouch in catalog["pouches"]:
+        pouch_id = pouch["templateId"]
+        pouch_source = f"Pouch '{pouch_id}'"
+
+        if (
+                "imageKey" not in pouch
+                and "sourceImageUrl" not in pouch
+        ):
+            raise CatalogValidationError(
+                f"{pouch_source}: pouch image is required"
+            )
+
+        tags = pouch.get("tags")
+
+        if not isinstance(tags, list) or not tags:
+            raise CatalogValidationError(
+                f"{pouch_source}: tags must be a non-empty array"
+            )
+
+        seen_tags: set[str] = set()
+
+        for index, tag in enumerate(tags):
+            tag = require_non_blank_string(
+                pouch_source,
+                f"tags[{index}]",
+                tag,
+            )
+
+            if tag in seen_tags:
+                raise CatalogValidationError(
+                    f"{pouch_source}: duplicate tag '{tag}'"
+                )
+
+            seen_tags.add(tag)
 
 
     # Enemies

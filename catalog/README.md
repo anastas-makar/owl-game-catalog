@@ -26,12 +26,15 @@ catalog/
   maps/
   medals/
   plants/
+  pouches/
   quests/
   recipes/
   supplies/
 ```
 
 Один исходный файл содержит одну корневую сущность.
+
+Мешочки — исключение только по смыслу, но не по формату хранения: каждый JSON в `pouches/` описывает один декоративный шаблон изображения. Шаблоны мешочков не являются объектами игрового мира. 
 
 ```text
 buildings/stone-fortress.json
@@ -66,7 +69,7 @@ quests/first-hatches.json
 
 ```json
 {
-  "templateId": "Red\_Sofa\_v2",
+  "templateId": "Red_Sofa_v2",
   "id": "0f88d63c-...",
   "releaseId": "..."
 }
@@ -126,7 +129,7 @@ red-sofa
 
 ```json
 {
-  "allowedAcquisitionSources": \[
+  "allowedAcquisitionSources": [
     "POUCH",
     "SHOP"
   ]
@@ -246,6 +249,12 @@ sh ./scripts/validate-catalog.sh
 * [Квесты](quests/README.md)
 * [Рецепты](recipes/README.md)
 * [Припасы](supplies/README.md)
+
+### Особые категории
+
+Предметы в этих категориях не часть игрового мира, и увеличивать их количество обычно не нужно:
+
+* [Мешочки](pouches/README.md)
 
 ## Версия формата каталога
 
