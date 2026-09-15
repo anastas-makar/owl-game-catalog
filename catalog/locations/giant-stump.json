@@ -4,6 +4,7 @@
   "description": "Пень древнего дерева возвышается над молодым лесом, как круглая башня.",
   "imageKey": "locations/giant-stump.webp",
   "type": "LANDMARK",
+  "tags": ["forest"],
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [
