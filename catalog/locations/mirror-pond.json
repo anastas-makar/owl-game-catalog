@@ -4,6 +4,7 @@
   "description": "Гладь пруда отражает небо даже тогда, когда над водой клубится туман.",
   "imageKey": "locations/mirror-pond.webp",
   "type": "WATER_LOCATION",
+  "tags": ["pond"],
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [

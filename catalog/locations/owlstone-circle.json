@@ -4,6 +4,7 @@
   "description": "На лесной поляне стоят девять валунов, напоминающих нахохлившихся сов.",
   "imageKey": "locations/owlstone-circle.webp",
   "type": "MONUMENT",
+  "tags": ["glade"],
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [

@@ -4,6 +4,7 @@
   "description": "Каменная лестница поднимается над вересковой пустошью и обрывается в воздухе.",
   "imageKey": "locations/stairway-to-nowhere.webp",
   "type": "RUINS",
+  "tags": ["plain"],
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [
