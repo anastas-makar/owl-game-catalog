@@ -213,6 +213,16 @@ completionMedalTemplateId
 
 Запускайте проверку из корня репозитория.
 
+Для проверки требуется Python 3.11 или новее, Git и пакет
+[`owl-catalog-tools`](https://github.com/anastas-makar/owl-catalog-tools).
+Установите зафиксированную для этого каталога версию пакета:
+
+```bash
+python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.1"
+```
+
+Устанавливать пакет заново перед каждой проверкой не нужно.
+
 В Windows:
 
 ```bat

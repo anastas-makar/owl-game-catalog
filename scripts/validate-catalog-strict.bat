@@ -1,8 +1,5 @@
 @echo off
-python -m py_compile scripts\build_catalog.py
-if errorlevel 1 exit /b 1
-
-python scripts\build_catalog.py ^
+python -m owl_catalog_tools ^
   --catalog-dir catalog ^
   --output build\catalog-release.json ^
   --version local ^

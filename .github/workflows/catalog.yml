@@ -11,7 +11,10 @@ on:
       - develop
       - main
     tags:
-      - 'catalog-v*'
+      # Любой каталожный тег запускает workflow. Ниже формат проверяется
+      # строго, чтобы старый catalog-v* или тег другого языка не был
+      # опубликован из репозитория русского каталога.
+      - 'catalog-*'
 
 permissions:
   contents: read
@@ -33,6 +36,13 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.13'
+
+      - name: Install owl-catalog-tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install \
+            "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.1"
 
       - name: Determine catalog mode
         id: catalog_mode
@@ -57,6 +67,12 @@ jobs:
           # - после проверки каталог публикуется.
           #
           if [[ "$REF_TYPE" == "tag" ]]; then
+            if [[ ! "$REF_NAME" =~ ^catalog-ru-v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "ERROR: invalid Russian catalog tag '$REF_NAME'"
+              echo "Expected format: catalog-ru-vX.Y.Z (for example, catalog-ru-v0.1.4)"
+              exit 1
+            fi
+
             VERSION="$REF_NAME"
             REQUIRE_IMAGE_KEYS="true"
             PUBLISH="true"
@@ -124,7 +140,7 @@ jobs:
             BUILD_ARGS+=(--require-image-keys)
           fi
 
-          python scripts/build_catalog.py "${BUILD_ARGS[@]}"
+          owl-catalog "${BUILD_ARGS[@]}"
 
       - name: Show release summary
         shell: bash
@@ -154,7 +170,7 @@ jobs:
       #
       # ПУБЛИКАЦИЯ В PRODUCTION
       #
-      # Этот шаг выполняется только для тегов catalog-v*.
+      # Этот шаг выполняется только для валидных тегов catalog-ru-vX.Y.Z.
       #
       - name: Publish catalog through SSH
         if: steps.catalog_mode.outputs.publish == 'true'
