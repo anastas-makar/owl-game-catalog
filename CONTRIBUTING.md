@@ -87,7 +87,7 @@ git checkout -b catalog/add-stone-fortress
 версию `owl-catalog-tools`, закреплённую для этого репозитория:
 
 ```bash
-python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.1"
+python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.2"
 ```
 
 Повторная установка нужна только при смене закреплённой версии инструмента.

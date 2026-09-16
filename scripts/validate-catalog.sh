@@ -11,6 +11,7 @@ python3 -m owl_catalog_tools \
   --catalog-dir catalog \
   --output build/catalog-release.json \
   --version local \
+  --locale ru  \
   --commit-sha local
 
 printf '\nCatalog validation OK\n'

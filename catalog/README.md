@@ -218,7 +218,7 @@ completionMedalTemplateId
 Установите зафиксированную для этого каталога версию пакета:
 
 ```bash
-python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.1"
+python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.2"
 ```
 
 Устанавливать пакет заново перед каждой проверкой не нужно.

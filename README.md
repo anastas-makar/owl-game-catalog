@@ -17,7 +17,7 @@
 5. Установите инструмент проверки (это требуется только при первой настройке или обновлении его версии):
 
    ```bash
-   python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.1"
+   python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.2"
    ```
 
    Для проверки требуется Python 3.11 или новее и Git.

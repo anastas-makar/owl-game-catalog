@@ -19,6 +19,10 @@ on:
 permissions:
   contents: read
 
+env:
+  # Локаль является свойством этого репозитория и передаётся в релиз явно.
+  CATALOG_LOCALE: ru
+
 jobs:
   catalog:
     name: Build and validate catalog
@@ -42,7 +46,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install \
-            "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.1"
+            "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.2"
 
       - name: Determine catalog mode
         id: catalog_mode
@@ -63,13 +67,14 @@ jobs:
           #
           # Релизный тег:
           # - версия берётся из имени тега;
+          # - локаль должна совпадать с локалью репозитория;
           # - допускаются только imageKey;
           # - после проверки каталог публикуется.
           #
           if [[ "$REF_TYPE" == "tag" ]]; then
-            if [[ ! "$REF_NAME" =~ ^catalog-ru-v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-              echo "ERROR: invalid Russian catalog tag '$REF_NAME'"
-              echo "Expected format: catalog-ru-vX.Y.Z (for example, catalog-ru-v0.1.4)"
+            if [[ ! "$REF_NAME" =~ ^catalog-${CATALOG_LOCALE}-v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "ERROR: invalid ${CATALOG_LOCALE} catalog tag '$REF_NAME'"
+              echo "Expected format: catalog-${CATALOG_LOCALE}-vX.Y.Z (for example, catalog-${CATALOG_LOCALE}-v0.1.4)"
               exit 1
             fi
 
@@ -99,6 +104,7 @@ jobs:
           echo "require_image_keys=$REQUIRE_IMAGE_KEYS" >> "$GITHUB_OUTPUT"
           echo "publish=$PUBLISH" >> "$GITHUB_OUTPUT"
 
+          echo "Catalog locale: $CATALOG_LOCALE"
           echo "Catalog version: $VERSION"
           echo "Require image keys: $REQUIRE_IMAGE_KEYS"
           echo "Publish: $PUBLISH"
@@ -133,6 +139,7 @@ jobs:
             --catalog-dir catalog
             --output build/catalog-release.json
             --version "$CATALOG_VERSION"
+            --locale "$CATALOG_LOCALE"
             --commit-sha "$GITHUB_SHA"
           )
 
@@ -157,6 +164,7 @@ jobs:
               data = json.load(file)
 
           print("Version:", data["version"])
+          print("Locale:", data["locale"])
           print("Schema version:", data["schemaVersion"])
           print("Commit:", data["commitSha"])
           print("Hash:", data["contentHash"])

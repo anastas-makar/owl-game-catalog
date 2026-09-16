@@ -4,6 +4,7 @@ python -m owl_catalog_tools ^
   --output build\catalog-release.json ^
   --version local ^
   --commit-sha local ^
+  --locale ru ^
   --require-image-keys
 
 if errorlevel 1 exit /b 1
