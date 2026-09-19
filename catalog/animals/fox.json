@@ -1,6 +1,6 @@
 {
   "templateId": "fox",
   "kind": "fox",
-  "initialDisplayName": "Лисёнок",
+  "initialDisplayName": "Растерянный лисёнок",
   "imageKey": "animals/fox.webp"
 }
