@@ -1,7 +1,7 @@
 {
   "templateId": "swamp-outskirts",
   "name": "Болотная окраина",
-  "imageKey": "maps/swamp-outskirts.webp",
+  "imageKey": "maps/swamp-outskirts.png",
   "locationSlots": [
     {
       "slotId": "camp",
