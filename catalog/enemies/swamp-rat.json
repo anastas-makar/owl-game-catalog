@@ -2,9 +2,9 @@
   "templateId": "swamp-rat",
   "name": "Болотная крыса",
   "description": "Небольшой и сравнительно слабый болотный противник.",
-  "imageKey": "enemies/swamp-rat.webp",
-  "health": 60,
-  "damage": 40,
+  "imageKey": "enemies/swamp-rat.png",
+  "health": 250,
+  "damage": 250,
   "tags": [
     "swamp",
     "weak"
