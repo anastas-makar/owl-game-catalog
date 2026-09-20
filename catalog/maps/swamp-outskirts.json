@@ -12,11 +12,20 @@
     },
     {
       "slotId": "park",
-      "x": 0.72,
-      "y": 0.58,
+      "x": 0.70,
+      "y": 0.50,
       "mode": "RANDOM",
       "allowedTypes": [
         "PARK"
+      ]
+    },
+    {
+      "slotId": "swamp-location",
+      "x": 0.25,
+      "y": 0.41,
+      "mode": "RANDOM",
+      "requiredTags": [
+        "swamp"
       ]
     }
   ],
