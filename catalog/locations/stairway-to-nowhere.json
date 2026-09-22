@@ -22,7 +22,7 @@
       "imageKey": "locations/stairway-to-nowhere/top-landing.webp",
       "sceneNumber": 20,
       "questTemplateId": "shadow-door",
-      "questButtonText": "Шагнуть в тень"
+      "questButtonText": "Осмотреть тень"
     },
     {
       "templateId": "view-below",
