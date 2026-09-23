@@ -5,8 +5,5 @@
   "price": 300,
   "height": 0.55,
   "width": 0.35,
-  "type": "REFRIGERATOR",
-  "allowedAcquisitionSources": [
-    "SHOP"
-  ]
+  "type": "REFRIGERATOR"
 }
