@@ -1,7 +1,7 @@
 {
   "templateId": "owlstone-circle",
   "name": "Круг совиных камней",
-  "description": "На лесной поляне стоят девять валунов, напоминающих нахохлившихся сов.",
+  "description": "На лесной поляне стоят восемь валунов, напоминающих нахохлившихся сов.",
   "imageKey": "locations/owlstone-circle.webp",
   "type": "MONUMENT",
   "tags": ["glade"],
@@ -11,14 +11,14 @@
     {
       "templateId": "watching-stones",
       "name": "Наблюдающие камни",
-      "description": "С какой стороны ни подойти, каменные глаза будто следят за посетителем.",
+      "description": "С какой стороны ни подойти, глаза восьми каменных сов будто следят за посетителем.",
       "imageKey": "locations/owlstone-circle/watching-stones.webp",
       "sceneNumber": 10
     },
     {
       "templateId": "central-feather",
       "name": "Каменное перо",
-      "description": "В центре круга торчит длинное каменное перо с узкой щелью у основания.",
+      "description": "В центре круга стоит длинное каменное перо. Вдоль него проходит тонкий шов, а у основания видна узкая щель.",
       "imageKey": "locations/owlstone-circle/central-feather.webp",
       "sceneNumber": 20,
       "questTemplateId": "ninth-owl",
