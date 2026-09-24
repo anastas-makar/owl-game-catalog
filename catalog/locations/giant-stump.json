@@ -26,7 +26,7 @@
     },
     {
       "templateId": "fern-balcony",
-      "name": "Папоротниковый балкон",
+      "name": "Балкон из папоротников",
       "description": "На выступе пня вырос целый сад папоротников и красных лесных цветов.",
       "imageKey": "locations/giant-stump/fern-balcony.webp",
       "sceneNumber": 30

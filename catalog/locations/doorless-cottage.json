@@ -6,6 +6,7 @@
   "type": "LANDMARK",
   "buildPrice": null,
   "allowedAcquisitionSources": [],
+  "tags": ["plain", "glade"],
   "scenes": [
     {
       "templateId": "lit-window",
