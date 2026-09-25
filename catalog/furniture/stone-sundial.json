@@ -1,10 +1,10 @@
 {
   "templateId": "stone-sundial",
   "name": "Каменные солнечные часы",
-  "imageKey": "furniture/stone-sundial.webp",
-  "price": 90,
-  "height": 0.24,
-  "width": 0.30,
+  "imageKey": "furniture/stone-sundial.png",
+  "price": 5,
+  "height": 0.150,
+  "width": 0.150,
   "type": "OTHER",
   "allowedAcquisitionSources": [
     "QUEST_REWARD"

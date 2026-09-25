@@ -1,10 +1,10 @@
 {
   "templateId": "cameo",
   "name": "Старинная камея",
-  "imageKey": "furniture/cameo.webp",
-  "price": 40,
-  "height": 0.16,
-  "width": 0.12,
+  "imageKey": "furniture/cameo.png",
+  "price": 10,
+  "height": 0.159,
+  "width": 0.150,
   "type": "OTHER",
   "allowedAcquisitionSources": [
     "QUEST_REWARD"

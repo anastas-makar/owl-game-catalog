@@ -1,9 +1,9 @@
 {
   "templateId": "wooden-chair",
   "name": "Деревянный стул",
-  "imageKey": "furniture/wooden-chair.webp",
-  "price": 60,
-  "height": 0.45,
-  "width": 0.3,
+  "imageKey": "furniture/wooden-chair.png",
+  "price": 10,
+  "height": 0.250,
+  "width": 0.250,
   "type": "OTHER"
 }
