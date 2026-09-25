@@ -1,9 +1,9 @@
 {
   "templateId": "porcelain-lantern",
   "name": "Фарфоровый фонарь",
-  "imageKey": "furniture/porcelain-lantern.webp",
-  "price": 85,
-  "height": 0.30,
-  "width": 0.19,
+  "imageKey": "furniture/porcelain-lantern.png",
+  "price": 5,
+  "height": 0.200,
+  "width": 0.200,
   "type": "OTHER"
 }

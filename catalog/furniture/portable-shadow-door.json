@@ -1,10 +1,10 @@
 {
   "templateId": "portable-shadow-door",
   "name": "Тень незнакомой двери",
-  "imageKey": "furniture/shadow-door.webp",
-  "price": 140,
-  "height": 0.52,
-  "width": 0.30,
+  "imageKey": "furniture/portable-shadow-door.png",
+  "price": 5,
+  "height": 0.250,
+  "width": 0.250,
   "type": "OTHER",
   "allowedAcquisitionSources": [
     "QUEST_REWARD"

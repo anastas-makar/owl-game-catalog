@@ -1,10 +1,10 @@
 {
   "templateId": "amber-paperweight",
   "name": "Янтарное пресс-папье",
-  "imageKey": "furniture/amber-paperweight.webp",
-  "price": 55,
-  "height": 0.12,
-  "width": 0.16,
+  "imageKey": "furniture/amber-paperweight.png",
+  "price": 5,
+  "height": 0.067,
+  "width": 0.100,
   "type": "OTHER",
   "allowedAcquisitionSources": [
     "QUEST_REWARD"

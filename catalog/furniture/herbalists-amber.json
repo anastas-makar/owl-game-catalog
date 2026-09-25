@@ -1,10 +1,10 @@
 {
   "templateId": "herbalists-amber",
   "name": "Янтарь травника",
-  "imageKey": "furniture/herbalists-amber.webp",
-  "price": 65,
-  "height": 0.14,
-  "width": 0.13,
+  "imageKey": "furniture/herbalists-amber.png",
+  "price": 5,
+  "height": 0.100,
+  "width": 0.100,
   "type": "OTHER",
   "allowedAcquisitionSources": [
     "QUEST_REWARD"

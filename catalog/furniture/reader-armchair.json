@@ -1,9 +1,9 @@
 {
   "templateId": "reader-armchair",
   "name": "Кресло «Чтец»",
-  "imageKey": "furniture/reader-armchair.webp",
-  "price": 180,
-  "height": 0.48,
-  "width": 0.42,
+  "imageKey": "furniture/reader-armchair.png",
+  "price": 30,
+  "height": 0.250,
+  "width": 0.250,
   "type": "OTHER"
 }
