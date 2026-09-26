@@ -2,7 +2,7 @@
 
 Этот документ предназначен прежде всего для владельца репозитория и разработчиков backend. Инструкции для авторов игрового контента находятся в [`catalog/README.md`](catalog/README.md) и в `README.md` соответствующих категорий.
 
-Текущая версия схемы каталога задаётся константой `CATALOG_SCHEMA_VERSION` в пакете [`owl-catalog-tools`](https://github.com/anastas-makar/owl-catalog-tools). Репозиторий каталога использует зафиксированную версию пакета `v0.1.2`.
+Текущая версия схемы каталога задаётся константой `CATALOG_SCHEMA_VERSION` в пакете [`owl-catalog-tools`](https://github.com/anastas-makar/owl-catalog-tools). Репозиторий каталога использует зафиксированную версию пакета `v0.2.0`.
 
 После первого production-релиза изменения структуры каталога, правил валидации и требований к контрибьюторам фиксируются в [`catalog/CHANGELOG.md`](catalog/CHANGELOG.md).
 
@@ -75,7 +75,8 @@ CATALOG_SCHEMA_VERSION = 1
 3. В `develop` допускаются временные внешние ссылки `sourceImageUrl`.
 4. Перед слиянием `develop` в `main` изображения проверяются и переносятся в основное S3-хранилище.
 5. Все `sourceImageUrl` заменяются на `imageKey`.
-6. Pull request или push в `main` проходит строгую проверку с `--require-image-keys`.
+6. Pull request или push в `main` проходит строгую проверку с
+   `--require-image-keys` и `--validate-s3-images`.
 7. Релизный тег `catalog-ru-vX.Y.Z` создаётся только на commit, входящем в `main`.
 8. Workflow собирает и публикует итоговый `catalog-release.json`.
 
@@ -96,7 +97,7 @@ git checkout -b catalog/add-stone-fortress
 версию `owl-catalog-tools`, закреплённую для этого репозитория:
 
 ```bash
-python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.2"
+python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.2.0"
 ```
 
 Повторная установка нужна только при смене закреплённой версии инструмента.
@@ -125,7 +126,10 @@ sh ./scripts/validate-catalog.sh
 
 ### Строгая проверка перед `main` и релизом
 
-Строгая проверка требует, чтобы все изображения уже использовали `imageKey`, и запускает сборщик с `--require-image-keys`.
+Строгая проверка требует, чтобы все изображения уже использовали `imageKey`.
+Она проверяет существование каждого объекта в основном S3, его MIME-тип и
+соответствие пропорций изображений мебели полям `width` и `height`. Допустимое
+отклонение отношения сторон — 5%.
 
 В Windows:
 
@@ -146,6 +150,10 @@ sh ./scripts/validate-catalog-strict.sh
 ```
 
 Оба варианта используют текущую версию схемы из `CATALOG_SCHEMA_VERSION`; передавать `schemaVersion` вручную не нужно.
+
+Строгая проверка обращается к публичному адресу
+`https://s3.regru.cloud/owlgame/`, поэтому для неё требуется доступ в интернет.
+Обычная develop-проверка остаётся локальной и не проверяет содержимое S3.
 
 Сгенерированный `build/catalog-release.json` не редактируется вручную.
 
@@ -173,6 +181,11 @@ sh ./scripts/validate-catalog-strict.sh
 * что изображение соответствует содержанию сущности;
 * что в нём нет случайного текста, водяных знаков и нежелательных деталей;
 * что размер и формат подходят мобильному приложению.
+
+После переноса файлов строгая проверка автоматически подтверждает, что
+каждый `imageKey` существует в основном S3 и сервер возвращает ожидаемый
+MIME-тип (`image/png`, `image/webp` и так далее). Это не заменяет визуальную
+проверку изображения.
 
 Не следует автоматически скачивать произвольные ссылки из внешних pull request с использованием production-секретов.
 

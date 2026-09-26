@@ -218,7 +218,7 @@ completionMedalTemplateId
 Установите зафиксированную для этого каталога версию пакета:
 
 ```bash
-python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.2"
+python -m pip install "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.2.0"
 ```
 
 Устанавливать пакет заново перед каждой проверкой не нужно.
@@ -243,7 +243,10 @@ sh ./scripts/validate-catalog.sh
 
 Эта проверка соответствует работе с `develop` и разрешает временные `sourceImageUrl`.
 
-Строгая проверка перед `main` выполняется сопровождающим проекта.
+Строгая проверка перед `main` выполняется сопровождающим проекта. Она также
+проверяет, что каждый `imageKey` существует в основном S3 и имеет правильный
+MIME-тип. Для мебели дополнительно сравниваются пропорции файла изображения
+и отношение `width / height` в каталоге.
 
 ## Инструкции по категориям
 

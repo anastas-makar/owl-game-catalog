@@ -22,6 +22,7 @@ permissions:
 env:
   # Локаль является свойством этого репозитория и передаётся в релиз явно.
   CATALOG_LOCALE: ru
+  CATALOG_IMAGE_BASE_URL: https://s3.regru.cloud/owlgame/
 
 jobs:
   catalog:
@@ -46,7 +47,7 @@ jobs:
         run: |
           set -euo pipefail
           python -m pip install \
-            "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.1.2"
+            "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.2.0"
 
       - name: Determine catalog mode
         id: catalog_mode
@@ -144,7 +145,11 @@ jobs:
           )
 
           if [[ "$REQUIRE_IMAGE_KEYS" == "true" ]]; then
-            BUILD_ARGS+=(--require-image-keys)
+            BUILD_ARGS+=(
+              --require-image-keys
+              --validate-s3-images
+              --image-base-url "$CATALOG_IMAGE_BASE_URL"
+            )
           fi
 
           owl-catalog "${BUILD_ARGS[@]}"
