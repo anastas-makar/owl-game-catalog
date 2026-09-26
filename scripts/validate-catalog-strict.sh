@@ -13,6 +13,8 @@ python3 -m owl_catalog_tools \
   --version local \
   --locale ru \
   --commit-sha local \
-  --require-image-keys
+  --require-image-keys \
+  --validate-s3-images \
+  --image-base-url "https://s3.regru.cloud/owlgame/"
 
 printf '\nCatalog strict validation OK\n'

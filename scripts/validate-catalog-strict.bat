@@ -5,7 +5,9 @@ python -m owl_catalog_tools ^
   --version local ^
   --commit-sha local ^
   --locale ru ^
-  --require-image-keys
+  --require-image-keys ^
+  --validate-s3-images ^
+  --image-base-url "https://s3.regru.cloud/owlgame/"
 
 if errorlevel 1 exit /b 1
 
