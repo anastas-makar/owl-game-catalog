@@ -5,6 +5,7 @@
   "imageKey": "locations/upside-down-waterfall.webp",
   "type": "WATERFALL",
   "buildPrice": null,
+  "tags": ["lake", "pool"],
   "allowedAcquisitionSources": [],
   "scenes": [
     {
