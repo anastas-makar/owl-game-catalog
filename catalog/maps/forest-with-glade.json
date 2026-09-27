@@ -1,0 +1,30 @@
+{
+  "templateId": "forest-with-glade",
+  "name": "Лесная поляна",
+  "imageKey": "maps/forest-with-glade.webp",
+  "locationSlots": [
+    {
+      "slotId": "glade",
+      "x": 0.652,
+      "y": 0.480,
+      "mode": "RANDOM",
+      "requiredTags": [
+        "glade"
+      ]
+    }
+  ],
+  "enemySlots": [
+  ],
+  "completionMedalTemplateId": "first-liberation",
+  "completionLootBundle": {
+    "gardenItemLoot": {
+      "templateIds": [
+        "garden-beehive"
+      ],
+      "amount": 1
+    },
+    "diamondLoot": {
+      "amount": 25
+    }
+  }
+}
