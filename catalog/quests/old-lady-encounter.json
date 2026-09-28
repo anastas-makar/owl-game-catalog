@@ -27,6 +27,10 @@
       "options": [],
       "endingId": "porcelain-lantern-found",
       "lootButtonText": "Забрать фонарь",
+      "scenePatch": {
+        "description": "Женщина гуляет с кошками. Рядом стоят переноска и большая сумка.",
+        "imageKey": "locations/birch-park/roundabout-lantern-gone.webp"
+      },
       "lootBundle": {
         "furnitureLoot": {
           "templateIds": [
