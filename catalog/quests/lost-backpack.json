@@ -42,7 +42,7 @@
     {
       "number": 30,
       "name": "Дорога дальше",
-      "description": "Животное решает не задерживаться и продолжает путь.",
+      "description": "Вы решаете не задерживаться и продолжаете путь.",
       "imageKey": "quests/lost-backpack/page-30.webp",
       "options": [],
       "endingId": "walk-away"

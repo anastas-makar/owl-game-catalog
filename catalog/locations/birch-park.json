@@ -9,9 +9,23 @@
     {
       "templateId": "birch-alley",
       "name": "Берёзовая аллея",
-      "description": "Светлая аллея, по которой приятно пройтись после экспедиции.",
+      "description": "Светлая аллея, по которой приятно пройтись после тяжёлого дня.",
       "imageKey": "locations/birch-park/birch-alley.webp",
       "sceneNumber": 10
+    },
+    {
+      "templateId": "bench-with-lamp",
+      "name": "Деревянная скамейка",
+      "description": "Скамейку украшает кованая композиция: изогнутый фонарь и фигурка голубя.",
+      "imageKey": "locations/birch-park/bench-with-lamp.webp",
+      "sceneNumber": 20
+    },
+    {
+      "templateId": "roundabout ",
+      "name": "Дорожка-ватрушка",
+      "description": "Кажется, круглую дорожку сделали только для того, чтобы разбить в кольце клумбу.",
+      "imageKey": "locations/birch-park/roundabout.webp",
+      "sceneNumber": 30
     }
   ]
 }
