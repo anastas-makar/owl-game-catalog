@@ -16,16 +16,18 @@
     {
       "templateId": "bench-with-lamp",
       "name": "Деревянная скамейка",
-      "description": "Скамейку украшает кованая композиция: изогнутый фонарь и фигурка голубя.",
+      "description": "Скамейку украшает скульптурная композиция: изогнутый фонарь и фигурка голубя.",
       "imageKey": "locations/birch-park/bench-with-lamp.webp",
       "sceneNumber": 20
     },
     {
-      "templateId": "roundabout ",
+      "templateId": "roundabout",
       "name": "Дорожка-ватрушка",
       "description": "Кажется, круглую дорожку сделали только для того, чтобы разбить в кольце клумбу.",
       "imageKey": "locations/birch-park/roundabout.webp",
-      "sceneNumber": 30
+      "sceneNumber": 30,
+      "questTemplateId": "old-lady-encounter",
+      "questButtonText": "Вас окликнула пожилая женщина"
     }
   ]
 }

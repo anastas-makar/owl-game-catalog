@@ -1,0 +1,48 @@
+{
+  "templateId": "old-lady-encounter",
+  "title": "Женщина с сумками",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Кошки всё испортили",
+      "description": "Женщина несёт огромную сумку, из которой высовываются две кошки. Кошки запутались в пряже и орут. Рядом лежит переноска и какой-то бидон. Женщина просит о помощи.",
+      "imageKey": "quests/old-lady-encounter/page-10.webp",
+      "options": [
+        {
+          "description": "Согласиться помочь",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Броситься бежать",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Изматывающий вечер",
+      "description": "Вы несколько часов распутывали пряжу и ловили кошек. Женщина благодарит вас и дарит фарфоровый фонарь, который вы приняли за бидон.",
+      "imageKey": "quests/old-lady-encounter/page-20.webp",
+      "options": [],
+      "endingId": "porcelain-lantern-found",
+      "lootButtonText": "Забрать фонарь",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "porcelain-lantern"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Успешный побег",
+      "description": "Никаких сожалений. Свежий ветер ударил в лицо.",
+      "imageKey": "quests/old-lady-encounter/page-30.webp",
+      "options": [],
+      "endingId": "escape"
+    }
+  ]
+}
