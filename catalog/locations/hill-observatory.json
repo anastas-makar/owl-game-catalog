@@ -7,6 +7,7 @@
   "tags": ["hill"],
   "buildPrice": 320,
   "allowedAcquisitionSources": [
+    "POUCH",
     "SHOP",
     "QUEST_REWARD"
   ],
