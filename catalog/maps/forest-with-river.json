@@ -1,0 +1,30 @@
+{
+  "templateId": "forest-with-river",
+  "name": "Нечастый лес",
+  "imageKey": "maps/forest-with-river.webp",
+  "locationSlots": [
+    {
+      "slotId": "forest-location",
+      "x": 0.624,
+      "y": 0.909,
+      "mode": "RANDOM",
+      "requiredTags": [
+        "forest"
+      ]
+    }
+  ],
+  "enemySlots": [
+  ],
+  "completionMedalTemplateId": "first-liberation",
+  "completionLootBundle": {
+    "gardenItemLoot": {
+      "templateIds": [
+        "garden-beehive"
+      ],
+      "amount": 1
+    },
+    "diamondLoot": {
+      "amount": 25
+    }
+  }
+}
