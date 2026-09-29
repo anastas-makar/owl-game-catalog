@@ -1,0 +1,10 @@
+{
+  "templateId": "goat",
+  "name": "Коза",
+  "description": "Дружелюбная коза. Даёт молоко.",
+  "imageKey": "garden-items/goat.webp",
+  "supplyTemplateId": "milk",
+  "supplyAmount": 1,
+  "itemType": "ANIMAL_HOUSE",
+  "gardenType": "GARDEN"
+}
