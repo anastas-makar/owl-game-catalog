@@ -4,5 +4,5 @@
   "description": "Простой горячий суп из моркови с ложкой мёда.",
   "imageKey": "supplies/carrot-soup.webp",
   "effectType": "HEAL",
-  "effectAmount": 8
+  "effectAmount": 180
 }
