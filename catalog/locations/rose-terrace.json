@@ -4,7 +4,7 @@
   "description": "Сад из старых роз поднимается по солнечному склону.",
   "imageKey": "locations/rose-terrace.webp",
   "type": "PARK",
-  "buildPrice": 160,
+  "buildPrice": 960,
   "allowedAcquisitionSources": [
     "SHOP"
   ],
@@ -15,6 +15,15 @@
       "description": "Из беседки видны весь сад и дальние холмы.",
       "imageKey": "locations/rose-terrace/upper-arbor.webp",
       "sceneNumber": 10
+    },
+    {
+      "templateId": "rose-pond",
+      "name": "Розовый пруд",
+      "description": "Круглый каменный пруд окружён старыми розами. На дне поблёскивает янтарная вещица, а в бортик встроена потемневшая латунная задвижка.",
+      "imageKey": "locations/rose-terrace/rose-pond.webp",
+      "sceneNumber": 20,
+      "questTemplateId": "amber-under-roses",
+      "questButtonText": "Осмотреть пруд"
     }
   ]
 }

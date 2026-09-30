@@ -4,7 +4,7 @@
   "description": "Лёгкий павильон увешан лентами и стеклянными колокольчиками.",
   "imageKey": "locations/wind-pavilion.webp",
   "type": "PAVILION",
-  "buildPrice": 200,
+  "buildPrice": 700,
   "allowedAcquisitionSources": [
     "SHOP",
     "QUEST_REWARD"

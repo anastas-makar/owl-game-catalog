@@ -5,5 +5,8 @@
   "price": 5,
   "height": 0.067,
   "width": 0.100,
-  "type": "OTHER"
+  "type": "OTHER",
+  "allowedAcquisitionSources": [
+    "QUEST_REWARD"
+  ]
 }
