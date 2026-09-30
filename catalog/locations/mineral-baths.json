@@ -15,6 +15,15 @@
       "description": "Над водой клубится тёплый пар с запахом хвои.",
       "imageKey": "locations/mineral-baths/steam-pool.webp",
       "sceneNumber": 10
+    },
+    {
+      "templateId": "seawater-courtyard",
+      "name": "Морской дворик",
+      "description": "Внутренний дворик занимает небольшой бассейн с морской водой. На мокром камне у сливного желоба лежит камбала, а рядом стоит ведро.",
+      "imageKey": "locations/mineral-baths/seawater-courtyard.webp",
+      "sceneNumber": 20,
+      "questTemplateId": "flounder-by-pool",
+      "questButtonText": "Подойти к камбале"
     }
   ]
 }
