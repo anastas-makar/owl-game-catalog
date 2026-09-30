@@ -19,7 +19,7 @@
     {
       "templateId": "rose-pond",
       "name": "Розовый пруд",
-      "description": "Круглый каменный пруд окружён старыми розами. На дне поблёскивает янтарная вещица, а в бортик встроена потемневшая латунная задвижка.",
+      "description": "Круглый каменный пруд окружён старыми розами. На дне поблёскивает янтарная вещица.",
       "imageKey": "locations/rose-terrace/rose-pond.webp",
       "sceneNumber": 20,
       "questTemplateId": "amber-under-roses",
