@@ -1,0 +1,8 @@
+{
+  "templateId": "carp",
+  "name": "Охлаждённый карп",
+  "description": "Карп из пруда.",
+  "imageKey": "supplies/carp.webp",
+  "effectType": "HEAL",
+  "effectAmount": 4
+}

@@ -3,7 +3,7 @@
   "name": "Карпы",
   "description": "Карпы, живущие в пруду и дающие рыбу.",
   "imageKey": "garden-items/pond-carp.webp",
-  "supplyTemplateId": "fish",
+  "supplyTemplateId": "carp",
   "supplyAmount": 1,
   "itemType": "FISH",
   "gardenType": "POOL"
