@@ -4,5 +4,5 @@
   "description": "Карп из пруда.",
   "imageKey": "supplies/carp.webp",
   "effectType": "HEAL",
-  "effectAmount": 4
+  "effectAmount": 10
 }

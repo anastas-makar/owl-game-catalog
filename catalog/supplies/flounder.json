@@ -1,0 +1,8 @@
+{
+  "templateId": "flounder",
+  "name": "Камбала",
+  "description": "Полезная морская рыба, но не стоит есть её сырой.",
+  "imageKey": "supplies/flounder.webp",
+  "effectType": "HEAL",
+  "effectAmount": 10
+}

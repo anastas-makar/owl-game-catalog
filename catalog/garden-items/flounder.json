@@ -1,0 +1,10 @@
+{
+  "templateId": "flounder",
+  "name": "Камбала",
+  "description": "Плоская морская рыба.",
+  "imageKey": "garden-items/flounder.webp",
+  "supplyTemplateId": "flounder",
+  "supplyAmount": 1,
+  "itemType": "FISH",
+  "gardenType": "GARDEN"
+}
