@@ -5,9 +5,6 @@
   "imageKey": "locations/conservatory.webp",
   "type": "LANDMARK",
   "buildPrice": 600,
-  "allowedAcquisitionSources": [
-    "SHOP"
-  ],
   "scenes": [
     {
       "templateId": "grand-hall",

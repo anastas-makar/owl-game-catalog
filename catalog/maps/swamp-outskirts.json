@@ -56,8 +56,21 @@
       ],
       "amount": 1
     },
+    "plantLoot": {
+      "templateIds": [
+        "carrot-plant"
+      ],
+      "amount": 1
+    },
+    "locationLoot": {
+      "templateIds": [
+        "conservatory"
+      ],
+      "amount": 1,
+      "dropChance": 0.1
+    },
     "diamondLoot": {
-      "amount": 25
+      "amount": 250
     }
   }
 }

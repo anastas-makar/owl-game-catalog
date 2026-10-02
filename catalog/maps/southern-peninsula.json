@@ -23,6 +23,22 @@
     }
   ],
   "enemySlots": [
+    {
+      "slotId": "enemy-1",
+      "x": 0.38,
+      "y": 0.46,
+      "requiredTags": [
+        "bird"
+      ]
+    },
+    {
+      "slotId": "enemy-2",
+      "x": 0.61,
+      "y": 0.67,
+      "requiredTags": [
+        "bird"
+      ]
+    }
   ],
   "completionMedalTemplateId": "first-liberation",
   "completionLootBundle": {
