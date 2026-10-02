@@ -4,6 +4,7 @@
   "description": "Каменная лестница поднимается над вересковой пустошью и обрывается в воздухе.",
   "imageKey": "locations/stairway-to-nowhere.webp",
   "type": "RUINS",
+  "tags": ["plain"],
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [
@@ -21,7 +22,7 @@
       "imageKey": "locations/stairway-to-nowhere/top-landing.webp",
       "sceneNumber": 20,
       "questTemplateId": "shadow-door",
-      "questButtonText": "Шагнуть в тень"
+      "questButtonText": "Осмотреть тень"
     },
     {
       "templateId": "view-below",

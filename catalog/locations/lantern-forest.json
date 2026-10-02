@@ -5,6 +5,7 @@
   "imageKey": "locations/lantern-forest.webp",
   "type": "PARK",
   "buildPrice": null,
+  "tags": ["forest"],
   "allowedAcquisitionSources": [],
   "scenes": [
     {

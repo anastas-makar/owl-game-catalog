@@ -4,6 +4,7 @@
   "description": "Пень древнего дерева возвышается над молодым лесом, как круглая башня.",
   "imageKey": "locations/giant-stump.webp",
   "type": "LANDMARK",
+  "tags": ["forest"],
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [
@@ -25,7 +26,7 @@
     },
     {
       "templateId": "fern-balcony",
-      "name": "Папоротниковый балкон",
+      "name": "Балкон из папоротников",
       "description": "На выступе пня вырос целый сад папоротников и красных лесных цветов.",
       "imageKey": "locations/giant-stump/fern-balcony.webp",
       "sceneNumber": 30

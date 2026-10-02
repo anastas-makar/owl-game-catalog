@@ -1,0 +1,52 @@
+{
+  "templateId": "amber-under-roses",
+  "title": "Янтарь под розами",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Что блестит в воде",
+      "description": "На дне лежит гладкий кусок янтаря с тёмной веточкой внутри. В одной из стенок пруда поблёскивает медный вентиль.",
+      "imageKey": "quests/amber-under-roses/page-10.webp",
+      "options": [
+        {
+          "description": "Открыть вентиль",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Попытаться достать янтарь рукой",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Вода для роз",
+      "description": "Уровень воды стремительно понижается. На обнажившемся дне остаётся янтарное пресс-папье. Вы забираете его и снова крутите вентиль. Пруд наполняется водой.",
+      "imageKey": "quests/amber-under-roses/page-20.webp",
+      "options": [],
+      "endingId": "amber-paperweight-found",
+      "scenePatch": {
+        "description": "Круглый пруд снова наполнен водой. Розы роняют туда свои лепестки.",
+        "imageKey": "locations/rose-terrace/rose-pond-after-amber.webp"
+      },
+      "lootButtonText": "Забрать пресс-папье",
+      "lootBundle": {
+        "furnitureLoot": {
+          "templateIds": [
+            "amber-paperweight"
+          ],
+          "amount": 1
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Обманчивая глубина",
+      "description": "Дно кажется совсем близким, но рука уходит в воду почти по плечо. Пальцы лишь касаются гладкого янтаря, и он соскальзывает глубже между камнями.",
+      "imageKey": "quests/amber-under-roses/page-30.webp",
+      "options": [],
+      "endingId": "amber-out-of-reach"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "templateId": "cobra",
+  "name": "Большая кобра",
+  "description": "Ядовитая хищница.",
+  "imageKey": "enemies/cobra.webp",
+  "health": 400,
+  "damage": 400,
+  "tags": [
+    "snake"
+  ]
+}

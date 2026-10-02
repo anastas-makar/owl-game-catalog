@@ -1,10 +1,10 @@
 {
   "templateId": "floating-river-stone",
   "name": "Парящий речной камень",
-  "imageKey": "furniture/floating-river-stone.webp",
-  "price": 110,
-  "height": 0.18,
-  "width": 0.24,
+  "imageKey": "furniture/floating-river-stone.png",
+  "price": 1,
+  "height": 0.100,
+  "width": 0.150,
   "type": "OTHER",
   "allowedAcquisitionSources": [
     "QUEST_REWARD"

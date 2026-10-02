@@ -1,10 +1,10 @@
 {
   "templateId": "mosaic-fragment",
   "name": "Фрагмент старой мозаики",
-  "imageKey": "furniture/mosaic-fragment.webp",
-  "price": 70,
-  "height": 0.22,
-  "width": 0.24,
+  "imageKey": "furniture/mosaic-fragment.png",
+  "price": 20,
+  "height": 0.200,
+  "width": 0.200,
   "type": "OTHER",
   "allowedAcquisitionSources": [
     "QUEST_REWARD"

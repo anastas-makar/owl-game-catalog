@@ -1,10 +1,10 @@
 {
   "templateId": "stone-owl",
   "name": "Каменная сова",
-  "imageKey": "furniture/stone-owl.webp",
-  "price": 95,
-  "height": 0.31,
-  "width": 0.22,
+  "imageKey": "furniture/stone-owl.png",
+  "price": 5,
+  "height": 0.150,
+  "width": 0.150,
   "type": "OTHER",
   "allowedAcquisitionSources": [
     "QUEST_REWARD"

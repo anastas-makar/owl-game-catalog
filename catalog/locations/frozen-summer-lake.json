@@ -4,6 +4,7 @@
   "description": "В разгар лета озеро покрыто прозрачным тёплым льдом.",
   "imageKey": "locations/frozen-summer-lake.webp",
   "type": "WATER_LOCATION",
+  "tags": ["pond"],
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [

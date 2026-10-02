@@ -1,0 +1,30 @@
+{
+  "templateId": "violet-house",
+  "name": "Маленький фиолетовый дом",
+  "imageKey": "houses/violet-house.webp",
+  "cost": 900,
+  "type": "HOUSE",
+  "rooms": [
+    {
+      "templateId": "living-room",
+      "name": "Жилая комната",
+      "imageKey": "rooms/beige-living-room.webp",
+      "roomNumber": 10
+    },
+    {
+      "templateId": "bath-room",
+      "name": "Ванная",
+      "imageKey": "rooms/large-tile-bath-room.webp",
+      "roomNumber": 20
+    }
+  ],
+  "gardens": [
+    {
+      "templateId": "kitchen-garden",
+      "name": "Огород",
+      "imageKey": "gardens/seedbeds-and-grass-kitchen-garden.png",
+      "gardenNumber": 10,
+      "gardenType": "KITCHEN_GARDEN"
+    }
+  ]
+}

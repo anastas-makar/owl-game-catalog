@@ -1,6 +1,6 @@
 {
   "templateId": "fallen-star-chart",
-  "title": "Карта упавшей звезды",
+  "title": "Координаты упавшей звезды",
   "startPageNumber": 10,
   "pages": [
     {
@@ -10,7 +10,7 @@
       "imageKey": "quests/fallen-star-chart/page-10.webp",
       "options": [
         {
-          "description": "Отметить место на карте и спуститься",
+          "description": "Определить место на карте и отправиться на поиски",
           "targetPageNumber": 20
         },
         {

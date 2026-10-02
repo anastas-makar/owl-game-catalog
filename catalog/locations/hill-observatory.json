@@ -4,8 +4,10 @@
   "description": "Небольшой купол стоит выше облаков и городских огней.",
   "imageKey": "locations/hill-observatory.webp",
   "type": "LANDMARK",
+  "tags": ["hill"],
   "buildPrice": 320,
   "allowedAcquisitionSources": [
+    "POUCH",
     "SHOP",
     "QUEST_REWARD"
   ],

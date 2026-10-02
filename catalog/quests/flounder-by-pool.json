@@ -1,0 +1,62 @@
+{
+  "templateId": "flounder-by-pool",
+  "title": "Камбала у бассейна",
+  "startPageNumber": 10,
+  "pages": [
+    {
+      "number": 10,
+      "name": "Неожиданная купальщица",
+      "description": "Похоже, маленькую камбалу затянуло в бассейн вместе с морской водой. Теперь она лежит на мокром камне у сливного желоба и шевелит жабрами. В стоящем рядом ведре осталась вода.",
+      "imageKey": "quests/flounder-by-pool/page-10.webp",
+      "options": [
+        {
+          "description": "Вылить воду и смыть камбалу в бассейн",
+          "targetPageNumber": 20
+        },
+        {
+          "description": "Посадить камбалу в ведро",
+          "targetPageNumber": 30
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "name": "Обратно в воду",
+      "description": "Поток из ведра подхватывает камбалу и переносит через низкий бортик. Рыба на мгновение замирает на дне, а затем скрывается в глубокой части бассейна.",
+      "imageKey": "quests/flounder-by-pool/page-20.webp",
+      "options": [],
+      "endingId": "flounder-rescued",
+      "scenePatch": {
+        "description": "На мокром камне никого нет. В прозрачной морской воде иногда мелькает плоская тень.",
+        "imageKey": "locations/mineral-baths/seawater-courtyard-rescued.webp"
+      },
+      "lootButtonText": "Получить награду",
+      "lootBundle": {
+        "diamondLoot": {
+          "amount": 15
+        }
+      }
+    },
+    {
+      "number": 30,
+      "name": "Камбала в ведре",
+      "description": "Камбала помещается в ведре как раз по ширине. Воды достаточно, чтобы донести неожиданную находку домой.",
+      "imageKey": "quests/flounder-by-pool/page-30.webp",
+      "options": [],
+      "endingId": "flounder-taken",
+      "scenePatch": {
+        "description": "У сливного желоба остался только мокрый камень.",
+        "imageKey": "locations/mineral-baths/seawater-courtyard-empty.webp"
+      },
+      "lootButtonText": "Забрать камбалу",
+      "lootBundle": {
+        "gardenItemLoot": {
+          "templateIds": [
+            "flounder"
+          ],
+          "amount": 1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "templateId": "southern-peninsula",
+  "name": "Солнечный полуостров",
+  "imageKey": "maps/southern-peninsula.webp",
+  "locationSlots": [
+    {
+      "slotId": "building",
+      "x": 0.729,
+      "y": 0.175,
+      "mode": "RANDOM",
+      "requiredTags": [
+        "buildings"
+      ]
+    },
+    {
+      "slotId": "shore-location",
+      "x": 0.316,
+      "y": 0.836,
+      "mode": "RANDOM",
+      "requiredTags": [
+        "shore"
+      ]
+    }
+  ],
+  "enemySlots": [
+    {
+      "slotId": "enemy-1",
+      "x": 0.38,
+      "y": 0.46,
+      "requiredTags": [
+        "bird"
+      ]
+    },
+    {
+      "slotId": "enemy-2",
+      "x": 0.61,
+      "y": 0.67,
+      "requiredTags": [
+        "bird"
+      ]
+    }
+  ],
+  "completionMedalTemplateId": "first-liberation",
+  "completionLootBundle": {
+    "gardenItemLoot": {
+      "templateIds": [
+        "garden-beehive"
+      ],
+      "amount": 1
+    },
+    "diamondLoot": {
+      "amount": 25
+    }
+  }
+}

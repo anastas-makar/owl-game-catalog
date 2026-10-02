@@ -3,6 +3,6 @@
   "name": "Морковь",
   "description": "Свежая морковь с огорода.",
   "imageKey": "supplies/carrot.webp",
-  "effectType": "NO_EFFECT",
-  "effectAmount": 0
+  "effectType": "HEAL",
+  "effectAmount": 30
 }

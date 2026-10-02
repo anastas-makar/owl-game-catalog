@@ -1,10 +1,10 @@
 {
   "templateId": "captured-sunbeam",
   "name": "Пойманный солнечный луч",
-  "imageKey": "furniture/captured-sunbeam.webp",
-  "price": 105,
-  "height": 0.30,
-  "width": 0.18,
+  "imageKey": "furniture/captured-sunbeam.png",
+  "price": 10,
+  "height": 0.150,
+  "width": 0.150,
   "type": "OTHER",
   "allowedAcquisitionSources": [
     "QUEST_REWARD"

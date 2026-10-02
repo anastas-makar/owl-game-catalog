@@ -1,9 +1,10 @@
 {
   "templateId": "sunken-colonnade",
   "name": "Затопленная колоннада",
-  "description": "Белые колонны стоят по колено в прозрачной воде.",
+  "description": "Белые колонны частично погружены в прозрачную воду.",
   "imageKey": "locations/sunken-colonnade.webp",
   "type": "RUINS",
+  "tags": ["pond", "shore", "swamp", "lake", "shallow-water"],
   "buildPrice": null,
   "allowedAcquisitionSources": [],
   "scenes": [

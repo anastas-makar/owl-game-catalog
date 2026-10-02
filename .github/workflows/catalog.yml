@@ -11,10 +11,18 @@ on:
       - develop
       - main
     tags:
-      - 'catalog-v*'
+      # Любой каталожный тег запускает workflow. Ниже формат проверяется
+      # строго, чтобы старый catalog-v* или тег другого языка не был
+      # опубликован из репозитория русского каталога.
+      - 'catalog-*'
 
 permissions:
   contents: read
+
+env:
+  # Локаль является свойством этого репозитория и передаётся в релиз явно.
+  CATALOG_LOCALE: ru
+  CATALOG_IMAGE_BASE_URL: https://s3.regru.cloud/owlgame/
 
 jobs:
   catalog:
@@ -33,6 +41,13 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: '3.13'
+
+      - name: Install owl-catalog-tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install \
+            "git+https://github.com/anastas-makar/owl-catalog-tools.git@v0.2.0"
 
       - name: Determine catalog mode
         id: catalog_mode
@@ -53,10 +68,17 @@ jobs:
           #
           # Релизный тег:
           # - версия берётся из имени тега;
+          # - локаль должна совпадать с локалью репозитория;
           # - допускаются только imageKey;
           # - после проверки каталог публикуется.
           #
           if [[ "$REF_TYPE" == "tag" ]]; then
+            if [[ ! "$REF_NAME" =~ ^catalog-${CATALOG_LOCALE}-v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "ERROR: invalid ${CATALOG_LOCALE} catalog tag '$REF_NAME'"
+              echo "Expected format: catalog-${CATALOG_LOCALE}-vX.Y.Z (for example, catalog-${CATALOG_LOCALE}-v0.1.4)"
+              exit 1
+            fi
+
             VERSION="$REF_NAME"
             REQUIRE_IMAGE_KEYS="true"
             PUBLISH="true"
@@ -83,6 +105,7 @@ jobs:
           echo "require_image_keys=$REQUIRE_IMAGE_KEYS" >> "$GITHUB_OUTPUT"
           echo "publish=$PUBLISH" >> "$GITHUB_OUTPUT"
 
+          echo "Catalog locale: $CATALOG_LOCALE"
           echo "Catalog version: $VERSION"
           echo "Require image keys: $REQUIRE_IMAGE_KEYS"
           echo "Publish: $PUBLISH"
@@ -117,14 +140,19 @@ jobs:
             --catalog-dir catalog
             --output build/catalog-release.json
             --version "$CATALOG_VERSION"
+            --locale "$CATALOG_LOCALE"
             --commit-sha "$GITHUB_SHA"
           )
 
           if [[ "$REQUIRE_IMAGE_KEYS" == "true" ]]; then
-            BUILD_ARGS+=(--require-image-keys)
+            BUILD_ARGS+=(
+              --require-image-keys
+              --validate-s3-images
+              --image-base-url "$CATALOG_IMAGE_BASE_URL"
+            )
           fi
 
-          python scripts/build_catalog.py "${BUILD_ARGS[@]}"
+          owl-catalog "${BUILD_ARGS[@]}"
 
       - name: Show release summary
         shell: bash
@@ -141,6 +169,7 @@ jobs:
               data = json.load(file)
 
           print("Version:", data["version"])
+          print("Locale:", data["locale"])
           print("Schema version:", data["schemaVersion"])
           print("Commit:", data["commitSha"])
           print("Hash:", data["contentHash"])
@@ -154,7 +183,7 @@ jobs:
       #
       # ПУБЛИКАЦИЯ В PRODUCTION
       #
-      # Этот шаг выполняется только для тегов catalog-v*.
+      # Этот шаг выполняется только для валидных тегов catalog-ru-vX.Y.Z.
       #
       - name: Publish catalog through SSH
         if: steps.catalog_mode.outputs.publish == 'true'
