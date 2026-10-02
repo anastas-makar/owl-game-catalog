@@ -1,0 +1,11 @@
+{
+  "templateId": "hostile-vulture",
+  "name": "Враждебный гриф",
+  "description": "Недобрый гриф с большим клювом.",
+  "imageKey": "enemies/hostile-vulture.webp",
+  "health": 300,
+  "damage": 300,
+  "tags": [
+    "bird"
+  ]
+}
