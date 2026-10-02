@@ -1,7 +1,7 @@
 {
-  "templateId": "cozy-house",
-  "name": "Уютный дом",
-  "imageKey": "houses/cozy-house.webp",
+  "templateId": "violet-house",
+  "name": "Маленький фиолетовый дом",
+  "imageKey": "houses/violet-house.webp",
   "cost": 900,
   "type": "HOUSE",
   "rooms": [

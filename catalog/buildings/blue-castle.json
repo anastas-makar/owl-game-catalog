@@ -1,7 +1,7 @@
 {
-  "templateId": "stone-fortress",
-  "name": "Каменный замок",
-  "imageKey": "castles/stone-fortress.webp",
+  "templateId": "blue-castle",
+  "name": "Замок в голубоватой дымке",
+  "imageKey": "castles/blue-castle.webp",
   "cost": 5000,
   "type": "FORTRESS",
   "rooms": [

@@ -1,7 +1,7 @@
 {
-  "templateId": "cozy-house",
-  "name": "Уютный дом",
-  "imageKey": "houses/cozy-house.webp",
+  "templateId": "triangular-house",
+  "name": "Дом с треугольной крышей",
+  "imageKey": "houses/triangular-house.webp",
   "cost": 900,
   "type": "HOUSE",
   "rooms": [
