@@ -1,6 +1,6 @@
 {
   "templateId": "owl",
-  "kind": "owl",
+  "kind": "сова",
   "initialDisplayName": "Заблудившаяся совушка",
   "imageKey": "animals/owl.png"
 }
